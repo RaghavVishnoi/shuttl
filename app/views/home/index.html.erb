@@ -1,0 +1,277 @@
+ <script>
+    $(document).ready(function() {
+
+      $("#start-time").owlCarousel({
+        items : 10,
+		 navigation: true,
+        navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+        ],
+        
+      });
+	  
+	  $("#end-time").owlCarousel({
+        items : 10,
+		 navigation: true,
+        navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+        ],
+        
+      });
+
+      $('.link').on('click', function(event){
+        var $this = $(this);
+        if($this.hasClass('clicked')){
+          $this.removeClass('clicked');
+        } else{
+          $this.addClass('clicked');
+        }
+      });
+
+$('.check-box li').click(function(){
+  $(this).addClass("selected");
+  
+  
+});
+	
+$('#sub').click(function(){
+ 	
+var geocoder = new google.maps.Geocoder();
+var geocoder1 = new google.maps.Geocoder();
+	
+	
+var address = $('#pac-input').val();
+var address1 = $('#pac-input1').val();
+ 
+geocoder.geocode( { 'address': address}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+     slat  = results[0].geometry.location.lat();
+     slng = results[0].geometry.location.lng();
+   } 
+});
+
+geocoder1.geocode( { 'address': address1}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+    dlat = results[0].geometry.location.lat();
+    dlng = results[0].geometry.location.lng();
+   }
+ });
+
+   location.href = 'routes/find_route?s='+address+'&slat='+slat+'&slong='+slng+'&d='+address1+'&dlat='+dlat+'&dlong='+dlng
+});
+
+
+	
+});
+	
+	
+	
+    </script>
+	
+</head>
+
+<body>
+<!-- Loader -->
+<div id="page-preloader"><span class="spinner"></span></div>
+<!-- Loader end -->
+<div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
+  <div id="wrapper"> 
+  
+  
+  
+	
+
+    <script>
+       
+      function initMap() {
+        initMap1()
+        var map = new google.maps.Map(document.getElementById('map'), {
+          
+        });
+        var input = (
+            document.getElementById('pac-input'));
+
+        var types = document.getElementById('type-selector');
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo('bounds', map);
+
+ 
+         
+
+        autocomplete.addListener('place_changed', function() {
+          
+
+          var address = '';
+          if (place.address_components) {
+            address = [
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+          }
+
+          infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+          infowindow.open(map, marker);
+        });
+
+       
+      }
+
+
+
+      function initMap1() {
+        var map1 = new google.maps.Map(document.getElementById('map1'), {
+          
+        });
+        var input1= (document.getElementById('pac-input1'));
+         var types1 = document.getElementById('type-selector');
+         map1.controls[google.maps.ControlPosition.TOP_LEFT].push(input1);
+        map1.controls[google.maps.ControlPosition.TOP_LEFT].push(types1);
+
+        var autocomplete1 = new google.maps.places.Autocomplete(input1);
+        autocomplete1.bindTo('bounds', map1);
+
+ 
+         
+
+        autocomplete1.addListener('place_changed', function() {
+          
+
+          var address1 = '';
+          if (place.address_components) {
+            address1 = [
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+          }
+           infowindow.setContent('<div class="me"><strong>' + place.name + '</strong><br>' + address1);
+          infowindow.open(map1, marker);
+        });
+
+       
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWdJ3F1a1pmCUjyHaINmV1_nOJ6hpbArM&libraries=places&callback=initMap"
+        async defer></script>
+  
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png"  width="100" alt="Logo"></a>
+            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
+          </div>
+          <!-- end col  --> 
+        </div>
+        <!-- end row  --> 
+      </div>
+      <!-- end container--> 
+    </header>
+    <!-- end header -->
+     <section class="section-default">
+        <div class="container"> 
+          
+           <div class="row">
+            
+          <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
+		  <div class="form-group">
+		  <div class="input-group">
+		  <span class="input-group-addon"><i class="fa fa-home"></i></span>
+		<input id="pac-input" class="controls form-control" type="text" placeholder="Enter Home Address">
+		<div id="map" style="height:2px;width:0px;"></div>
+		</div>
+		<div class="input-group">
+		  <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
+		<input class="form-control" type="text" placeholder="Enter Office Address" id="pac-input1">
+    <div id="map1" style="height:2px;width:0px;"></div>
+		</div> 
+		 </div> 
+		<!-- end form group -->
+		<!-- star time -->
+    <% if alert %>
+		<div class="start-time-block">
+		 <h5>What time do you have to reach work?</h5>
+		 <div class="crowl-pad">
+		 <div id="start-time" class="owl-carousel">               
+                <a class="item link">8:00</a>
+                <a class="item link">8:30</a>
+				<a class="item link">9:00</a>
+				<a class="item link">9:30</a>
+                <a class="item link">10:00</a>
+				<a class="item link">10:30</a>
+				<a class="item link">11:00</a>
+                <a class="item link">11:30</a>
+				<a class="item link">12:00</a>
+				<a class="item link">12:30</a>
+                <a class="item link">13:00</a>
+				<a class="item link">13:30</a>
+
+              </div>
+			  <p style="text-align:center">(Select top 2)</p>
+		  </div>
+		 </div>
+		 
+		 <!-- end time -->
+		 <div class="end-time-block">
+		  <h5>What time do you leave from work?</h5>
+		 <div class="crowl-pad">
+		 <div id="end-time" class="owl-carousel">               
+                <a class="item link">8:00</a>
+                <a class="item link">8:30</a>
+				<a class="item link">9:00</a>
+				<a class="item link">9:30</a>
+                <a class="item link">10:00</a>
+				<a class="item link">10:30</a>
+				<a class="item link">11:00</a>
+                <a class="item link">11:30</a>
+				<a class="item link">12:00</a>
+				<a class="item link">12:30</a>
+                <a class="item link">13:00</a>
+				<a class="item link">13:30</a>
+
+              </div>
+			  <p style="text-align:center">(Select top 2)</p>
+		  </div>
+		 
+		 </div>
+     <%end%>
+		 <!-- travel time -->
+		 <div class="travel-time-block">
+		 <h5>What mode of travel do you use to complete this journey everyday?</h5>
+		 <ul class="check-box">
+		 <li><label><input type="checkbox" checked> Bus</label></li>
+		 <li><label><input type="checkbox"> Metro</label></li>
+		 <li><label><input type="checkbox"> Shared Auto</label></li>
+		 <li><label><input type="checkbox"> Auto</label></li>
+		 <li><label><input type="checkbox"> Car</label></li>
+		 <li><label><input type="checkbox"> Shared Taxi</label></li>
+		 <li><label><input type="checkbox"> Office Cab</label></li>
+		 
+		 <li><label><input type="checkbox"> Bike</label></li>
+		 <li><label><input type="checkbox"> Taxi</label></li>
+		 </ul>
+		 
+		 <button class="btn btn-info btn-block" type="button" id="sub">Submit</button>
+		 
+		 
+		 </div>
+    </div>
+		<!-- end coll --> 
+		 
+         </div>
+         
+        </div>
+        <!-- end container --> 
+      </section>   
+  </div>
+ </div>
+ 
