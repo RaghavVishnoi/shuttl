@@ -3,7 +3,6 @@ class RouteSuggestion < ActiveRecord::Base
 	attr_accessor :slots,:timestamps
 
  	has_many :route_suggestions_slots
-
 	validates :name, presence: true
 	validates :threshold, presence: true
 
@@ -29,42 +28,21 @@ class RouteSuggestion < ActiveRecord::Base
 		end
 	end
 
-	def self.home_depart(route_id,lat,long)
-		slot_id = nearest_slot(route_id,lat,long).last.id
-		departure_time(slot_id,route_id)
-	end
-
-	def self.home_arrive(route_id,lat,long)
-		slot_id = nearest_slot(route_id,lat,long).last.id
-		
+	def self.home_depart(route_id,time,drop_point_id,pickup_point_id)
+  		drop_time = RouteSuggestionsSlot.find(drop_point_id).time
+		pick_time = RouteSuggestionsSlot.find(pickup_point_id).time
+ 		departure_time = (Time.parse(Time.parse(time.to_s).strftime("%H:%M:%S")) - drop_time.to_i.minutes).strftime("%I:%M")
+ 		total_time_to_pick = (Time.parse(Time.parse(departure_time.to_s).strftime("%H:%M:%S")) + pick_time.to_i.minutes).strftime("%I:%M")
+ 		total_time_to_pick
 	end
 
 	def self.nearest_slot(route_id,lat,long)
 		RouteSuggestionsSlot.where(lat: (lat.to_f - 0.001)..(lat.to_f + 0.001),long: (long.to_f - 0.001)..(long.to_f + 0.001))
 	end
 
-	def self.departure_time(slot_id,route_id)
-		time = RouteSuggestionsSlot.find(slot_id).time
-		route_time = RouteSuggestionsTimestamp.find_by(route_suggestion_id: route_id).time_departure
-		slot_time = (RouteSuggestionsSlot.find(slot_id).time*60)
-		if slot_time != 0
-			route_time + slot_time.strftime("%I:%M %P")
-		else
-			route_time.strftime("%I:%M")
-		end
-		
-	end
+	 
 
-	def self.arrival_time(slot_id)
-		time = RouteSuggestionsSlot.find(slot_id).time
-		route_time = RouteSuggestionsTimestamp.find_by(route_suggestion_id: route_id).time
-		slot_time = (RouteSuggestionsSlot.find(slot_id).time*60)
-		if slot_time != 0
-			route_time - slot_time.strftime("%I:%M %P")
-		else
-			route_time.strftime("%I:%M")
-		end
-	end
+	 
 
 
 end

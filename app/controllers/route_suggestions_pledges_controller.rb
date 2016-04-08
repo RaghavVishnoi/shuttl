@@ -1,8 +1,6 @@
 class RouteSuggestionsPledgesController < ApplicationController
  
-	def new
-	end
-
+	 
 	def create
 		@route_suggestions_pledge = RouteSuggestionsPledge.new pledge_params
 		if @route_suggestions_pledge.save
@@ -32,6 +30,11 @@ class RouteSuggestionsPledgesController < ApplicationController
 		else
 			render :json => 0
 		end
+	end
+
+	def pledges
+		pledges = RouteSuggestionsPledge.pledges(params[:route_id],params[:drop_point_id])
+		render :json => pledges
 	end
 
 end

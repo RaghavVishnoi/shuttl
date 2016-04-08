@@ -1,6 +1,7 @@
 class RouteSuggestionsTimestamp < ActiveRecord::Base
 
 	belongs_to :route_suggestions
+	has_many :route_suggestions_pledges
 
 	validates :time_departure,presence: true
 	validates :route_suggestion_id, presence: true

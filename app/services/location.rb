@@ -1,13 +1,14 @@
 class Location
+	
 
-	def self.distance(params)
-		distance = Geocoder::Calculations.distance_between([params[:slat],params[:slong]],[params[:dlat],params[:dlong]])
-		nearby(distance,params[:slat],params[:slong])
-	end
+	def self.distance(lat1,long1,lat2,long2)
+		Haversine.distance(lat1, long1, lat2, long2).to_meters
+ 	end
 
 	def self.nearby(distance,slat,slong)
 		@routes = RouteSuggestionsSlot.near([slat, slong], distance, units: :km)
 	end
 
+	 
 
 end

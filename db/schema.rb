@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160404080927) do
+ActiveRecord::Schema.define(version: 20160408140413) do
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.string   "message",    limit: 255
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "route_suggestions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -21,17 +28,19 @@ ActiveRecord::Schema.define(version: 20160404080927) do
   end
 
   create_table "route_suggestions_pledges", force: :cascade do |t|
-    t.integer  "user_id",                   limit: 4,   null: false
-    t.boolean  "approved",                  limit: 1
-    t.string   "lat",                       limit: 255, null: false
-    t.string   "long",                      limit: 255, null: false
-    t.integer  "is_pledge",                 limit: 4
-    t.integer  "route_suggestions_slot_id", limit: 4
+    t.integer  "user_id",                        limit: 4,   null: false
+    t.boolean  "approved",                       limit: 1
+    t.string   "lat",                            limit: 255, null: false
+    t.string   "long",                           limit: 255, null: false
+    t.integer  "is_pledge",                      limit: 4
+    t.integer  "route_suggestions_slot_id",      limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "route_suggestions_timestamp_id", limit: 4
   end
 
   add_index "route_suggestions_pledges", ["route_suggestions_slot_id"], name: "fk_rails_21937d8705", using: :btree
+  add_index "route_suggestions_pledges", ["route_suggestions_timestamp_id"], name: "fk_rails_ec23c55f37", using: :btree
 
   create_table "route_suggestions_route_points", force: :cascade do |t|
     t.string   "lat",                 limit: 255
@@ -39,6 +48,8 @@ ActiveRecord::Schema.define(version: 20160404080927) do
     t.integer  "route_suggestion_id", limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "pickup_point_id",     limit: 4
+    t.integer  "drop_point_id",       limit: 4
   end
 
   add_index "route_suggestions_route_points", ["route_suggestion_id"], name: "fk_rails_348cada1dc", using: :btree
@@ -65,6 +76,7 @@ ActiveRecord::Schema.define(version: 20160404080927) do
   add_index "route_suggestions_timestamps", ["route_suggestion_id"], name: "fk_rails_a56260d126", using: :btree
 
   add_foreign_key "route_suggestions_pledges", "route_suggestions_slots"
+  add_foreign_key "route_suggestions_pledges", "route_suggestions_timestamps"
   add_foreign_key "route_suggestions_route_points", "route_suggestions"
   add_foreign_key "route_suggestions_slots", "route_suggestions"
   add_foreign_key "route_suggestions_timestamps", "route_suggestions"

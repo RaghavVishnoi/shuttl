@@ -4,6 +4,7 @@ root 'home#index'
 
 get 'routes/find_route'
 get 'routes/user_identification'
+get 'routes/route_return'
 get 'routes/return'
 get 'routes/info'
 get 'routes/not_interested'
@@ -11,9 +12,12 @@ get 'routes/firsttimeslot'
 get 'routes/secondtimeslot'
 get '/route_suggestions_pledges/pledge_count'
 get '/route_suggestions_pledges/pledge_route'
+get '/route_suggestions_pledges/pledges'
+get '/routes/location'
 resources :routes, only: [:index,:show]
 resources :route_suggestions_pledges, only: [:create]
 resources :route_suggestions, only: [:create]
+resources :feedbacks, only: [:create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

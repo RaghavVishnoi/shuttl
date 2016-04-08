@@ -1,90 +1,10 @@
  
-  <script>
-    $(document).ready(function() {
-
-      $("#start-time").owlCarousel({
-        items : 10,
-		 navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-	  
-	  $("#start-time2").owlCarousel({
-        items : 10,
-		 navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-	  
-	  
-	  $("#end-time").owlCarousel({
-        items : 10,
-		 navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-	  
-	  $("#end-time2").owlCarousel({
-        items : 10,
-		 navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-
-      $('.link').on('click', function(event){
-        var $this = $(this);
-        if($this.hasClass('clicked')){
-          $this.removeClass('clicked');
-        } else{
-          $this.addClass('clicked');
-        }
-      });
-
-$('.check-box li').click(function(){
-  $(this).addClass("selected");
+ 
+<script>
   
-  
-});
-	
-$('#sub').click(function(){
-	var geocoder = new google.maps.Geocoder();
-	
-	
-var address = $('#pac-input').val();
-
-geocoder.geocode( { 'address': address}, function(results, status) {
-
-  if (status == google.maps.GeocoderStatus.OK) {
-    var latitude = results[0].geometry.location.lat();
-    var longitude = results[0].geometry.location.lng();
-    alert(latitude);
-  } 
-});
-})
-
-
-	
-   });
-	
-	
-	
-    </script>
-	
-</head>
-
-<body>
+</script>
+ 
+   
 <!-- Loader -->
 <div id="page-preloader"><span class="spinner"></span></div>
 <!-- Loader end -->
@@ -95,7 +15,7 @@ geocoder.geocode( { 'address': address}, function(results, status) {
     <header class="header">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png"  width="100" alt="Logo"></a>
+          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png" alt="Logo"></a>
             <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
           </div>
           <!-- end col  --> 
@@ -111,32 +31,33 @@ geocoder.geocode( { 'address': address}, function(results, status) {
            <div class="row">
             
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
-		  
-		<!-- star time -->
-		<div class="not-interested">
-		<h5>I am not interested in using Shuttl services because:</h5>
-		<p class="font-s">(Multiple selection)</p>
-		<ul class="mul-choice">
-		<li><input type="checkbox"> <span>I travel in different route</span></li>
-		<li><input type="checkbox"> <span>The pick-up and drop-point are unconvenient</span></li>
-		<li><input type="checkbox"> <span>The time-slot are not suitable</span></li>
-		<li><input type="checkbox"> <span>Pricing in too high</span></li>
-		<li><input type="checkbox"> <span>I don't wish to buy the passes in advance</span></li>
-		<li><input type="checkbox"> <span>Other, </span> <input type="text" class="single-line"></li>
-		
-		
-		</ul>
-		  <div class="button-block">
-		  <button class="btn btn-info btn-block" type="button">Submit</button>
-		  </div>
-		  
-		  
-		 </div>
-		 <!-- end time -->
-		 
+      
+    <!-- star time -->
+    <div class="not-interested">
+    <h5>I am not interested in using Shuttl services because:</h5>
+    <p class="font-s">(Multiple selection)</p>
+    <ul class="mul-choice">
+    <li><input type="checkbox"> <span>I travel in different route</span></li>
+    <li><input type="checkbox"> <span>The pick-up and drop-point are unconvenient</span></li>
+    <li><input type="checkbox"> <span>The time-slot are not suitable</span></li>
+    <li><input type="checkbox"> <span>Pricing in too high</span></li>
+    <li><input type="checkbox"> <span>I don't wish to buy the passes in advance</span></li>
+    <li><input type="checkbox"> <span>Other, </span> <input type="text" class="single-line"></li>
+    
+    
+    </ul>
+      <div class="button-block">
+      <button class="btn bg-danger" type="button"> <i class="fa fa-chevron-circle-left"></i> Back  </button>
+      <button class="btn btn-info" type="button">Submit</button>
+      </div>
+      
+      
+     </div>
+     <!-- end time -->
+     
          </div>
-		<!-- end coll --> 
-		 
+    <!-- end coll --> 
+     
          </div>
          
         </div>
@@ -152,4 +73,5 @@ geocoder.geocode( { 'address': address}, function(results, status) {
 </div>
 <!-- SCRIPTS --> 
 
-	 
+ 
+ 

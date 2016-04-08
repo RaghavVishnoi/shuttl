@@ -1,6 +1,5 @@
  
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWdJ3F1a1pmCUjyHaINmV1_nOJ6hpbArM&libraries=places&callback=initMap"
-        async defer></script>
+ 
  <script>
   window.onload = function() {
    initMap();
@@ -8,7 +7,7 @@
      
 
  function initMap() {
-   debugger
+    
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -18,24 +17,144 @@
   directionsDisplay.setMap(map);
 calculateAndDisplayRoute(directionsService, directionsDisplay);
 
+  
+     
+   directionsService.route({
+    origin: 'Sector-2 Noida',
+    destination: 'Sector-65 Noida',
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.DRIVING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+ 
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+  var map = new google.maps.Map(document.getElementById('googleMap'), {
+    zoom: 7,
+    center: {lat: 28.5846875, lng: 77.3159296}
+  });
+  directionsDisplay.setMap(map);
 
+  directionsService.route({
+    origin: 'Sector-2 Noida',
+    destination: 'Sector-65 Noida',
+    travelMode: google.maps.TravelMode.DRIVING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
  
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
-   
+
+/////////////////pickup point marker/////////////////   
+var pmarker = new MarkerWithLabel({
+     position: new google.maps.LatLng(<%=session[:from][0]%>, <%=session[:from][1]%>),
+     draggable: false,
+     raiseOnDrag: false,
+     map: map,
+     labelContent: "<%=session[:s]%>",
+     labelAnchor: new google.maps.Point(22, 0),
+     labelClass: "pickup-labels", // the CSS class for the label
+     labelStyle: {opacity: 0.75},
+     
+});
+       
+ var piw = new google.maps.InfoWindow({
+   content: "<%=session[:d]%>"
+ });
+
+
+google.maps.event.addListener(pmarker, "click", function (e) { piw.open(map, this); });
+
+/////////////////drop point marker/////////////////
+var dmarker = new MarkerWithLabel({
+     position: new google.maps.LatLng(<%=session[:to][0]%>, <%=session[:to][1]%>),
+     draggable: false,
+     raiseOnDrag: false,
+     map: map,
+     labelContent: "<%=session[:d]%>",
+     labelAnchor: new google.maps.Point(22, 0),
+     labelClass: "pickup-labels", // the CSS class for the label
+     labelStyle: {opacity: 0.75},
+     
+});
+       
+ var diw = new google.maps.InfoWindow({
+   content: "<%=session[:d]%>"
+ });
+
+
+google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, this); });
+
+
+  <%
+  slots = RouteSuggestionsSlot.slot_points(session[:home_route_id])
   
-  <%RouteSuggestionsSlot.slot_points(params[:route_id]).each do |route|%>
+  slots.each_with_index do |route,index|%>
+  <%if index != 0 && index != slots.length-1%>
      waypts.push({
         location: new google.maps.LatLng(<%=route.lat%>,<%=route.long%>),
         stopover: true
 
       });
+  <%end%>   
+     <%if index == 0%>
+             var smarker = new MarkerWithLabel({
+               position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
+               draggable: false,
+               raiseOnDrag: false,
+               map: map,
+               labelContent: "Start",
+               labelAnchor: new google.maps.Point(22, 0),
+               labelClass: "labels", // the CSS class for the label
+               labelStyle: {opacity: 0.75},
+               
+          });
+       
+           var siw = new google.maps.InfoWindow({
+             content: "<%=route.name%>"
+           });
+         
+
+         google.maps.event.addListener(smarker, "click", function (e) { siw.open(map, this); });
+      <%end%> 
+      <%if index == slots.length-1%>  
+        var emarker = new MarkerWithLabel({
+               position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
+               draggable: false,
+               raiseOnDrag: false,
+               map: map,
+               labelContent: "End",
+               labelAnchor: new google.maps.Point(22, 0),
+               labelClass: "labels", // the CSS class for the label
+               labelStyle: {opacity: 0.75},
+               
+          });
+       
+           var eiw = new google.maps.InfoWindow({
+             content: "<%=route.name%>"
+           });
+         
+
+         google.maps.event.addListener(emarker, "click", function (e) { eiw.open(map, this); });
+      <%end%>
   <%end%>
    
- 
-     
-
-
   directionsService.route({
 
     origin: 'Sector-2 Noida',
@@ -48,15 +167,10 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
       directionsDisplay.setDirections(response);
       var route = response.routes[0];
       var summaryPanel = document.getElementById('directions-panel');
-     // summaryPanel.innerHTML = '';
-      // For each route, display summary information.
+   
       for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
-        //summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-            '</b><br>';
-        //summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-        //summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-        //summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+        
       }
     } else {
       window.alert('Directions request failed due to ' + status);
@@ -79,8 +193,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   directionsService.route({
-    origin: "#{params[:s]}",
-    destination: "#{params[:d]}",
+    origin: "#{session[:s]}",
+    destination: "#{session[:d]}",
     travelMode: google.maps.TravelMode.DRIVING
   }, function(response, status) {
     if (status === google.maps.DirectionsStatus.OK) {
@@ -90,6 +204,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }
   });
 }
+
     $(document).ready(function() {
 
       $("#start-time").owlCarousel({
@@ -148,24 +263,11 @@ $('.check-box li').click(function(){
   
 });
 	
-$('#sub').click(function(){
-	var geocoder = new google.maps.Geocoder();
-	
-	
-var address = $('#pac-input').val();
+$("#not-interested").click(function(){
+    params = window.location.href.split('?')[1]
+    location.href = '/routes/not_interested?'+params
+  });  
 
-geocoder.geocode( { 'address': address}, function(results, status) {
-
-  if (status == google.maps.GeocoderStatus.OK) {
-    var latitude = results[0].geometry.location.lat();
-    var longitude = results[0].geometry.location.lng();
-    alert(latitude);
-  } 
-});
-})
-
-
-	
    });
 	
 	
@@ -205,21 +307,26 @@ geocoder.geocode( { 'address': address}, function(results, status) {
 		  <div id="map"></div>
 		  </div>
 
-		  <ul class="book-detail">
-		  <li class="col-md-6">
-		  <div class="change-col">
-
+		  <ul class="book-detail clearfix">
+      <li>
+      <div class="change-col">
+      <span class="change-link"><a href="#">Change</a></span>
+      <div class="book-title">
 		  <h5>Going to work</h5>
 		  
-		  <span class="change-link"><a href="/routes?route_id=<%=params[:route_id]%>">Change</a></span>
+		   
 		  </div>
+
 <%if session[:home_slot] != nil%> 
-		  <p>Depart: <%=session[:s]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:from][0],session[:from][1])%>
-		  <br>
+<div style="margin-left:2%;">  
+		  <p>Depart: <%=session[:s]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:home_slot],session[:drop_point_id],session[:pickup_point_id])%>
+		   <br>
 		  Arrives: <%=session[:d]%> @  <%=session[:home_slot]%>
-		  <br>
+</div>      
+		   
 		  <em><%=RouteSuggestion.find(params[:route_id]).threshold - RouteSuggestionsPledge.total_pledge(params[:route_id])%> more ppl required to louch root</em>
 		  </p>
+      
 		  </li>
 <%else%>
   <em>No timeslot was selected</em>
@@ -231,11 +338,12 @@ geocoder.geocode( { 'address': address}, function(results, status) {
 
 		  <span class="change-link"><a href="/routes/return?route_id=<%=params[:route_id]%>">Change</a></span>
 		  </div>
-<%if session[:work_slot] != nil%>  
-		  <p>Depart: <%=session[:d]%> @ <%=session[:work_slot]%>
+<%if session[:work_slot] != nil%> 
+<div style="margin-left:2%;">  
+		  <p>Depart: <%=session[:d]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:work_slot],session[:drop_point_id],session[:pickup_point_id])%>
 		  <br>
-		  Arrives: <%=session[:s]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:from][0],session[:from][1])%> 
-		  <br>
+		  Arrives: <%=session[:s]%> @ <%=session[:work_slot]%>
+</div>		  
 		  <em><%=RouteSuggestion.find(params[:route_id]).threshold - RouteSuggestionsPledge.total_pledge(params[:route_id])%>  more ppl required to louch root</em>
 		  </p>
 <%else%>
