@@ -141,29 +141,12 @@
    
   
 $('#sub').click(function(){
-  debugger;
-var geocoder = new google.maps.Geocoder();
-var geocoder1 = new google.maps.Geocoder(); 
-var address = $('#pac-input').val();
-var address1 = $('#pac-input1').val();
- 
-geocoder.geocode( { 'address': address}, function(results, status) {
+   
 
-  if (status == google.maps.GeocoderStatus.OK) {
-      slat  = results[0].geometry.location.lat();
-      slng = results[0].geometry.location.lng();
-   } 
-});
 
-geocoder1.geocode( { 'address': address1}, function(results, status) {
 
-  if (status == google.maps.GeocoderStatus.OK) {
-     dlat = results[0].geometry.location.lat();
-     dlng = results[0].geometry.location.lng();
-   }
- });
 
-   location.href = 'routes/find_route?s='+address+'&slat='+slat+'&slong='+slng+'&d='+address1+'&dlat='+dlat+'&dlong='+dlng
+   
 });
 
 
@@ -185,7 +168,7 @@ geocoder1.geocode( { 'address': address1}, function(results, status) {
   <div id="wrapper"> 
  <script>
        
-
+       var slat,slng,dlat,dlng; 
       function initMap() {
         var map = new google.maps.Map(document.getElementById('address_hint'), {
           
@@ -256,10 +239,30 @@ geocoder1.geocode( { 'address': address1}, function(results, status) {
     
     function RedirectPage()
     {
- 
- 
+        var geocoder = new google.maps.Geocoder();
+        var geocoder1 = new google.maps.Geocoder(); 
+        var address = $('#pac-input').val();
+        var address1 = $('#pac-input1').val();
+         
+        geocoder.geocode( { 'address': address}, function(results, status) {
 
+          if (status == google.maps.GeocoderStatus.OK) {
+              slat  = results[0].geometry.location.lat();
+              slng = results[0].geometry.location.lng();
+           } 
+        });
+        geocoder1.geocode( { 'address': address1}, function(results, status) {
+
+        if (status == google.maps.GeocoderStatus.OK) {
+           dlat = results[0].geometry.location.lat();
+           dlng = results[0].geometry.location.lng();
+         }
+       });
+    if(address.length != 0 && address1.length != 0){
+        location.href = 'routes/find_route?s='+address+'&slat='+slat+'&slong='+slng+'&d='+address1+'&dlat='+dlat+'&dlong='+dlng
     }
+ 
+     }
     </script>
   
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWdJ3F1a1pmCUjyHaINmV1_nOJ6hpbArM&libraries=places&callback=initMap"
@@ -300,7 +303,7 @@ geocoder1.geocode( { 'address': address1}, function(results, status) {
      </div> 
     <!-- end form group -->
     <!-- star time -->
-<%if params[:result] == false%>    
+<%if params[:result] == 'false'%>    
     <div class="start-time-block">
      <h5>What time do you have to reach work?</h5>
      <div class="crowl-pad">
@@ -360,11 +363,11 @@ geocoder1.geocode( { 'address': address1}, function(results, status) {
      <li> Bike </li>
      <li> Taxi </li>
      </ul>
-<%end%>     
+     
      <div class="button-block">
      <button class="btn btn-info btn-block" type="button" id="sub">Submit</button>
      </div>
-     
+<%end%>     
      </div>
          </div>
     <!-- end coll --> 

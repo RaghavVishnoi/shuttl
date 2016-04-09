@@ -8,7 +8,6 @@
 
 RouteSuggestion.create!([
 	{name: 'Noida sector-2 to Noida sector-65',threshold: 1},
-	{name: 'Noida sector-62 to Noida sector-37',threshold: 2}
 ])
 
 RouteSuggestionsSlot.create!([
