@@ -24,4 +24,6 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: shuttl
+  username: root
+  password: shuttl@12345
