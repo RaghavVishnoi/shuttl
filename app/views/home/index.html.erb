@@ -140,7 +140,14 @@
     
    
   
- 
+$('#sub').click(function(){
+   
+
+
+
+
+   
+});
 
 
 
@@ -185,7 +192,17 @@
 
         autocomplete.addListener('place_changed', function() {
           
-      RedirectPage();
+        var geocoder = new google.maps.Geocoder();
+        var address = $('#pac-input').val();
+         
+        geocoder.geocode( { 'address': address}, function(results, status) {
+
+          if (status == google.maps.GeocoderStatus.OK) {
+              slat  = results[0].geometry.location.lat();
+              slng = results[0].geometry.location.lng();
+                      RedirectPage(slat,slng,dlat,dlng)
+           } 
+        });
           var address = '';
           if (place.address_components) {
             address = [
@@ -201,7 +218,17 @@
     
     autocomplete1.addListener('place_changed', function() {
           
-      RedirectPage();
+        var geocoder = new google.maps.Geocoder();
+        var address = $('#pac-input').val();
+         
+        geocoder.geocode( { 'address': address}, function(results, status) {
+
+          if (status == google.maps.GeocoderStatus.OK) {
+              dlat  = results[0].geometry.location.lat();
+              dlng = results[0].geometry.location.lng();
+                      RedirectPage(slat,slng,dlat,dlng)
+           } 
+        });
           var address = '';
           if (place.address_components) {
             address = [
@@ -230,29 +257,12 @@
         setupClickListener('changetype-geocode', ['geocode']);
       }
     
-    function RedirectPage()
+    function RedirectPage(lat1,long1,lat2,long2)
     {
-        var geocoder = new google.maps.Geocoder();
-        var geocoder1 = new google.maps.Geocoder(); 
-        var address = $('#pac-input').val();
-        var address1 = $('#pac-input1').val();
-         
-        geocoder.geocode( { 'address': address}, function(results, status) {
-
-          if (status == google.maps.GeocoderStatus.OK) {
-              slat  = results[0].geometry.location.lat();
-              slng = results[0].geometry.location.lng();
-           } 
-        });
-        geocoder1.geocode( { 'address': address1}, function(results, status) {
-
-        if (status == google.maps.GeocoderStatus.OK) {
-           dlat = results[0].geometry.location.lat();
-           dlng = results[0].geometry.location.lng();
-         }
-       });
-        alert(slat+"  "+slng+"  "+dlat+"  "+dlng);
-    if(address.length != 0 && address1.length != 0){
+        
+    var address = $('#pac-input').val();
+    var address1 = $('#pac-input1').val();   
+    if(lat1 != null && long1 != null && lat2 != null && long2 != null){
         location.href = 'routes/find_route?s='+address+'&slat='+slat+'&slong='+slng+'&d='+address1+'&dlat='+dlat+'&dlong='+dlng
     }
  
