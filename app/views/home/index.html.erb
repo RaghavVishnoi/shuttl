@@ -219,7 +219,7 @@ $('#sub').click(function(){
     autocomplete1.addListener('place_changed', function() {
           
         var geocoder = new google.maps.Geocoder();
-        var address = $('#pac-input').val();
+        var address = $('#pac-input1').val();
          
         geocoder.geocode( { 'address': address}, function(results, status) {
 
