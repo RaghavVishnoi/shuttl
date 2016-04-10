@@ -21,7 +21,9 @@ RouteSuggestionsSlot.create!([
 ])
 
 RouteSuggestionsTimestamp.create!([
-	{time_departure: '5:30',route_suggestion_id: 1}
+	{time_departure: '5:30',route_suggestion_id: 1},
+	{time_departure: '7:30',route_suggestion_id: 1},
+	{time_departure: '8:30',route_suggestion_id: 1}
 ])
 
 RouteSuggestionsPledge.create!([

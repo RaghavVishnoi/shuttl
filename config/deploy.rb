@@ -27,3 +27,11 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true
 set :puma_preload_app, false
 set :bundle_gemfile, "/home/ubuntu/repo/Gemfile"
+
+namespace :deploy do
+  task :install do
+    on roles(:all) do
+      execute "bundle install --without development test"
+    end
+  end
+end  
