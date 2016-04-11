@@ -100,6 +100,7 @@ class RouteSuggestionsSlot < ActiveRecord::Base
 
   	def self.slot_points(route_id)
   		routes = RouteSuggestionsSlot.where(route_suggestion_id: route_id)
+  		routes
   	end
 
 

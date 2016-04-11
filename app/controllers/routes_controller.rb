@@ -1,12 +1,6 @@
 class RoutesController < ApplicationController
 
 	def index
-		puts "from #{session[:from]}"
-		puts "to #{session[:to]}" 
-		puts "lat #{session[:lat]}"
-		puts "long #{session[:long]}"
-		puts "pickup point #{session[:pickup_point_id]}"
-		puts "drop_point_id #{session[:drop_point_id]}"
 	
 		@route_slot = RouteSuggestionsSlot.find_by(id: params[:pick_point_id],route_suggestion_id: params[:route_id])
 		respond_to do |format|
@@ -31,6 +25,11 @@ class RoutesController < ApplicationController
  		redirect_to '/routes/return?route_id='+@route[:route_id].to_s+'&drop_point_id='+@route[:drop_point_id].to_s
  	end
 
+ 	def return
+ 		puts "from #{session[:from]}"
+ 		puts "to #{session[:from]}"
+  	end
+
 
 	def find_route
 		@route = RouteSuggestionsSlot.nearest_point(params[:slat],params[:slong],params[:dlat],params[:dlong])
@@ -41,8 +40,6 @@ class RoutesController < ApplicationController
    			to.push(params[:dlat],params[:dlong])
    			session[:from] = from
 			session[:to] = to
-			session[:lat] = @route[:lat]
-			session[:long] = @route[:long]
 			session[:s] = params[:s]
 			session[:d] = params[:d]
 			session[:home_route_id] = @route[:route_id]
