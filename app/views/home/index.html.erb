@@ -143,7 +143,9 @@ $('#sub').click(function(){
   var lat2 = <%=params[:dlat]%>;
   var long2 = <%=params[:dlong]%>;
   if(time1.length != 0 && time2.length != 0 && lat1 != null && lat2 != null && long1 != null && long2 != null){
-      $(".contact-dialog").attr('style','display:block')
+      $(".otp-dialog").attr('style','display:block')
+      $(".overlay").attr('style','display:block')
+      
       var phone;
       $("#contact-submit").click(function(){
         phone = $('#contact').val()
@@ -159,8 +161,8 @@ $('#sub').click(function(){
             },
 
             success: function(data, textStatus, xhr) {
-              $('.otp-dialog').attr('style','display:block')
-              $(".contact-dialog").attr('style','display:none')
+              $('#confirmSection').attr('style','display:block')
+              $("#sectionOtp").attr('style','display:none')
             }
           });
         }else{
@@ -226,7 +228,20 @@ $('#sub').click(function(){
       });
 
   }else{
-
+    if(time1.length == 0){
+      $('#warn1').attr('style','color:red')
+    }else{
+      $('#warn1').attr('style','color:#434343')
+    }
+    if(time2.length == 0){
+      $('#warn2').attr('style','color:red')
+    }else{
+      $('#warn2').attr('style','color:#434343')
+    }if(mode.length == 0){
+      $('#warn3').attr('style','color:red')
+    }else{
+      $('#warn3').attr('style','color:#434343')
+    }
   }
    
 });
@@ -241,17 +256,9 @@ $('#sub').click(function(){
     </script>
   
 
- <div class="contact-dialog">
-    <span><h4><center>Enter your mobile number</center></h4></span>
-    <span><center><input type="text" style="width:70%;" id="contact"></center></span>
-    <span><center><input type="submit" name="submit" value="Submit" style="width:50%;height:40px;margin-top:2%;color:000;" id="contact-submit"></center></span>
- </div>
+ 
 
- <div class="otp-dialog">
-    <span><h4><center>Enter OTP already sent to your mobile</center></h4></span>
-    <span><center><input type="text" style="width:70%;" id="otp"></center></span>
-    <span><center><input type="submit" name="submit" value="Submit" style="width:50%;height:40px;margin-top:2%;" id="otp-submit"></center></span>
- </div>
+ 
 <!-- Loader end -->
 <div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
   <div id="wrapper"> 
@@ -398,7 +405,7 @@ $('#sub').click(function(){
     <!-- star time -->
 <%if params[:result] == 'false'%>    
     <div class="start-time-block">
-     <h5>What time do you have to reach work?</h5>
+     <h5  id="warn1">What time do you have to reach work?</h5>
      <div class="crowl-pad">
      <div id="start-time" class="owl-carousel">               
                 <a class="item link">8:00</a>
@@ -421,7 +428,7 @@ $('#sub').click(function(){
      
      <!-- end time -->
      <div class="end-time-block">
-      <h5>What time do you leave from work?</h5>
+      <h5  id="warn2">What time do you leave from work?</h5>
      <div class="crowl-pad">
      <div id="end-time" class="owl-carousel">               
         <a class="item leave-office mode">8:00</a>
@@ -438,13 +445,13 @@ $('#sub').click(function(){
         <a class="item leave-office mode">13:30</a>
 
               </div>
-        <p style="text-align:center">(Select top 2)</p>
+        <p style="text-align:center" id="warn2">(Select top 2)</p>
       </div>
      
      </div>
      <!-- travel time -->
      <div class="travel-time-block">
-     <h5>What mode of travel do you use to complete this journey everyday?</h5>
+     <h5 id="warn3">What mode of travel do you use to complete this journey everyday?</h5>
      <ul class="check-box">
      <li> Bus </li>
      <li> Metro </li>
@@ -479,6 +486,34 @@ $('#sub').click(function(){
  <!-- end wrapper --> 
 </div>
 <!-- SCRIPTS --> 
+<div class="overlay"></div>
+      <div class="modal-body signup otp-dialog">
+        
+            <form id="otpForm">
+              <div class="row" id="sectionOtp">
+                <div class="form-group col-md-6">
+                  <!-- <label for="mnum" class="control-label">Mobile<span class="text-danger">*</span></label> -->
+                  <input maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
+                </div>
+                <div class="form-group col-md-6">
+                  <input class="btn text-uppercase submitSearch"  value="send otp" id="contact-submit">
+                </div>
+              </div>
+              <div class="form-group col-md-6" id="confirmSection" style="display:none">
+                  <label for="mnum" class="control-label">OTP sent on 9953520620 <i class="fa fa-pencil"></i></label>
+                  <input maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP">
+                  <i class="fa fa-repeat"><span class="resend">Resend</span></i>
+                  <div class="form-group col-md-6">
+                    <input class="btn text-uppercase submitSearch" value="Confirm"    id="otp-submit">
+                  </div>
+                </div>
+                  
+            </form>
+            
+            
+            <div class="loader" style="display: none;"><img src="./images/rolling.gif"></div>
+            <div class="alert centerText hidden"></div>
+          </div>
 
  
  

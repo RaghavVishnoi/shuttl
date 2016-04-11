@@ -166,8 +166,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
    
   directionsService.route({
 
-    origin: 'Sector-2 Noida',
-    destination: 'Sector-65 Noida',
+    origin: '<%=session[:s]%>',
+    destination: '<%=session[:d]%>',
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING

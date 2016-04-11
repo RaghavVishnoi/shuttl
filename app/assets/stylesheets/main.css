@@ -78,6 +78,101 @@ img.pull-left { margin-right: 20px; }
 .book-staff-right{ float:right; font-size:11px; line-height:9px; text-align:center;position:relative;}
 .book-staff-right strong, .book-staff-left strong{font-size:15px;}
 
+/** resat button **/ 
+.input-group-addon{position: relative;}
+i.fa.fa-times {position: absolute;top: 14px;right: 8px;z-index: 99;font-size: 18px;font-weight: normal;}
+.input-group .fa-times{display: none;}
+.input-group .form-control{padding: 13px 33px 13px 10px}
+input::-webkit-input-placeholder {font-size: 15px;}
+.doneSign {text-align: center;padding: 15px;}
+.doneSign .fa-check-circle-o {font-size: 56px;color: green;}
+.ThankYouPage {font-size: 17px;line-height: 26px;text-align: center;}
+.thankYo {transform: translatey(50%);}
+.overlay {position: fixed;display: none;width: 100%;height: 100%;top: 0;background: rgba(0,0,0,0.5);z-index: 99;}
+/* .otpBox {position: fixed;z-index: 999;top: 40%;left: 50%;right: 0;transform: translate(-50%);width: 94%;background: #fff;padding: 26px 12px;}
+.otpBox input[type="text"] {padding: 6px 9px;width: 100%;}
+span.otpText {margin-top: 3px; display: block;color: #999;} */
+.modal-body.signup {
+    position: fixed;
+    background: transparent;
+    z-index: 999;
+    left: 50%;
+    top: 24%;
+    width: 94%;
+    transform: translateX(-50%);
+        padding: 0px;
+}
+.modal-body.signup .form-group {
+    margin-bottom: 0px;
+}
+.modal-body.signup .form-control{
+	    margin-bottom: 0px;
+	        border: 0px solid #333;
+}
+.btn.disabled, .btn[disabled]{
+	    opacity: 1;
+}
+input#contact-submit {
+    width: 100%;
+}
+
+div#confirmSection {
+    background: transparent;
+}
+div#confirmSection .form-group.col-md-6{padding: 0px;}
+
+label.control-label {
+    text-align: center;
+    display: block;
+    color: #fff;
+}
+input#otp-submit {
+   	background: rgb(235, 235, 228);
+    border: 0px solid #f1f1f1 !important;
+    width: 100%;
+    color: #000;
+}
+
+label.control-label .fa-pencil {
+    font-size: 14px;
+    padding: 9px 14px;
+    color: #fff;
+}
+div#confirmSection {
+    position: relative;
+    display:block;
+}
+
+div#confirmSection .fa-repeat {
+    position: absolute;
+    z-index: 999;
+    top: 51px;
+    right: 30px;
+    font-size: 15px;
+    color: #999;
+}
+
+span.resend {
+    margin-left: 6px;
+    font-size: 13px;
+    color: #999;
+    text-transform: uppercase;
+    font-family: roboto;
+}
+button.btn.btn-info a {
+    color: #fff;
+}
+.time-slot span {
+    display: block;
+}
+
+
+div#confirmSection input {
+    border: 1px solid #f1f1f1;
+}
+
+
+
 
 .buttun-group{text-align:right;}
 .buttun-group .btn{padding:5px 10px;}
@@ -1602,4 +1697,4 @@ html #search-open {margin-top: 8px;}
 .pickup-labels {color: #000; padding:0px 5px; background-color:#fff; font-size:12px;font-weight: 400; text-align: center; border: 1px solid #333;; white-space: nowrap;}
 
 .contact-dialog{width:30%;height: 120px;background-color: #10B9B3;position:absolute;margin-left:40%;margin-top:300px;z-index: 10;display:none;}
-.otp-dialog{width:30%;height: 120px;background-color: #10B9B3;position:absolute;margin-left:40%;margin-top:300px;z-index: 10;display:none;}
+.otp-dialog{display:none;}
