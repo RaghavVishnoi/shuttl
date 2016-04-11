@@ -35,12 +35,14 @@ class RouteSuggestionsPledge < ActiveRecord::Base
 			route_time[:time] = time.strftime("%I:%M")
 			route_time[:count] = timestamp.route_suggestions_pledges.count	
 			pledge = timestamp.route_suggestions_pledges.first
- 			pledged_time = ((pledge.created_at + 30.days) - Time.now).to_i/86400
-			route_time[:pledge_route] = pledged_time
-			timestamps.push(route_time)			
+  			if pledge != nil
+	  			pledged_time = ((pledge.created_at + 30.days) - Time.now).to_i/86400
+				route_time[:pledge_route] = pledged_time
+				timestamps.push(route_time)
+			end				
 		end
  		time = timestamps.sort_by { |key| key[:count] }.reverse
-		time
+ 		time
 	end
 
 	def self.pledge_route(route_id,time)

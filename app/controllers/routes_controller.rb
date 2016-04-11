@@ -1,6 +1,13 @@
 class RoutesController < ApplicationController
 
 	def index
+		puts "from #{session[:from]}"
+		puts "to #{session[:to]}" 
+		puts "lat #{session[:lat]}"
+		puts "long #{session[:long]}"
+		puts "pickup point #{session[:pickup_point_id]}"
+		puts "drop_point_id #{session[:drop_point_id]}"
+	
 		@route_slot = RouteSuggestionsSlot.find_by(id: params[:pick_point_id],route_suggestion_id: params[:route_id])
 		respond_to do |format|
 		    format.html
@@ -57,21 +64,24 @@ class RoutesController < ApplicationController
 	end
 
 	def firsttimeslot
-		slots = params[:timeslot].split(',') if params[:timeslot] != nil
+		if params[:timeslot].length != 0
+			slots = params[:timeslot].split(',') if params[:timeslot] != nil
 
-		if slots != nil
-			session[:home_slot] = slots[0].split('F')[0]  			 			
-		end	
-		
+			if slots != nil
+				session[:home_slot] = slots[0].split('F')[0]  			 			
+			end	
+		end
 
  		redirect_to '/routes/route_return'
 	end
 
 	def secondtimeslot
-  		slots = params[:timeslot].split(',') if params[:timeslot] != nil
-		if slots != nil
-			 session[:work_slot] = slots[0].split('F')[0]  
-		end	
+		if params[:timeslot].length != 0
+	  		slots = params[:timeslot].split(',') if params[:timeslot] != nil
+			if slots != nil
+				 session[:work_slot] = slots[0].split('F')[0]  
+			end	
+		end
 		if session[:home_slot] == nil  && session[:work_slot] == nil 
 			redirect_to '/routes/not_interested'
 		else
