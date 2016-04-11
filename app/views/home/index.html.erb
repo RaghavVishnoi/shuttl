@@ -1,6 +1,40 @@
  
   <script>
     $(document).ready(function() {
+      $('.input-group input').keyup(function(){
+      var inputVal = $('#pac-input').val();
+      $(this).next('.fa-times').fadeIn();
+      if (inputVal === '') {
+        $(this).find('.fa-times').fadeOut();
+      }else{
+        $(this).next('.fa-times').fadeIn();
+      }
+      });
+      $(".resetInput").click(function() {
+        $(this).prev("input").val("");
+        $(this).fadeOut();
+    });
+    $('#contact').keyup(function(){
+      var number = document.getElementById('contact');
+       if(number.value.length!=10){
+         jQuery('#contact-submit').attr("disabled", disable);
+      }else if(number.value.length===10){
+        jQuery('#contact-submit').removeAttr('disabled').css({'background':'#39B5B5','color':'#fff'});
+      }
+    })
+    // send OTP function 
+     
+     
+    $('#otp').keyup(function(){
+      var number = document.getElementById('otp');
+      if(number.value.length!=4){
+         jQuery('#otp-submit').attr("disabled", disable);
+         console.log('nahi');
+      }else if(number.value.length===4){
+        jQuery('#otp-submit').removeAttr('disabled').css({'background':'#39B5B5','color':'#fff'});
+        
+      }
+    })
 
       $("#start-time").owlCarousel({
         items : 10,
@@ -163,6 +197,33 @@ $('#sub').click(function(){
             success: function(data, textStatus, xhr) {
               $('#confirmSection').attr('style','display:block')
               $("#sectionOtp").attr('style','display:none')
+              $("#contact-number").val(phone);
+
+              $('#contact-label').text("OTP send on "+phone)
+            }
+          });
+        }else{
+
+        }
+          
+      });
+      $("#resend").click(function(){
+        var phone = $("#contact-number").val();
+          
+        
+        if(phone != null){
+          $.ajax({
+            url: "/route_suggestions/generate_otp",
+            type: "GET",
+            data: {phone : phone},
+            dataType: "text",
+                     
+            complete: function() {
+
+            },
+
+            success: function(data, textStatus, xhr) {
+              
             }
           });
         }else{
@@ -393,11 +454,13 @@ $('#sub').click(function(){
       <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-home"></i></span>
     <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Home Address">
+    <i class="fa fa-times resetInput"></i>
     <div id="address_hint"></div>
     </div>
     <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
     <input class="controls form-control" id="pac-input1" type="text" placeholder="Enter Office Address">
+    <i class="fa fa-times resetInput"></i>
     <div id="address_hint"></div>
     </div> 
      </div> 
@@ -405,9 +468,12 @@ $('#sub').click(function(){
     <!-- star time -->
 <%if params[:result] == 'false'%>    
     <div class="start-time-block">
-     <h5  id="warn1">What time do you have to reach work?</h5>
+     <h5 id="warn1">What time do you have to reach work?</h5>
+     <p class="notify" style="text-align: right;">Select top 2 preferred time slots </p>
      <div class="crowl-pad">
      <div id="start-time" class="owl-carousel">               
+                <a class="item link">7:00</a>
+                <a class="item link">7:30</a>
                 <a class="item link">8:00</a>
                 <a class="item link">8:30</a>
         <a class="item link">9:00</a>
@@ -422,30 +488,31 @@ $('#sub').click(function(){
         <a class="item link">13:30</a>
 
               </div>
-        <p style="text-align:center">(Select top 2)</p>
+         
       </div>
      </div>
      
      <!-- end time -->
      <div class="end-time-block">
-      <h5  id="warn2">What time do you leave from work?</h5>
+      <h5 id="warn2">What time do you leave from work?</h5>
+      <p class="notify" style="text-align: right;">Select top 2 preferred time slots </p>
      <div class="crowl-pad">
      <div id="end-time" class="owl-carousel">               
-        <a class="item leave-office mode">8:00</a>
-        <a class="item leave-office mode">8:30</a>
-        <a class="item leave-office mode">9:00</a>
-        <a class="item leave-office mode">9:30</a>
-        <a class="item leave-office mode">10:00</a>
-        <a class="item leave-office mode">10:30</a>
-        <a class="item leave-office mode">11:00</a>
-        <a class="item leave-office mode">11:30</a>
-        <a class="item leave-office mode">12:00</a>
-        <a class="item leave-office mode">12:30</a>
-        <a class="item leave-office mode">13:00</a>
-        <a class="item leave-office mode">13:30</a>
+        <a class="item leave-office">16:00</a>
+                <a class="item leave-office">16:30</a>
+                <a class="item leave-office">17:00</a>
+                <a class="item leave-office">17:30</a>
+        <a class="item leave-office">18:00</a>
+        <a class="item leave-office">18:30</a>
+                <a class="item leave-office">19:00</a>
+        <a class="item leave-office">19:30</a>
+        <a class="item leave-office">20:00</a>
+                <a class="item leave-office">20:30</a>
+        <a class="item leave-office">21:00</a>
+        <a class="item leave-office">21:30</a>
 
               </div>
-        <p style="text-align:center" id="warn2">(Select top 2)</p>
+         
       </div>
      
      </div>
@@ -496,18 +563,18 @@ $('#sub').click(function(){
                   <input maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
                 </div>
                 <div class="form-group col-md-6">
-                  <input class="btn text-uppercase submitSearch"  value="send otp" id="contact-submit">
+                  <input class="btn text-uppercase submitSearch"  value="send otp" id="contact-submit" disabled="">
                 </div>
               </div>
               <div class="form-group col-md-6" id="confirmSection" style="display:none">
-                  <label for="mnum" class="control-label">OTP sent on 9953520620 <i class="fa fa-pencil"></i></label>
-                  <input maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP">
-                  <i class="fa fa-repeat"><span class="resend">Resend</span></i>
+                  <label for="mnum" class="control-label" id="contact-label"> <i class="fa fa-pencil"></i></label>
+                  <input maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP" >
+                  <i class="fa fa-repeat"><span class="resend" id="resend">Resend</span></i>
                   <div class="form-group col-md-6">
-                    <input class="btn text-uppercase submitSearch" value="Confirm"    id="otp-submit">
+                    <input class="btn text-uppercase submitSearch" value="Confirm"    id="otp-submit" disabled="">
                   </div>
                 </div>
-                  
+                  <input type="hidden" id="contact-number"/>
             </form>
             
             
