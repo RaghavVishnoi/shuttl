@@ -6,6 +6,23 @@ class RouteSuggestion < ActiveRecord::Base
 	validates :name, presence: true
 	validates :threshold, presence: true
 
+	def self.add_otp(otp,phone)
+		@otp = RouteSuggestionsOtp.find_by(phone: phone)
+		if @otp == nil
+			RouteSuggestionsOtp.create!(phone: phone,otp: otp)
+		else
+			@otp.update(otp: otp)
+		end
+	end
+
+	def self.send_otp(otp,phone)
+		Message.send(phone,otp)
+	end
+
+	def self.check_otp(otp,phone)
+		@otp = RouteSuggestionsOtp.exists?(otp: otp,phone: phone)	
+	end
+
 	def self.route(params)
  		self.all.each do |route|
 			if route.route_suggestions_slots.exists?(lat: params[:slat],long: params[:slong]) && route.route_suggestions_slots.exists?(lat: params[:dlat],long: params[:dlong])

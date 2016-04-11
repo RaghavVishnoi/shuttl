@@ -280,20 +280,20 @@ $("#not-interested").click(function(){
 		  </div>
 
 <%if session[:home_slot] != nil%> 
-<div style="margin-left:2%;">  
+  <div style="margin-left:2%;">  
 		  <p>Depart: <%=session[:s]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:home_slot],session[:drop_point_id],session[:pickup_point_id])%>
 		   <br>
 		  Arrives: <%=session[:d]%> @  <%=session[:home_slot]%>
-</div>      
+  </div>      
 		   
 		  <em><%=RouteSuggestionsPledge.total_pledge(params[:route_id])%> more ppl required to louch root</em>
 		  </p>
       
 		  </li>
-<%else%>
-  <em>No timeslot was selected</em>
-  <br><br>		  
-<%end%>		  
+      <%else%>
+        <em>No timeslot was selected</em>
+        <br><br>		  
+      <%end%>		  
 		  <li class="col-md-6">
 		  <div class="change-col">
 		  <h5>Return from work</h5>
@@ -301,17 +301,17 @@ $("#not-interested").click(function(){
 		  <span class="change-link"><a href="/routes/return?route_id=<%=params[:route_id]%>">Change</a></span>
 		  </div>
 <%if session[:work_slot] != nil%> 
-<div style="margin-left:2%;">  
+  <div style="margin-left:2%;">  
 		  <p>Depart: <%=session[:d]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:work_slot],session[:drop_point_id],session[:pickup_point_id])%>
 		  <br>
 		  Arrives: <%=session[:s]%> @ <%=session[:work_slot]%>
-</div>		  
-		  <em><%=RouteSuggestion.find(params[:route_id]).threshold - RouteSuggestionsPledge.total_pledge(params[:route_id])%>  more ppl required to louch root</em>
+  </div>		  
+		  <em><%=RouteSuggestionsPledge.total_pledge(params[:route_id])%>  more ppl required to louch root</em>
 		  </p>
-<%else%>
-  <p>No timeslot was selected</p>	
-  <br><br>	  
-<%end%>		  
+      <%else%>
+        <p>No timeslot was selected</p>	
+        <br><br>	  
+      <%end%>		  
 		  </li>
 		  
 		  </ul>

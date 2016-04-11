@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160408140413) do
+ActiveRecord::Schema.define(version: 20160411124942) do
 
   create_table "feedbacks", force: :cascade do |t|
     t.string   "message",    limit: 255
@@ -23,6 +23,26 @@ ActiveRecord::Schema.define(version: 20160408140413) do
   create_table "route_suggestions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
     t.integer  "threshold",  limit: 4,   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "route_suggestions_customers", force: :cascade do |t|
+    t.string   "from_lat",   limit: 255
+    t.string   "from_long",  limit: 255
+    t.string   "to_lat",     limit: 255
+    t.string   "to_long",    limit: 255
+    t.string   "time1",      limit: 255
+    t.string   "time2",      limit: 255
+    t.string   "phone",      limit: 255
+    t.string   "mode",       limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "route_suggestions_otps", force: :cascade do |t|
+    t.string   "phone",      limit: 255
+    t.string   "otp",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end

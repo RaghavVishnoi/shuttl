@@ -32,6 +32,10 @@ class RoutesController < ApplicationController
 
 
 	def find_route
+		session[:slat] = params[:slat]
+		session[:slong] = params[:slong]
+		session[:dlat] = params[:dlat]
+		session[:dlong] = params[:dlong]
 		@route = RouteSuggestionsSlot.nearest_point(params[:slat],params[:slong],params[:dlat],params[:dlong])
    		if @route != nil  
    			from = []
@@ -50,7 +54,7 @@ class RoutesController < ApplicationController
  			session[:drop_point_id] = @route[:drop_point_id]
  			redirect_to routes_path(route_id: @route[:route_id],drop_point_id: @route[:drop_point_id])
 		else
- 			redirect_to root_path(result: false)
+ 			redirect_to root_path(result: false,slat: params[:slat],slong: params[:slong],dlat: params[:dlat],dlong: params[:dlong])
 		end		 
 	end
 	 
