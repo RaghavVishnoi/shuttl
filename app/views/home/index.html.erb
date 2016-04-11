@@ -158,10 +158,7 @@ $('#sub').click(function(){
   
     </script>
   
-</head>
 
-<body>
-<!-- Loader -->
  
 <!-- Loader end -->
 <div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
@@ -244,17 +241,17 @@ $('#sub').click(function(){
 
         // Sets a listener on a radio button to change the filter type on Places
         // Autocomplete.
-        function setupClickListener(id, types) {
-          var radioButton = document.getElementById(id);
-          radioButton.addEventListener('click', function() {
-            autocomplete.setTypes(types);
-          });
-        }
+        // function setupClickListener(id, types) {
+        //   var radioButton = document.getElementById(id);
+        //   radioButton.addEventListener('click', function() {
+        //     autocomplete.setTypes(types);
+        //   });
+        // }
 
-        setupClickListener('changetype-all', []);
-        setupClickListener('changetype-address', ['address']);
-        setupClickListener('changetype-establishment', ['establishment']);
-        setupClickListener('changetype-geocode', ['geocode']);
+        // setupClickListener('changetype-all', []);
+        // setupClickListener('changetype-address', ['address']);
+        // setupClickListener('changetype-establishment', ['establishment']);
+        // setupClickListener('changetype-geocode', ['geocode']);
       }
     
     function RedirectPage(lat1,long1,lat2,long2)

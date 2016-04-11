@@ -120,7 +120,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   directionsService.route({
 
     origin: '<%=session[:s]%>',
-    destination: 'S<%=session[:]%>',
+    destination: '<%=session[:d]%>',
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
@@ -286,7 +286,7 @@ $("#not-interested").click(function(){
 		  Arrives: <%=session[:d]%> @  <%=session[:home_slot]%>
 </div>      
 		   
-		  <em><%=RouteSuggestion.find(params[:route_id]).threshold - RouteSuggestionsPledge.total_pledge(params[:route_id])%> more ppl required to louch root</em>
+		  <em><%=RouteSuggestionsPledge.total_pledge(params[:route_id])%> more ppl required to louch root</em>
 		  </p>
       
 		  </li>
