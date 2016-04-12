@@ -53,6 +53,15 @@ class RouteSuggestion < ActiveRecord::Base
  		total_time_to_pick
 	end
 
+	def self.home_arrive(route_id,time,drop_point_id,pickup_point_id)
+		drop_time = RouteSuggestionsSlot.find(drop_point_id).time
+		pick_time = RouteSuggestionsSlot.find(pickup_point_id).time
+		time_to_drop = drop_time - pick_time
+		departure_time = (Time.parse(Time.parse(time.to_s).strftime("%H:%M:%S")) - pick_time.to_i.minutes).strftime("%I:%M")
+		total_time_to_drop =  (Time.parse(Time.parse(departure_time.to_s).strftime("%H:%M:%S")) + drop_time.to_i.minutes).strftime("%I:%M")
+		total_time_to_drop
+	end
+
 	def self.nearest_slot(route_id,lat,long)
 		RouteSuggestionsSlot.where(lat: (lat.to_f - 0.001)..(lat.to_f + 0.001),long: (long.to_f - 0.001)..(long.to_f + 0.001))
 	end

@@ -10,18 +10,24 @@ get 'routes/info'
 get 'routes/not_interested'
 get 'routes/firsttimeslot'
 get 'routes/secondtimeslot'
-get '/route_suggestions_pledges/pledge_count'
-get '/route_suggestions_pledges/pledge_route'
-get '/route_suggestions_pledges/pledges'
-get '/routes/location'
-get '/route_suggestions/generate_otp'
-get '/route_suggestions/check_otp'
+get 'route_suggestions_pledges/pledge_count'
+get 'route_suggestions_pledges/pledge_route'
+get 'route_suggestions_pledges/pledges'
+get 'routes/location'
+get 'route_suggestions/generate_otp'
+get 'route_suggestions/check_otp'
 get 'routes/thankyou'
+get 'routes/saved' => "route_suggestions_routes#show"
+get 'routes/shipped' => "route_suggestions_routes#update"
+post 'dashboard/save'
+post 'dashboard/shipped'
+
 resources :routes, only: [:index,:show]
 resources :route_suggestions_pledges, only: [:create]
 resources :route_suggestions, only: [:create]
 resources :feedbacks, only: [:create]
 resources :route_suggestions_customers,only: [:create]
+resources :dashboard,only: [:index]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

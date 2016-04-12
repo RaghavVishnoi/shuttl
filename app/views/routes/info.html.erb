@@ -5,7 +5,7 @@
    initMap();
   };
      
-
+var waypts = [];
  function initMap() {
       var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -67,52 +67,12 @@ google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, thi
 
       });
   <%end%>   
-     <%if index == 0%>
-             var smarker = new MarkerWithLabel({
-               position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-               draggable: false,
-               raiseOnDrag: false,
-               map: map,
-               labelContent: "Start",
-               labelAnchor: new google.maps.Point(22, 0),
-               labelClass: "labels", // the CSS class for the label
-               labelStyle: {opacity: 0.75},
-               
-          });
-       
-           var siw = new google.maps.InfoWindow({
-             content: "<%=route.name%>"
-           });
-         
-
-         google.maps.event.addListener(smarker, "click", function (e) { siw.open(map, this); });
-      <%end%> 
-      <%if index == slots.length-1%>  
-        var emarker = new MarkerWithLabel({
-               position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-               draggable: false,
-               raiseOnDrag: false,
-               map: map,
-               labelContent: "End",
-               labelAnchor: new google.maps.Point(22, 0),
-               labelClass: "labels", // the CSS class for the label
-               labelStyle: {opacity: 0.75},
-               
-          });
-       
-           var eiw = new google.maps.InfoWindow({
-             content: "<%=route.name%>"
-           });
-         
-
-         google.maps.event.addListener(emarker, "click", function (e) { eiw.open(map, this); });
-      <%end%>
-  <%end%>
+       <%end%>
   
 
  
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-  var waypts = [];
+  
 
 /////////////////pickup point marker/////////////////   
 
@@ -228,9 +188,17 @@ $('.check-box li').click(function(){
 $("#not-interested").click(function(){
     params = window.location.href.split('?')[1]
     location.href = '/routes/not_interested?'+params
-  });  
+});  
 
-   });
+  $("#home-change").click(function(){
+    location.href = "/routes?route_id=<%=session[:home_route_id]%>&drop_point_id=<%=session[:drop_point_id]%>"
+  });
+
+  $("#work-change").click(function(){
+    location.href = "/routes/return?route_id=<%=session[:work_route_id]%>&drop_point_id=<%=session[:pickup_point_id]%>"
+  });
+
+});
 	
 	
 	
@@ -272,7 +240,7 @@ $("#not-interested").click(function(){
 		  <ul class="book-detail clearfix">
       <li>
       <div class="change-col">
-      <span class="change-link"><a href="#">Change</a></span>
+      <span class="change-link"><a href="#" id="home-change">Change</a></span>
       <div class="book-title">
 		  <h5>Going to work</h5>
 		  
@@ -298,13 +266,13 @@ $("#not-interested").click(function(){
 		  <div class="change-col">
 		  <h5>Return from work</h5>
 
-		  <span class="change-link"><a href="/routes/return?route_id=<%=params[:route_id]%>">Change</a></span>
+		  <span class="change-link"><a href="" id="work-change">Change</a></span>
 		  </div>
 <%if session[:work_slot] != nil%> 
   <div style="margin-left:2%;">  
-		  <p>Depart: <%=session[:d]%> @ <%=RouteSuggestion.home_depart(params[:route_id],session[:work_slot],session[:drop_point_id],session[:pickup_point_id])%>
+		  <p>Depart: <%=session[:d]%> @ <%=session[:work_slot]%>
 		  <br>
-		  Arrives: <%=session[:s]%> @ <%=session[:work_slot]%>
+		  Arrives: <%=session[:s]%> @ <%=RouteSuggestion.home_arrive(params[:route_id],session[:work_slot],session[:drop_point_id],session[:pickup_point_id])%>
   </div>		  
 		  <em><%=RouteSuggestionsPledge.total_pledge(params[:route_id])%>  more ppl required to louch root</em>
 		  </p>

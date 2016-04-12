@@ -1,0 +1,30 @@
+<table border = "1">
+	<tr><td><b>Route Id</b></td><td><%=@route.id%></td></tr>
+	<tr><td><b>Start Point</b></td><td><%=@route.start%></td></tr>
+	<tr><td><b>End Point</b></td><td><%=@route.stop%></td></tr>
+	<tr><td><b>Save Date</b></td><td><%=@route.created_at.strftime("%d %b, %Y")%></td></tr>
+	<tr><td><b>Last Modified Date</b></td><td><%=@route.updated_at.strftime("%d %b, %Y")%></td></tr>
+	<tr><td><b>Points</b></td><td><%=@route.points%></td></tr>
+	<tr><td><b>Type</b></td><td><%=@route.route_type%></td></tr>
+	<tr><td><b>Distance</b></td><td>Pending</td></tr>
+	<tr><td><b>ETA</b></td><td>Pending</td></tr>
+	<tr><td><b>Price</b></td><td>Pending</td></tr>
+	<tr><td><b>Pricing</b></td><td>Pending</td></tr>
+	<tr><td><b>Slots</b></td><td><%@route.slots.split(',').each do |slot|%>
+			<a href="#"><%=slot%></a> &nbsp; 
+		<%end%>
+	</td></tr>
+	<tr><td><b>Potential</b></td><td>Pending</td></tr>
+	<tr><td><b>Pledge</b></td><td>Peding</td></tr>
+	<tr><td><b>Feedback</b></td><td>Pending</td>
+	</tr>
+	<tr><td><b>State</b></td><td><%=@route.state.upcase%></td>
+	</tr>
+	<tr><td><b>Status</b></td><td><%=@route.status%></td>
+	</tr>
+	<tr><td colspan="2">
+		<%if @route.state == 'saved'%>
+			<a href="/routes/shipped?id=<%=@route.id%>"><input type = "submit" value="Shipped"></a>
+		<%end%>
+	</td></td>
+</table>

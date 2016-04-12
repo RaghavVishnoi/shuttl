@@ -1,0 +1,577 @@
+﻿﻿ 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#DashboardTab').easyResponsiveTabs({
+            type: 'default', //Types: default, vertical, accordion           
+            width: 'auto', //auto or any width like 600px
+            fit: true,   // 100% fit in a container
+            closed: 'close', // Start closed if in accordion view
+            activate: function(event) { // Callback function if tab is switched
+                var $tab = $(this);
+                var $info = $('#tabInfo');
+                var $name = $('span', $info);
+
+                $name.text($tab.text());
+
+                $info.show();
+            }
+        });
+
+    });
+</script>	
+  <script>
+  
+      var mapId = 0;
+      var estimatedTime = [];
+      var estimatedDistance = [];
+      var check = 0;
+      var OriginalRouteHash = [];// = {} ;
+      var tempRouteHash = [];
+      var fillroutecheck = 0;
+  window.onload = function() {
+    getWayPointList();
+    initMap();
+}
+    $(document).ready(function() {
+      $("#start-time").owlCarousel({
+        items : 10,
+		 navigation: true,
+        navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+        ],
+        
+      });
+	  
+	  $("#start-time2").owlCarousel({
+        items : 10,
+		 navigation: true,
+        navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+        ],
+        
+      });
+	  
+	  
+	  $("#end-time").owlCarousel({
+        items : 10,
+		 navigation: true,
+        navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+        ],
+        
+      });
+	  
+	  $("#end-time2").owlCarousel({
+        items : 10,
+		 navigation: true,
+        navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+        ],
+        
+      });
+
+      $('.link').on('click', function(event){
+        var $this = $(this);
+        if($this.hasClass('clicked')){
+          $this.removeClass('clicked');
+        } else{
+          $this.addClass('clicked');
+        }
+      });
+
+$('.check-box li').click(function(){
+  $(this).addClass("selected");
+  
+  
+});
+	
+$('#sub').click(function(){
+	var geocoder = new google.maps.Geocoder();
+	
+	
+var address = $('#pac-input').val();
+
+geocoder.geocode( { 'address': address}, function(results, status) {
+
+  if (status == google.maps.GeocoderStatus.OK) {
+    var latitude = results[0].geometry.location.lat();
+    var longitude = results[0].geometry.location.lng();
+    alert(latitude);
+  } 
+});
+
+})
+
+	var originalDiv = $("<input type='text' id='pacinput1' value='<%=CustomerRoute.first.name%> to <%=CustomerRoute.last.name%>' class='controls form-control' disabled=''/>");
+	$("#original-route").append(originalDiv);
+
+	$(".save").click(function(){
+		alert("info");
+	});
+	
+});
+	
+function initMap() {
+var iw = [];
+var marker = [];
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+  var centerLatLong = OriginalRouteHash[Math.ceil(OriginalRouteHash.length/2)].waypoints;
+  var map = new google.maps.Map(document.getElementById('map'+mapId), {
+    zoom: 6,
+    center: {lat: parseFloat(centerLatLong.lat), lng: parseFloat(centerLatLong.longt)}
+  });
+  directionsDisplay.setMap(map);
+    for (var i = 0; i < OriginalRouteHash.length; i++) 
+  {
+  var ways = OriginalRouteHash[i].waypoints;
+  	 marker[i] = new MarkerWithLabel
+  ({
+  position: new google.maps.LatLng(parseFloat(ways.lat),parseFloat(ways.longt)),
+       draggable: false,
+       raiseOnDrag: true,
+       map: map,
+       labelContent: OriginalRouteHash[i].label,
+       labelAnchor: new google.maps.Point(22, 0),
+       labelClass: "labels", // the CSS class for the label
+       labelStyle: {opacity: 1.0}
+	});
+	 iw[i] = new google.maps.InfoWindow({
+       content: "2016-04-04 09:11:22",
+     });
+	google.maps.event.addListener(marker[i], 'click', (function(MarkerWithLabel, i) {
+  return function() {
+    iw[i].setContent(OriginalRouteHash[i].label)
+		for(var z=0;z<OriginalRouteHash.length;z++ )
+		{
+            iw[z].close();
+		}
+    iw[i].open(map, marker[i]);
+  }
+})(marker[i], i));
+}
+//irectionsDisplay.setMap(map);
+calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var waypts = [];
+
+  for (var i = 0; i < OriginalRouteHash.length; i++) 
+  {
+       var ways = OriginalRouteHash[i].waypoints;
+	   waypts.push({
+	    location: new google.maps.LatLng(parseFloat(ways.lat),parseFloat(ways.longt)),
+        stopover: true,
+	  }); 
+ }
+
+      var sourceLatLong = OriginalRouteHash[0].waypoints;
+	var destinationLatLong = OriginalRouteHash[OriginalRouteHash.length-1].waypoints;;
+  directionsService.route({
+
+    origin: new google.maps.LatLng(ways.lat,ways.longt),
+    destination: new google.maps.LatLng(ways.lat,ways.longt),
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.DRIVING
+  }, function(response, status) {
+     check =1;
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+	  directionsDisplay.setOptions( { suppressMarkers: true } )
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+     // summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+		estimatedTime.push(route.legs[i].duration.text);
+		estimatedDistance.push(route.legs[i].distance.text);
+        //summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+           
+		   '</b><br>';
+      }
+          if(fillroutecheck == 0)
+	  	  fillRouteTable();
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+
+}
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+
+  var onChangeHandler = function() {
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+	fillRouteTable();
+  }
+
+	function genrate_lower_table(){
+	mapId++;
+	var newTableDiv = $("<div class='col-md-5'><div class='table-data-hide' id='upper_Table'><div class='input-group'><input type='text' id='pacinput1' value='Subsection Route: Najafgarh-Convergys' class='controls form-control' /><span class='input-group-addon'><a href='#'><i class='fa fa-times-circle-o' onclick='clear_pacinput1()'></i></a></span></div><table class='table-col' id='wayPointsOriginalTable"+mapId+"'><tr><th>Pick-up</th><th>People</th><th>ETA</th><th>KM</th><th>Price</th></tr> </table><div class='buttun-group'><a href='' class='btn bg-danger cancel' title='Cancel'>Cancel</a><span  class='btn btn-info save' title='Save' onclick = save(mapId)>Save</span><span class='btn btn-info ship' title='Ship' onclick = shipped(mapId)>Ship</span></div></div><div class='table-data-show' id='Lower_Table'></div></div>");
+	var newMapDiv = $("<div class='col-md-7'><div class='location-map-dashboard' id='map"+mapId+"'></div></div>");      
+     $("#mainDiv").append(newMapDiv);
+	 $("#mainDiv").append(newTableDiv);
+	 initMap();
+	}
+
+	function save(table_id){
+		values = []
+		$("#wayPointsOriginalTable"+table_id+" tr").each( function(){
+				var map = new Object();
+ 			   //add item to array
+ 			    var $tds = $(this).find('td');
+	            name = $tds.eq(0).text();
+	            people = $tds.eq(1).text();
+	            eta = $tds.eq(2).text();
+	            km = $tds.eq(3).text();
+	            price = $tds.eq(4).text();
+	            if(name.length != 0 && people.length != 0 && eta.length != 0 && km.length != 0 && price.length != 0){
+ 			    	map['name'] = name.replace("+","").replace("-","");
+ 			    	map['people'] = people
+ 			    	map['eta'] = eta
+ 			    	map['km'] = km
+ 			    	map['price'] = price
+ 			    	map['status'] = 'saved'
+ 			    	values.push(map)
+  			    }
+ 			    
+  			    	
+		});
+		  
+		$.ajax({
+	        url: "/dashboard/save",
+	        type: "POST",
+	        data: {values : values},
+	        dataType: "text",
+	                 
+	        complete: function() {
+
+	        },
+
+	        success: function(data, textStatus, xhr) {
+	        	$("#save").text("")
+	        },
+	        error: function(){
+
+	        }	
+	    });    
+		
+	}
+
+	function shipped(table_id){
+		values = []
+		$("#wayPointsOriginalTable"+table_id+" tr").each( function(){
+				var map = new Object();
+ 			   //add item to array
+ 			    var $tds = $(this).find('td');
+	            name = $tds.eq(0).text();
+	            people = $tds.eq(1).text();
+	            eta = $tds.eq(2).text();
+	            km = $tds.eq(3).text();
+	            price = $tds.eq(4).text();
+	            if(name.length != 0 && people.length != 0 && eta.length != 0 && km.length != 0 && price.length != 0){
+ 			    	map['name'] = name.replace("+","").replace("-","");
+ 			    	map['people'] = people
+ 			    	map['eta'] = eta
+ 			    	map['km'] = km
+ 			    	map['price'] = price
+ 			    	map['status'] = 'saved'
+ 			    	values.push(map)
+  			    }
+ 			    
+  			    	
+		});
+		  
+		$.ajax({
+	        url: "/dashboard/shipped",
+	        type: "POST",
+	        data: {values : values},
+	        dataType: "text",
+	                 
+	        complete: function() {
+
+	        },
+
+	        success: function(data, textStatus, xhr) {
+	        },
+	        error: function(){
+
+	        }	
+	    });    
+		
+	}
+
+	function triggersaveevent(){
+		$("[aria-controls='tab_item-3']").trigger( "click" );
+		
+	}
+
+	function triggershipevent(){
+		$("[aria-controls='tab_item-2']").trigger( "click" );
+		
+	}
+
+     function clear_pacinput1()
+	{
+	    $("#pacinput1").val(' ');
+		document.getElementById("pacinput1").innerHTML = "";
+	}
+
+	function deleteCurrentRoute(a)
+     {
+ 	    var rowIndex = $(a).closest('tr').rowIndex;
+	    mapId = a.parentNode.parentNode.parentNode.parentNode.id.slice(-1);
+    var p=a.parentNode.parentNode;
+    p.parentNode.removeChild(p);
+    removefromOriginalRouteHash(OriginalRouteHash, $(a).parentNode.parentNode.children[0].innerText.charAt(0));
+	}
+	
+	function addNextRow(b)
+	{
+	   alert("hu");
+	}
+	
+	function getWayPointList()
+	{
+		<%
+			@dashboard.each do |dashboard|
+		%>
+ 		OriginalRouteHash.push({ label : '<%=dashboard[:name]%>', waypoints :{lat : '<%=dashboard[:lat]%>',longt : '<%=dashboard[:long]%>'},price : '3',People : '<%=dashboard[:count]%>'});
+		<%end%>
+	    
+  //       OriginalRouteHash.push({label : 'B', waypoints : {lat : '28.5785422',longt :'77.31746199999998'},price :'3',People : '45'});
+		// OriginalRouteHash.push({label : 'C', waypoints : {lat :'28.5697189',longt :'77.318321'},price : '2',People : '55'});
+		// OriginalRouteHash.push({label : 'D',waypoints :{lat :'28.6127633',longt : '77.38713189999999'},price : '5',People : '65'});
+									  
+	}
+	
+	function  fillRouteTable()
+	{	
+	    for(var i=0; i< OriginalRouteHash.length;i++)
+		{
+	        var row = $("<tr><td>"+OriginalRouteHash[i].label+" <span class='btn btn-info' title='Add'>+</span> <span  class='btn bg-danger' title='Delete' onclick='deleteCurrentRoute(this)'>-</span></td><td>" + OriginalRouteHash[i].People +"</td><td>"+estimatedTime[i]+"</td><td>"+estimatedDistance[i]+"</td><td>" +OriginalRouteHash[i].price+"/km </td></tr>");
+         var tableId = "#wayPointsOriginalTable" + mapId;
+         $(tableId).append(row);
+		}
+	}
+
+	function removefromOriginalRouteHash(OriginalRouteHash, keytoRemove) {
+	    tempRouteHash = OriginalRouteHash;
+	    tempRouteHash.splice(keytoRemove, 1);
+	    fillroutecheck = 1;
+	    initMap();
+	}
+    </script>
+</head>
+
+<body>
+<!-- Loader -->
+<div id="page-preloader"><span class="spinner"></span></div>
+<!-- Loader end -->
+<div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
+  <div id="wrapper"> 
+
+  
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png" alt="Logo"></a>
+            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
+          </div>
+          <!-- end col  --> 
+        </div>
+        <!-- end row  --> 
+      </div>
+      <!-- end container--> 
+    </header>
+    <!-- end header -->
+     <section class="section-default">
+        <div class="container"> 
+          
+           <div class="row">
+            
+          <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
+		  
+		 <div id="DashboardTab">
+		  <ul class="resp-tabs-list">
+		    <li>Home</li>
+		    <li>Live</li>
+		    <li>Shipped</li>
+			<li>Saved</li>
+			<li>All</li>
+		  </ul>
+  <div class="resp-tabs-container">
+  <!--Tab-->
+    <div>
+	<div class="row data-scroll">
+        <div id="mainDiv">
+            <div class="col-md-7">
+                    <div class="location-map-dashboard" id="map0">
+                    </div>
+            </div>
+
+            <div class="col-md-5 hide-data">
+                <div class="table-data-hide">
+
+                    <div class="input-group">
+
+                        <input type="text" id="pacinput1" value="Subsection Route: Najafgarh-Convergys" class="controls form-control" />
+                        <span class="input-group-addon"><a href="#" ><i class="fa fa-times-circle-o" onclick="clear_pacinput1()"></i></a></span>
+                    </div>
+                    <div id="original-route"></div>
+
+                    <table class="table-col" id="wayPointsOriginalTable0">
+                        <tr>
+                            <th>Pick-up</th>
+                            <th>People</th>
+                            <th>ETA</th>
+                            <th>KM</th>
+                            <th>Price</th>
+                        </tr>
+                    </table>
+                    <div><span  onclick="triggersaveevent()" id="save"><%="Saved Routes" if RouteSuggestionsRoute.find_by(state: 'saved') != nil%></span>
+						<span  onclick="triggershipevent()" id="ship" style="margin-left:10%;"><%="Shipped Routes" if RouteSuggestionsRoute.find_by(state: 'shipped') != nil%></span>
+                    </div>
+                    <div class="buttun-group">
+
+                        <!-- <a href="#" class="btn bg-danger" title="Cancel">Cancel</a>
+                        <a href="#" class="btn btn-info" title="Save">Save</a>
+                        <a href="#" class="btn btn-info" title="Ship">Ship</a> -->
+                    </div>
+
+                </div>
+                <div class="form-group static-ch clearfix">
+                    <button class="btn btn-info" type="button" onclick="genrate_lower_table()"><span>Make New Route</span> <i class="fa fa-plus-circle"></i> </button>
+                </div>
+                <div class="table-data-show" id="Lower_Table">
+
+
+
+                </div>
+
+
+            </div>
+           
+        
+        
+        
+         </div>
+        </div>
+	<!--End row-->
+     </div>
+	 <!--Tab-->
+    <div>
+      <p>This tab has icon in consectetur adipiscing eliconse consectetur adipiscing elit. Vestibulum nibh urna, ctetur adipiscing elit. Vestibulum nibh urna, t.consectetur adipiscing elit. Vestibulum nibh urna,  Vestibulum nibh urna,it.</p>
+    </div>
+    <div>
+    <div class="table-ship-block">
+	 
+ 
+	<div class="mo-scrl">
+	<table class="table-col">
+	<tr>
+	<th>Route ID</th> <th>Date Saved</th> <th>Last Modified</th> <th>Type</th>  <th>Start</th> <th>Stop</th> <th>Points</th> <th>KM</th> <th>ETA</th><th>Price</th> <th>Pricing</th><th>Slots</th><th>Potencial</th><th>Pledge</th><th>Feedback</th>
+	</tr>
+	<%RouteSuggestionsRoute.where(state: 'shipped').each do |route|%>	
+	<tr>
+	<td><a href="/routes/saved?id=<%=route.id%>"><%=route.id%></a></td>
+	<td><%=route.created_at.strftime("%d %b, %Y")%></td>
+	<td><%=route.updated_at.strftime("%d %b, %Y")%></td>
+	<td><%=route.route_type%></td>
+	<td><%=route.start%></td>
+	<td><%=route.stop%></td>
+	<td>5</td>
+	<td>15</td>
+	<td>45 min</td>
+	<td>2-3Km</td>
+	<td>Differencial</td>
+	<td>
+		<%route.slots.split(',').each do |slot|%>
+			<a href="#"><%=slot%></a> &nbsp; 
+		<%end%>
+	</td>
+	<td>98</td>
+	<td>33</td>
+	<td><a href="#">3</a> New</td>
+	</tr>
+<%end%>	
+	
+	 
+	
+	 
+	
+	
+	</table>
+	</div>
+	</div>
+	</div>
+	<div>
+      <div class="table-ship-block">
+	<div class="mo-scrl">
+	<table class="table-col">
+	<tr>
+	<th>Route ID</th> <th>Date Saved</th> <th>Last Modified</th> <th>Type</th>  <th>Start</th> <th>Stop</th> <th>Points</th> <th>KM</th> <th>ETA</th><th>Price</th> <th>Pricing</th><th>Slots</th><th>Potencial</th><th>Pledge</th><th>Feedback</th>
+	</tr>
+<%RouteSuggestionsRoute.where(state: 'saved').each do |route|%>	
+	<tr>
+	<td><a href="/routes/saved?id=<%=route.id%>"><%=route.id%></a></td>
+	<td><%=route.created_at.strftime("%d %b, %Y")%></td>
+	<td><%=route.updated_at.strftime("%d %b, %Y")%></td>
+	<td><%=route.route_type%></td>
+	<td><%=route.start%></td>
+	<td><%=route.stop%></td>
+	<td>5</td>
+	<td>15</td>
+	<td>45 min</td>
+	<td>2-3Km</td>
+	<td>Differencial</td>
+	<td>
+		<%route.slots.split(',').each do |slot|%>
+			<a href="#"><%=slot%></a> &nbsp; 
+		<%end%>
+	</td>
+	<td>98</td>
+	<td>33</td>
+	<td><a href="#">3</a> New</td>
+	</tr>
+<%end%>	
+	
+	</table>
+	</div>
+</div>
+    </div>
+	<div>
+      <p>Suspendisse blandit velit Integer laoreet placerat suscipit. Sed sodales scelerisque commodo. Nam porta cursus lectus. Proin nunc erat, gravida a facilisis quis, ornare id lectus. Proin consectetur nibh quis Integer laoreet placerat suscipit. Sed sodales scelerisque commodo. Nam porta cursus lectus. Proin nunc erat, gravida a facilisis quis, ornare id lectus. Proin consectetur nibh quis urna gravid urna gravid eget erat suscipit in malesuada odio venenatis.</p>
+    </div>
+  </div>
+</div>
+ 
+         </div>
+		<!-- end coll --> 
+		 
+         </div>
+         
+        </div>
+        <!-- end container --> 
+      </section>
+      <!-- end section-default -->
+   
+    
+    
+  </div>
+
+ <!-- end wrapper --> 
+</div>
+<!-- SCRIPTS --> 
+
+	
+ 

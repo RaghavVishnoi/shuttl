@@ -497,6 +497,14 @@ p {
   line-height: 1.4;
 }
 @media (min-width: 768px) {
+h5,
+.h5 {
+  font-size: 21px; font-weight:400; margin-bottom:15px;
+}	
+.btn-block {
+  display: inline-block;
+  width:inherit;
+}	
   .lead {
     font-size: 18px;
   }
@@ -607,7 +615,7 @@ a.bg-warning:focus {
 }
 a.bg-danger:hover,
 a.bg-danger:focus {
-  background-color: #e4b9b9;
+  background-color: #F05A4F;
 }
 .page-header {
   padding-bottom: 5px;
@@ -2716,10 +2724,7 @@ fieldset[disabled] .btn-link:focus {
   line-height: 1.5;
   border-radius: 3px;
 }
-.btn-block {
-  display: block;
-  width: 100%;
-}
+
 .btn-block + .btn-block {
   margin-top: 5px;
 }

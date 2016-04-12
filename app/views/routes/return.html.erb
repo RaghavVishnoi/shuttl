@@ -5,7 +5,7 @@
    initMap();
   };
      
-
+var waypts = []
  function initMap() {
     
   var directionsService = new google.maps.DirectionsService;
@@ -67,46 +67,8 @@ google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, thi
 
       });
   <%end%>   
-     <%if index == 0%>
-             var smarker = new MarkerWithLabel({
-               position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-               draggable: false,
-               raiseOnDrag: false,
-               map: map,
-               labelContent: "End",
-               labelAnchor: new google.maps.Point(22, 0),
-               labelClass: "labels", // the CSS class for the label
-               labelStyle: {opacity: 0.75},
-               
-          });
-       
-           var siw = new google.maps.InfoWindow({
-             content: "<%=route.name%>"
-           });
-         
-
-         google.maps.event.addListener(smarker, "click", function (e) { siw.open(map, this); });
-      <%end%> 
-      <%if index == slots.length-1%>  
-        var emarker = new MarkerWithLabel({
-               position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-               draggable: false,
-               raiseOnDrag: false,
-               map: map,
-               labelContent: "Start",
-               labelAnchor: new google.maps.Point(22, 0),
-               labelClass: "labels", // the CSS class for the label
-               labelStyle: {opacity: 0.75},
-               
-          });
-       
-           var eiw = new google.maps.InfoWindow({
-             content: "<%=route.name%>"
-           });
-         
-
-         google.maps.event.addListener(emarker, "click", function (e) { eiw.open(map, this); });
-      <%end%>
+     
+      
   <%end%>
   
      
@@ -150,7 +112,7 @@ google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, thi
   // });
  
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-  var waypts = [];
+   
 
 /////////////////drop point marker/////////////////   
 
@@ -377,7 +339,7 @@ $('.check-box li').click(function(){
 	
  
 <!-- Loader -->
-<div id="page-preloader"><span class="spinner"></span></div>
+ 
 <!-- Loader end -->
 <div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
   <div id="wrapper"> 

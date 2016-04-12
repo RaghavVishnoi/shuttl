@@ -2,8 +2,8 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
 
 /* ======= GLOBAL ======= */
-::-moz-selection { background: #e84c3d;  color:#fff !important;  }
-::selection { background: #e84c3d ; color:#fff !important; }
+::-moz-selection { background: #3EB6B5;  color:#fff !important;  }
+::selection { background: #3EB6B5 ; color:#fff !important; }
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {font-size: 12px; color: #aaa;
@@ -28,12 +28,20 @@ img.pull-left { margin-right: 20px; }
 
 .ma-bt{margin-bottom:0;}
 .location-map-block{}
+.location-map-dashboard{border:solid 1px #ccc; height:225px;}
 .location-map-block iframe{ border:solid 1px #ccc; height:350px;}
 #map{border:solid 1px #ccc; height:350px;}
-#map1{border:solid 1px #ccc; height:350px;}
-#map2{border:solid 1px #ccc; height:350px;}
-#map3{border:solid 1px #ccc; height:350px;}
+
 .font-s{font-size:11px; text-align:center;}
+#mainDiv .col-md-7, #mainDiv .col-md-5{margin-bottom:10px;}
+
+.col-md-5.hide-data .buttun-group{ margin-bottom:10px;}
+.col-md-5.hide-data .input-group, .col-md-5.hide-data .table-col .btn{display:none;}
+
+.row.data-scroll{ margin-right:0; overflow-y:auto; max-height:480px;}
+.repeat_Data #map{height:196px;}
+.table-data-show #map{height:196px;}
+
 .button-block{text-align:center;}
 .button-block .btn{ padding:10px 11px; }
 .button-block .fa{font-size:13px;}
@@ -78,106 +86,13 @@ img.pull-left { margin-right: 20px; }
 .book-staff-right{ float:right; font-size:11px; line-height:9px; text-align:center;position:relative;}
 .book-staff-right strong, .book-staff-left strong{font-size:15px;}
 
-/** resat button **/ 
-.input-group-addon{position: relative;}
-i.fa.fa-times {position: absolute;top: 14px;right: 8px;z-index: 99;font-size: 18px;font-weight: normal;}
-.input-group .fa-times{display: none;}
-.input-group .form-control{padding: 13px 33px 13px 10px}
-input::-webkit-input-placeholder {font-size: 15px;}
-.doneSign {text-align: center;padding: 15px;}
-.doneSign .fa-check-circle-o {font-size: 56px;color: green;}
-.ThankYouPage {font-size: 17px;line-height: 26px;text-align: center;}
-.thankYo {transform: translatey(50%);}
-.overlay {position: fixed;display: none;width: 100%;height: 100%;top: 0;background: rgba(0,0,0,0.5);z-index: 99;}
-/* .otpBox {position: fixed;z-index: 999;top: 40%;left: 50%;right: 0;transform: translate(-50%);width: 94%;background: #fff;padding: 26px 12px;}
-.otpBox input[type="text"] {padding: 6px 9px;width: 100%;}
-span.otpText {margin-top: 3px; display: block;color: #999;} */
-.modal-body.signup {
-    position: fixed;
-    background: transparent;
-    z-index: 999;
-    left: 50%;
-    top: 24%;
-    width: 94%;
-    transform: translateX(-50%);
-        padding: 0px;
-}
-.modal-body.signup .form-group {
-    margin-bottom: 0px;
-}
-.modal-body.signup .form-control{
-	    margin-bottom: 0px;
-	        border: 0px solid #333;
-}
-.btn.disabled, .btn[disabled]{
-	    opacity: 1;
-}
-input#contact-submit {
-    width: 100%;
-}
-
-div#confirmSection {
-    background: transparent;
-}
-div#confirmSection .form-group.col-md-6{padding: 0px;}
-
-label.control-label {
-    text-align: center;
-    display: block;
-    color: #fff;
-}
-input#otp-submit {
-   	background: rgb(235, 235, 228);
-    border: 0px solid #f1f1f1 !important;
-    width: 100%;
-    color: #000;
-}
-
-label.control-label .fa-pencil {
-    font-size: 14px;
-    padding: 9px 14px;
-    color: #fff;
-}
-div#confirmSection {
-    position: relative;
-    display:block;
-}
-
-div#confirmSection .fa-repeat {
-    position: absolute;
-    z-index: 999;
-    top: 51px;
-    right: 30px;
-    font-size: 15px;
-    color: #999;
-}
-
-span.resend {
-    margin-left: 6px;
-    font-size: 13px;
-    color: #999;
-    text-transform: uppercase;
-    font-family: roboto;
-}
-button.btn.btn-info a {
-    color: #fff;
-}
-.time-slot span {
-    display: block;
-}
-
-
-div#confirmSection input {
-    border: 1px solid #f1f1f1;
-}
-
-
-
 
 .buttun-group{text-align:right;}
 .buttun-group .btn{padding:5px 10px;}
 
-.table-data-hide .input-group, .table-data-hide .buttun-group, .table-data-hide .btn{display:none;}
+.repeat_Data .input-group, .repeat_Data .buttun-group, .repeat_Data .btn{display:none;}
+
+.table-data-show .static-ch{display:none;}
 
 .table-data-show .input-group{ margin-bottom:2px;}
 .static-ch .btn{ width:100%; display:block; padding:10px;}
@@ -1669,7 +1584,16 @@ html #search-open { margin-top: 60px;}
 .list-collapse__info {float: none; 	display: block; } 
 .header-inner{ float:left; width:60%; text-align:center; padding-top:20px; font-size:14px;} 
 .header-logo__img{margin:10px 0;}  
-.location-map-block iframe{height:175px;} #map{width:100%; height:175px;} #map1{width:100%; height:175px;} #map2{width:100%; height:175px;} #map3{width:100%; height:175px;} .col-md-5.mo{width:26%; display:inline-block; vertical-align:top; font-size:11px; text-align:center;} .col-md-6.mo{width:72%; display:inline-block; vertical-align:top; font-size:11px; } .col-md-6.mo strong, .col-md-5.mo strong{font-size:15px;}  .mo-none{ display:none;} .book-detail li{width:100%; padding:5px 10px;} .book-detail li:nth-of-type(2n){float:inherit;} .start-time-block{text-align:left;} .end-time-block{text-align:left;} .section-default{margin-top:10px;} .mo-scrl{overflow:scroll;} .table-col .btn{width:18px;} .reach-col{text-align:left;} .font-s{} .align_left{text-align:left;} .align_right{text-align:right; line-height:12px;} .align_right strong{text-align:center;} .mul-choice{max-width:inherit; font-size:13px;} .not-interested h5{text-align:left;} .travel-time-block{text-align:inherit;}  
+.location-map-block iframe{height:175px;} #map{width:100%; height:175px;} #map1{width:100%; height:175px;} #map2{width:100%; height:175px;} #map3{width:100%; height:175px;} .col-md-5.mo{width:26%; display:inline-block; vertical-align:top; font-size:11px; text-align:center;} .col-md-6.mo{width:72%; display:inline-block; vertical-align:top; font-size:11px; } .col-md-6.mo strong, .col-md-5.mo strong{font-size:15px;}  .mo-none{ display:none;} .book-detail li{width:100%; padding:5px 10px;} .book-detail li:nth-of-type(2n){float:inherit;} .start-time-block{text-align:left;} .end-time-block{text-align:left;} .section-default{margin-top:10px;} .mo-scrl{overflow:scroll;} 
+.table-col .btn{width:15px; padding:0 2px;} 
+.reach-col{text-align:left;} 
+.font-s{} 
+.align_left{text-align:left;} 
+.align_right{text-align:right; line-height:12px;} 
+.align_right strong{text-align:center;} 
+.mul-choice{max-width:inherit; font-size:13px;} 
+.not-interested h5{text-align:left;} 
+.travel-time-block{text-align:inherit;}  
 }
 
 /* end max-width:767px */
@@ -1694,7 +1618,108 @@ html   .header-logo { display: inline-block; float: left; position: relative; te
 html #search-open {margin-top: 8px;}
 .top-header__contacts { 	display: block; 	padding-left: 0; 	border-right: none; } .top-header__contacts:first-child {margin-bottom: 10px;} .section-advantages { 	padding-left: 25px; 	padding-right: 25px; } .find-course_mod-b .jelect, .find-course_mod-b .form-control { 	width: 100%; 	max-width: 100%; } .post_mod-d { 	padding-left: 0; 	padding-right: 0; 	background-color: #EEE; } .post_mod-d .entry-media { 	float: none; 	border: 1px solid #eee; } .section-gallery:after, .section-gallery:before {display: none;} .sorting .select { 	display: block; 	text-align: left; 	width: 130px; } .list-collapse__title { 	display: block; 	margin-top: 0; } .post_mod-j .post-inner { 	padding-left: 0; 	padding-top: 30px; } blockquote {padding-left: 30px;} blockquote:before {top: 10px;} .about-autor__foto, .avatar-placeholder {float: none;} .about-autor__inner, .comment-inner { 	margin-left: 0; 	margin-top: 20px; } .comments-list .children {margin-left: 50px;} .nav-tabs_mod-a > li { 	float: none; 	width: 100%; } .nav-tabs > li > a { 	padding-bottom: 0; 	padding-top: 5px; } .btn-block {display:block; width:100%;}}
 .labels {color: #fff; padding:0px 5px; background-color:#3EB6B6; font-size:12px;font-weight: 400; text-align: center; border: 1px solid #333;; white-space: nowrap;}
-.pickup-labels {color: #000; padding:0px 5px; background-color:#fff; font-size:12px;font-weight: 400; text-align: center; border: 1px solid #333;; white-space: nowrap;}
-
-.contact-dialog{width:30%;height: 120px;background-color: #10B9B3;position:absolute;margin-left:40%;margin-top:300px;z-index: 10;display:none;}
-.otp-dialog{display:none;}
+/*.pickup-labels {color: #000; padding:0px 5px; background-color:#fff; font-size:12px;font-weight: 400; text-align: center; border: 1px solid #333;; white-space: nowrap;}        
+            
+    .contact-dialog{width:30%;height: 120px;background-color: #10B9B3;position:absolute;margin-left:40%;margin-top:300px;z-index: 10;display:none;}     
+    .otp-dialog{display:none;}*/
+/** resat button **/        
+    .input-group-addon{position: relative;}     
+    i.fa.fa-times {position: absolute;top: 14px;right: 8px;z-index: 99;font-size: 18px;font-weight: normal;}        
+    .input-group .fa-times{display: none;}      
+    .input-group .form-control{padding: 13px 33px 13px 10px}        
+    input::-webkit-input-placeholder {font-size: 15px;}     
+    .doneSign {text-align: center;padding: 15px;}       
+    .doneSign .fa-check-circle-o {font-size: 56px;color: green;}        
+    .ThankYouPage {font-size: 17px;line-height: 26px;text-align: center;}       
+    .thankYo {transform: translatey(50%);}      
+    .overlay {position: fixed;display: none;width: 100%;height: 100%;top: 0;background: rgba(0,0,0,0.5);z-index: 99;}       
+    /* .otpBox {position: fixed;z-index: 999;top: 40%;left: 50%;right: 0;transform: translate(-50%);width: 94%;background: #fff;padding: 26px 12px;}        
+    .otpBox input[type="text"] {padding: 6px 9px;width: 100%;}      
+    span.otpText {margin-top: 3px; display: block;color: #999;} */      
+    .modal-body.signup {        
+    position: fixed;        
+    background: transparent;        
+    z-index: 999;       
+    left: 50%;      
+    top: 24%;       
+    width: 94%;     
+    transform: translateX(-50%);        
+    padding: 0px;       
+    }       
+    .modal-body.signup .form-group {        
+    margin-bottom: 0px;     
+    }       
+    .modal-body.signup .form-control{       
+    margin-bottom: 0px;     
+    border: 0px solid #333;     
+    }       
+    .btn.disabled, .btn[disabled]{      
+    opacity: 1;     
+    }       
+    input#contact-submit {      
+    width: 100%;        
+    }       
+            
+    div#confirmSection {        
+    background: transparent;        
+    }       
+    div#confirmSection .form-group.col-md-6{padding: 0px;}      
+            
+    label.control-label {       
+    text-align: center;     
+    display: block;     
+    color: #fff;        
+    }       
+    input#otp-submit {      
+    background: rgb(235, 235, 228);     
+    border: 0px solid #f1f1f1 !important;       
+    width: 100%;        
+    color: #000;        
+    }       
+            
+    label.control-label .fa-pencil {        
+    font-size: 14px;        
+    padding: 9px 14px;      
+    color: #fff;        
+    }       
+    div#confirmSection {        
+    position: relative;     
+    display:block;      
+    }       
+            
+    div#confirmSection .fa-repeat {     
+    position: absolute;     
+    z-index: 999;       
+    top: 51px;      
+    right: 30px;        
+    font-size: 15px;        
+    color: #999;        
+    }       
+            
+    span.resend {       
+    margin-left: 6px;       
+    font-size: 13px;        
+    color: #999;        
+    text-transform: uppercase;      
+    font-family: roboto;        
+    }       
+    button.btn.btn-info a {     
+    color: #fff;        
+    }       
+    .time-slot span {       
+    display: block;     
+    }       
+            
+            
+    div#confirmSection input {      
+    border: 1px solid #f1f1f1;      
+    }       
+            
+            
+            
+            
+    .buttun-group{text-align:right;}
+    .pickup-labels {color: #000; padding:0px 5px; background-color:#fff; font-size:12px;font-weight: 400; text-align: center; border: 1px solid #333;; white-space: nowrap;}        
+            
+    .contact-dialog{width:30%;height: 120px;background-color: #10B9B3;position:absolute;margin-left:40%;margin-top:300px;z-index: 10;display:none;}     
+    .otp-dialog{display:none;}
