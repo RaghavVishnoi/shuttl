@@ -1,0 +1,3 @@
+module Constants
+  THRESHOLD_DEVIATION_ALLOWED=0.001
+end
