@@ -35,7 +35,7 @@ var pmarker = new MarkerWithLabel({
 
 google.maps.event.addListener(pmarker, "click", function (e) { piw.open(map, this); });
 
-/////////////////drop point marker/////////////////
+
 var dmarker = new MarkerWithLabel({
      position: new google.maps.LatLng(<%=session[:to][0]%>, <%=session[:to][1]%>),
      draggable: false,
@@ -200,8 +200,55 @@ $("#not-interested").click(function(){
 
 });
 	
-	
-	
+
+
+     function startLazyPaymentForAmount(amount,mobileNo){
+       $.ajax({
+             url:"http://test.lazypay.in/api/assuredpay/v0/",
+           data:JSON.stringify({email:"dummy.mail@nomail.com", mobile:mobileNo, amount:'250.00'}),
+           type:"POST",
+           contentType:"application/json",
+           headers:{
+         'accessKey':"KI7RAM54A4FIO6BTBD39",
+         'signature':"123a075a4bf21a6d91331c9575ac0f1aeb38e548",
+          },
+          async:true,
+         success:function(data) {
+           $.ajax({
+             url: "",
+             data: JSON.stringify({
+               "returnUrl": window.location.host + "/payment_done",
+               "notifyUrl": window.location.host + "/payment_status",
+               "amount": "250.00",
+               "merchantAccessKey": "06SLEEBYLVZELISZ5ECU",
+               "merchantTxnId": "143798270056812",
+               "requestSignature": "c645f026ce2ad0d26cb7c89093c53936f8627f56",
+               "userDetails": {
+                 "email": "dummy.mail@nomail.com",
+                 "mobileNo": mobileNo,
+                 "firstName": !"Tester",
+                 "lastName": !"Citrus",
+                 "address": {
+                   "state": "Maharashtra",
+                   "street1": "streetone",
+                   "street2": "streettwo",
+                   "city": "Mumbai",
+                   "country": "India",
+                   "zip": "400052"
+                 }
+
+               }
+             }),
+             error: function (data) {
+               var responseText = JSON.parse(data.responseText);
+               var httpStatusCode = responseText.status;
+               var errorMes = responseText.message;
+               alert(errorMes);
+             }
+           });
+         }
+         });
+     }
     </script>
 	
 	
@@ -256,7 +303,7 @@ $("#not-interested").click(function(){
 		   
 		  <em><%=RouteSuggestionsPledge.total_pledge(params[:route_id])%> more ppl required to louch root</em>
 		  </p>
-      
+      </div>
 		  </li>
       <%else%>
         <em>No timeslot was selected</em>
@@ -291,8 +338,8 @@ $("#not-interested").click(function(){
 		
 		 <div class="button-col">
 		  <h5>To Travel on this route select a pass</h5>
-		  <a class="btn btn-info">10 Rides @ Rs.499</a>
-		  <a class="btn btn-info">Promo Monthly @ Rs.1800</a></i></button>
+		  <a class="btn btn-info" onclick="javascript:startLazyPaymentForAmount(499,'8800846150');">10 Rides @ Rs.499</a>
+		  <a class="btn btn-info" onclick="javascript:startLazyPaymentForAmount(499,'8800846150');">Promo Monthly @ Rs.1800</a></i></button>
 		  </div>
 		 <p class="font-s">(we'll change your wallet just before lounching the services)</p>
 		  <div class="button-block">

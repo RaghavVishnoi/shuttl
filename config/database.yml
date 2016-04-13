@@ -7,12 +7,13 @@
 default: &default
   adapter: mysql2
   pool: 5
+  host: 54.200.116.105
   timeout: 5000
 
 development:
   <<: *default
   username: root
-  password: root
+  password: shuttl@12345
   database: shuttl
 
 # Warning: The database defined as "test" will be erased and
