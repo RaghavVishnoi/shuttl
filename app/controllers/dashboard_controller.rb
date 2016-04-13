@@ -16,11 +16,15 @@ class DashboardController < ApplicationController
  	def shipped
  		result = Dashboard.shipped(params)
 		if result
-			Message.send_link(result.id)
+ 			Message.send_link(result.id)
 			render :json => true
 		else
 			render :json => false
 		end
+ 	end
+
+ 	def locations
+ 		render :json => CustomerRoute.all
  	end
 
 

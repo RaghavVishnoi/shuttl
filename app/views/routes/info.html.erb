@@ -1,6 +1,4 @@
- 
- 
- <script>
+<script>
   window.onload = function() {
    initMap();
   };
@@ -67,7 +65,7 @@ google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, thi
 
       });
   <%end%>   
-       <%end%>
+<%end%>
   
 
  
@@ -198,14 +196,37 @@ $("#not-interested").click(function(){
     location.href = "/routes/return?route_id=<%=session[:work_route_id]%>&drop_point_id=<%=session[:pickup_point_id]%>"
   });
 
+  $('#contact').keyup(function(){
+      var number = document.getElementById('contact');
+       if(number.value.length!=10){
+         jQuery('#contact-submit').attr("disabled", disable);
+      }else if(number.value.length===10){
+        $('#contact-submit').removeAttr('disabled').css({'background':'#39B5B5','color':'#fff'});
+      }
+    })
+    // send OTP function 
+     
+     
+    $('#otp').keyup(function(){
+      var number = document.getElementById('otp');
+      if(number.value.length!=4){
+         $('#otp-submit').attr("disabled", disable);
+         console.log('nahi');
+      }else if(number.value.length===4){
+        $('#otp-submit').removeAttr('disabled').css({'background':'#39B5B5','color':'#fff'});
+        
+      }
+    })
+
+
 });
 	
 
 
-     function startLazyPaymentForAmount(amount,mobileNo){
+function startLazyPaymentForAmount(amount,mobileNo){
        $.ajax({
              url:"http://test.lazypay.in/api/assuredpay/v0/",
-           data:JSON.stringify({email:"dummy.mail@nomail.com", mobile:mobileNo, amount:'250.00'}),
+           data:JSON.stringify({email:"dummy.mail@nomail.com", mobile:mobileNo, amount:amount}),
            type:"POST",
            contentType:"application/json",
            headers:{
@@ -217,9 +238,9 @@ $("#not-interested").click(function(){
            $.ajax({
              url: "",
              data: JSON.stringify({
-               "returnUrl": window.location.host + "/payment_done",
+               "returnUrl": window.location.host + "/routes/thankyou",
                "notifyUrl": window.location.host + "/payment_status",
-               "amount": "250.00",
+               "amount": amount,
                "merchantAccessKey": "06SLEEBYLVZELISZ5ECU",
                "merchantTxnId": "143798270056812",
                "requestSignature": "c645f026ce2ad0d26cb7c89093c53936f8627f56",
@@ -246,8 +267,134 @@ $("#not-interested").click(function(){
                alert(errorMes);
              }
            });
+            updatePledge(phone)
          }
          });
+     }
+
+     function updatePledge(phone){
+        <%slot = RouteSuggestionsSlot.find(session[:pickup_point_id])%>
+        lat = "<%=slot.lat%>";
+        lng = "<%=slot.long%>";
+        approved = 1;
+        is_pledge = 1;
+        slot_id = "<%=session[:pickup_point_id]%>"
+        time_stamp_id = "<%=RouteSuggestionsTimestamp.find_timestamp(session[:home_route_id],session[:home_slot],session[:pickup_point_id])[0][:id]%>"
+
+
+
+         
+        $.ajax({
+            url: "/route_suggestions_pledges",
+            type: "POST",
+            data: {
+                  route_suggestions_pledge : {
+                    lat : lat,
+                    long : lng,
+                    approved : approved,
+                    is_pledge : is_pledge,
+                    route_suggestions_slot_id : slot_id,
+                    route_suggestions_timestamp_id : time_stamp_id,
+                    phone : phone
+                  }  
+            },
+            dataType: "text",
+                     
+            complete: function() {
+
+            },
+
+            success: function(data, textStatus, xhr) {
+
+            }
+
+        })    
+     }
+
+     function confirmMobile(amount){
+      $(".otp-dialog").attr('style','display:block')
+      $(".overlay").attr('style','display:block')
+      
+      var phone;
+      $("#contact-submit").click(function(){
+        phone = $('#contact').val()
+        if(phone != null){
+          $.ajax({
+            url: "/route_suggestions/generate_otp",
+            type: "GET",
+            data: {phone : phone},
+            dataType: "text",
+                     
+            complete: function() {
+
+            },
+
+            success: function(data, textStatus, xhr) {
+              $('#confirmSection').attr('style','display:block')
+              $("#sectionOtp").attr('style','display:none')
+              $("#contact-number").val(phone);
+
+              $('#contact-label').text("OTP send on "+phone)
+            }
+          });
+        }else{
+
+        }
+          
+      });
+      $("#resend").click(function(){
+        var phone = $("#contact-number").val();
+          
+        
+        if(phone != null){
+          $.ajax({
+            url: "/route_suggestions/generate_otp",
+            type: "GET",
+            data: {phone : phone},
+            dataType: "text",
+                     
+            complete: function() {
+
+            },
+
+            success: function(data, textStatus, xhr) {
+              
+            }
+          });
+        }else{
+
+        }
+          
+      });
+      $("#otp-submit").click(function(){
+        otp = $("#otp").val();
+        if(otp != null){
+          $.ajax({
+            url: "/route_suggestions/check_otp",
+            type: "GET",
+            data: {phone : phone,
+              otp: otp
+            },
+            dataType: "text",
+                     
+            complete: function() {
+
+            },
+
+            success: function(data, textStatus, xhr) {
+               
+              $('.otp-dialog').attr('style','display:block')
+              if(data == 'true'){
+                 startLazyPaymentForAmount(amount,phone)
+              }else{
+                alert('wrong otp!')
+              }
+            }
+          });
+        }else{
+
+        }
+      });
      }
     </script>
 	
@@ -338,8 +485,8 @@ $("#not-interested").click(function(){
 		
 		 <div class="button-col">
 		  <h5>To Travel on this route select a pass</h5>
-		  <a class="btn btn-info" onclick="javascript:startLazyPaymentForAmount(499,'8800846150');">10 Rides @ Rs.499</a>
-		  <a class="btn btn-info" onclick="javascript:startLazyPaymentForAmount(499,'8800846150');">Promo Monthly @ Rs.1800</a></i></button>
+		  <a class="btn btn-info" onclick="confirmMobile(499.00)">10 Rides @ Rs.499</a>
+		  <a class="btn btn-info" onclick="confirmMobile(1800.00)">Promo Monthly @ Rs.1800</a></i></button>
 		  </div>
 		 <p class="font-s">(we'll change your wallet just before lounching the services)</p>
 		  <div class="button-block">
@@ -372,3 +519,33 @@ $("#not-interested").click(function(){
  <!-- end wrapper --> 
 </div>
 <!-- SCRIPTS --> 
+
+<!-- SCRIPTS --> 
+<div class="overlay"></div>
+      <div class="modal-body signup otp-dialog">
+        
+            <form id="otpForm">
+              <div class="row" id="sectionOtp">
+                <div class="form-group col-md-6">
+                  <!-- <label for="mnum" class="control-label">Mobile<span class="text-danger">*</span></label> -->
+                  <input maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
+                </div>
+                <div class="form-group col-md-6">
+                  <input class="btn text-uppercase submitSearch"  value="send otp" id="contact-submit" disabled="">
+                </div>
+              </div>
+              <div class="form-group col-md-6" id="confirmSection" style="display:none">
+                  <label for="mnum" class="control-label" id="contact-label"> <i class="fa fa-pencil"></i></label>
+                  <input maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP" >
+                  <i class="fa fa-repeat"><span class="resend" id="resend">Resend</span></i>
+                  <div class="form-group col-md-6">
+                    <input class="btn text-uppercase submitSearch" value="Confirm"    id="otp-submit" disabled="">
+                  </div>
+                </div>
+                  <input type="hidden" id="contact-number"/>
+            </form>
+            
+            
+            <div class="loader" style="display: none;"><img src="./images/rolling.gif"></div>
+            <div class="alert centerText hidden"></div>
+          </div>

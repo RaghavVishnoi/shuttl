@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412135742) do
+ActiveRecord::Schema.define(version: 20160413144708) do
 
   create_table "customer_routes", force: :cascade do |t|
     t.string   "lat",        limit: 255
@@ -36,10 +36,10 @@ ActiveRecord::Schema.define(version: 20160412135742) do
   end
 
   create_table "route_suggestions_customers", force: :cascade do |t|
-    t.string   "from_lat",   limit: 255
-    t.string   "from_long",  limit: 255
-    t.string   "to_lat",     limit: 255
-    t.string   "to_long",    limit: 255
+    t.float    "from_lat",   limit: 24
+    t.float    "from_long",  limit: 24
+    t.float    "to_lat",     limit: 24
+    t.float    "to_long",    limit: 24
     t.string   "time1",      limit: 255
     t.string   "time2",      limit: 255
     t.string   "phone",      limit: 255
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 20160412135742) do
   end
 
   create_table "route_suggestions_pledges", force: :cascade do |t|
-    t.integer  "user_id",                        limit: 4,   null: false
+    t.integer  "user_id",                        limit: 4
     t.boolean  "approved",                       limit: 1
     t.string   "lat",                            limit: 255, null: false
     t.string   "long",                           limit: 255, null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20160412135742) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "route_suggestions_timestamp_id", limit: 4
+    t.string   "phone",                          limit: 255
   end
 
   add_index "route_suggestions_pledges", ["route_suggestions_slot_id"], name: "fk_rails_21937d8705", using: :btree

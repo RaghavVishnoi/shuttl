@@ -1,6 +1,7 @@
  
   <script>
     $(document).ready(function() {
+      
       <% if (params["dlat"]!=nil) %>
       $('.source-dest-input').hide();
       <% end %>
@@ -312,7 +313,7 @@ $('#sub').click(function(){
 });
 
 
-
+$('#form').attr("style","display:block")
   
    });
   
@@ -454,7 +455,7 @@ $('#sub').click(function(){
            <div class="row">
             
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
-      <div class="form-group source-dest-input">
+      <div class="form-group source-dest-input" id="form">
       <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-home"></i></span>
     <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Home Address">

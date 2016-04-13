@@ -4,7 +4,7 @@ class RouteSuggestionsPledge < ActiveRecord::Base
 	belongs_to :route_suggestions_timestamps
 
 
-	validates :user_id,presence: true
+	validate :user_id
 	validate  :approved
 	validates :lat, presence: true
 	validates :long, presence: true

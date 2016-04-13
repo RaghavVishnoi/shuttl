@@ -3,7 +3,7 @@ class RouteSuggestionsPledgesController < ApplicationController
 	 
 	def create
 		@route_suggestions_pledge = RouteSuggestionsPledge.new pledge_params
-		if @route_suggestions_pledge.save
+		if @route_suggestions_pledge.save!
 			render :json => {result: true,data: @route_suggestions_pledge}
 		else
 			render :json => @route_suggestions_pledge.errors.full_messages
@@ -11,7 +11,7 @@ class RouteSuggestionsPledgesController < ApplicationController
 	end
 
 	def pledge_params
-		params.require(:route_suggestions_pledge).permit(:user_id,:approved,:lat,:long,:is_pledge,:route_suggestions_slot_id)
+		params.require(:route_suggestions_pledge).permit(:user_id,:approved,:lat,:long,:is_pledge,:route_suggestions_slot_id,:phone,:route_suggestions_timestamp_id)
 	end
 
 	def pledge_count

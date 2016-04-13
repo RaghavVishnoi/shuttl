@@ -1,3 +1,90 @@
+<script>
+  window.onload = function() {
+  initMap();
+};
+
+function initMap() {
+   
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 6,
+    center: {lat: 28.5846875, lng: -77.3159296}
+  });
+  directionsDisplay.setMap(map);
+calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var waypts = [];
+  <%slots = RouteSuggestionsRoute.slots(@route.id)
+  slots.each do |route|%>
+	waypts.push({
+        location: new google.maps.LatLng(<%=route[:lat]%>,<%=route[:long]%>),
+        stopover: true
+      });
+     
+ <%end%>      
+
+
+
+  directionsService.route({
+
+    origin: '28.5849339,77.3107348',
+    destination: '28.6119173,77.3801268',
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.DRIVING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+     // summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        //summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+            '</b><br>';
+        //summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        //summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        //summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+  var map = new google.maps.Map(document.getElementById('googleMap'), {
+    zoom: 7,
+    center: {lat: 41.85, lng: -87.65}
+  });
+  directionsDisplay.setMap(map);
+
+  var onChangeHandler = function() {
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+  };
+  //document.getElementById('start').addEventListener('change', onChangeHandler);
+  //document.getElementById('end').addEventListener('change', onChangeHandler);
+}
+
+
+</script>
+<section class="section-default">
+    <div class="container"> 
+        <div class="row">
+            <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
+		  		<div class="location-map-block">
+		  			<h5><%=@route.name%></h5>
+		  		 	<div id="map"></div>
+		 		</div> 
+		 	</div>
+		</div>
+	</div>	 		
+</section>		 
 <table border = "1">
 	<tr><td><b>Route Id</b></td><td><%=@route.id%></td></tr>
 	<tr><td><b>Start Point</b></td><td><%=@route.start%></td></tr>

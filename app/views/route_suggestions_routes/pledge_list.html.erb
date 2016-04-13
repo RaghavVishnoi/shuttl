@@ -1,0 +1,39 @@
+<script>
+	$(document).ready(function(){
+		$(".action").click(function(){
+			var phone = [];
+			<%@customers.each do |customer|%>
+				phone.push(<%=customer.phone%>)
+			<%end%>   
+			$("#contactDiv").attr("style","display:block")
+			$("#send").click(function(){
+				message = $("#message").val();
+				$.ajax({
+				 	url : "/pledges/message",
+				 	type : "POST",
+				 	data : {phone : phone,message : message},
+				 	success: function(data, textStatus, xhr) {
+		        			$("#contactDiv").attr("style","display:none")
+		        		},
+				 })
+
+			})
+			 
+		})
+	});
+</script>
+<button class="action">Send Message</button>
+
+<table width="300" border="1">
+	<tr><th>Slot</th><th>Phone</th><tr>
+	<%@customers.each do |customer|%>
+		<tr><td><%=if params[:type] == 'M' then customer.time1 else customer.time2 end%></td><td><%=customer.phone%></td></tr>
+	<%end%>	
+</table>
+<div class="message-box" id = "contactDiv">
+	<table style="width:390px;">
+		<tr><td><center><h2>Enter Message</h2></center></td></tr>
+		<tr><td><center><textarea name="mesage" placeholder="Enter your message here" id="message"></textarea></center></td></tr>
+		<tr><td><center><input type="submit" value = "Send" id="send"/></center></td></tr>
+	</table>
+</div>

@@ -21,6 +21,11 @@ get 'routes/saved' => "route_suggestions_routes#show"
 get 'routes/shipped' => "route_suggestions_routes#update"
 post 'dashboard/save'
 post 'dashboard/shipped'
+get 'routes/pledges' => "route_suggestions_routes#pledges"
+get 'pledge/list' => "route_suggestions_routes#pledge_list"
+post '/pledges/message' => "route_suggestions_routes#message"
+get '/points/pledges' => "route_suggestions_routes#live_pledges"
+get '/dashboard/locations'
 
 resources :routes, only: [:index,:show]
 resources :route_suggestions_pledges, only: [:create]
@@ -28,6 +33,7 @@ resources :route_suggestions, only: [:create]
 resources :feedbacks, only: [:create]
 resources :route_suggestions_customers,only: [:create]
 resources :dashboard,only: [:index]
+resources :route_exists, only: [:index]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

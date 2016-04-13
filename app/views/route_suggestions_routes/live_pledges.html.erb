@@ -1,0 +1,40 @@
+<script>
+	$(document).ready(function(){
+		$(".action").click(function(){
+			var phone = [];
+			<%@pledges.each do |pledge|%>
+				phone.push(<%=pledge.phone%>)
+			<%end%>
+			$("#contactDiv").attr("style","display:block")
+			$("#send").click(function(){
+				message = $("#message").val();
+				$.ajax({
+				 	url : "/pledges/message",
+				 	type : "POST",
+				 	data : {phone : phone,message : message},
+				 	success: function(data, textStatus, xhr) {
+		        			$("#contactDiv").attr("style","display:none")
+		        		},
+				 })
+
+			})
+			 
+		})
+	});
+</script>
+<button class="action">Send Message</button>
+
+<table width="300" border="1">
+	<tr><th>Pick Point</th><th>Pledge Date</th><th>Customer Phone</th></tr>
+	<%@pledges.each do |pledge|%>
+		<tr><td><%=pledge.route_suggestions_slot.name%></td><td><%=pledge.created_at.strftime("%d %b,%Y")%></td><td><%=pledge.phone%></td></tr>
+	<%end%>
+</table>
+
+<div class="message-box" id = "contactDiv">
+	<table style="width:390px;">
+		<tr><td><center><h2>Enter Message</h2></center></td></tr>
+		<tr><td><center><textarea name="mesage" placeholder="Enter your message here" id="message"></textarea></center></td></tr>
+		<tr><td><center><input type="submit" value = "Send" id="send"/></center></td></tr>
+	</table>
+</div>

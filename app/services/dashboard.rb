@@ -1,3 +1,4 @@
+
 class Dashboard
 
 	def self.save(data)
@@ -9,11 +10,15 @@ class Dashboard
 			values.each do |value|
 				val = value[1]
  				count_people = count_people+val[:people].to_i			 
-				slots = slots+"  ,"+val[:name]
+				if slots != ''
+					slots = slots+","+val[:name]
+				else
+					slots = val[:name]
+				end
 			end 
 		end
   		@route_suggestions_routes = RouteSuggestionsRoute.new
-		@route_suggestions_routes[:name] = values.first[1][:name]
+		@route_suggestions_routes[:name] = data[:path_name]
 		@route_suggestions_routes[:people] = count_people
  		@route_suggestions_routes[:state] = 'saved'
 		@route_suggestions_routes[:status] = 'Active'
@@ -36,12 +41,16 @@ class Dashboard
 			values.each do |value|
 				val = value[1]
  				count_people = count_people+val[:people].to_i			 
-				slots = slots+"  ,"+val[:name]
+				if slots != ''
+					slots = slots+","+val[:name]
+				else
+					slots = val[:name]
+				end
 			end 
 		end
 		
 		@route_suggestions_routes = RouteSuggestionsRoute.new
-		@route_suggestions_routes[:name] = values.first[1][:name]
+		@route_suggestions_routes[:name] = data[:path_name]
 		@route_suggestions_routes[:people] = count_people
  		@route_suggestions_routes[:state] = 'shipped'
 		@route_suggestions_routes[:status] = 'Active'
@@ -53,7 +62,29 @@ class Dashboard
 		@route_suggestions_routes[:distance] = distance(values.first[1][:name],values.to_a.last[1][:name])
 		@route_suggestions_routes.save!	
 		@route_suggestions_routes
+		
 	end
+
+	# def self.route_save(data)
+	# 	values = data[:values]
+	# 	slots = []
+ # 		if values != nil
+	# 		values.each do |value|
+	# 			slot = {}
+	# 			val = value[1]
+ # 				name = val[:name]
+ # 				route = CustomerRoute.find_by(name: name)
+ # 				slot[:name] = name
+ # 				slot[:lat] = route.lat
+ # 				slot[:long] = route.long
+ # 				slots.push(slot)
+	# 		end 
+	# 	end
+	# 	puts "path name #{data[:path_name]}"
+	# 	puts "threshold #{THRESHOLD}"
+	# 	puts "slots #{slots}"
+	# 	RouteSuggestion.new(name: data[:path_name],threshold: THRESHOLD.to_i,slots: slots,timestamps: )
+	# end
 
 	def self.distance(start_point,end_point)
 		start = CustomerRoute.find_by(name: start_point)

@@ -1,0 +1,43 @@
+<script>
+	$(document).ready(function(){
+		$(".action").click(function(){
+			var phone = [];
+			<%@slots.each do |slot|
+				slot[:phone].each do |s|
+				 
+			%>
+				 phone.push(<%=s%>)
+			<%end
+			end%> 
+ 			$("#contactDiv").attr("style","display:block")
+			$("#send").click(function(){
+				message = $("#message").val();
+				$.ajax({
+				 	url : "/pledges/message",
+				 	type : "POST",
+				 	data : {phone : phone,message : message},
+				 	success: function(data, textStatus, xhr) {
+		        			$("#contactDiv").attr("style","display:none")
+		        		},
+				 })
+
+			})
+			 
+		})
+	});
+</script>
+<button class="action">Send Message</button>
+<table width="200" border="1">
+	<tr><td>Slots</td><td>Count</td><td>Show</td></tr>
+	 <%@slots.each do |slot|%>
+	 	<tr><td><%=slot[:slot]%></td><td><%=slot[:count]%></td></td><td><a href = "/pledge/list?route_id=<%=params[:route_id]%>&slot=<%=slot[:slot]%>&type=<%=params[:type]%>">Show</a></td>
+	 <%end%>
+
+</table>
+<div class="message-box" id = "contactDiv">
+	<table style="width:390px;">
+		<tr><td><center><h2>Enter Message</h2></center></td></tr>
+		<tr><td><center><textarea name="mesage" placeholder="Enter your message here" id="message"></textarea></center></td></tr>
+		<tr><td><center><input type="submit" value = "Send" id="send"/></center></td></tr>
+	</table>
+</div>

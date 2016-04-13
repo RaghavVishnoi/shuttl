@@ -30,8 +30,27 @@
       var tempRouteHash = [];
       var fillroutecheck = 0;
   window.onload = function() {
-    getWayPointList();
-    initMap();
+    $.ajax({
+          url: "/dashboard/locations",
+          type: "GET",
+          data: {},
+          dataType: "text",
+                   
+          complete: function() {
+
+          },
+
+          success: function(data, textStatus, xhr) {
+            locations = data;
+            locations=JSON.parse(locations);
+            getWayPointList(locations);
+            initMap();           
+          },
+          error: function(){
+
+          } 
+      }); 
+    
 }
     $(document).ready(function() {
       $("#start-time").owlCarousel({
@@ -214,7 +233,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 	function genrate_lower_table(){
 	mapId++;
-	var newTableDiv = $("<div class='col-md-5'><div class='table-data-hide' id='upper_Table'><div class='input-group'><input type='text' id='pacinput1' value='Subsection Route: Najafgarh-Convergys' class='controls form-control' /><span class='input-group-addon'><a href='#'><i class='fa fa-times-circle-o' onclick='clear_pacinput1()'></i></a></span></div><table class='table-col' id='wayPointsOriginalTable"+mapId+"'><tr><th>Pick-up</th><th>People</th><th>ETA</th><th>KM</th><th>Price</th></tr> </table><div class='buttun-group'><a href='' class='btn bg-danger cancel' title='Cancel'>Cancel</a><span  class='btn btn-info save' title='Save' onclick = save(mapId)>Save</span><span class='btn btn-info ship' title='Ship' onclick = shipped(mapId)>Ship</span></div></div><div class='table-data-show' id='Lower_Table'></div></div>");
+	var newTableDiv = $("<div class='col-md-5'><div class='table-data-hide' id='upper_Table'><div class='input-group'><input type='text' id='pacinput1' required='required' class='controls form-control' /><span class='input-group-addon'><a href='#'><i class='fa fa-times-circle-o' onclick='clear_pacinput1()'></i></a></span></div><table class='table-col' id='wayPointsOriginalTable"+mapId+"'><tr><th>Pick-up</th><th>People</th><th>ETA</th><th>KM</th><th>Price</th></tr> </table><div class='buttun-group'><a href='' class='btn bg-danger cancel' title='Cancel'>Cancel</a><span  class='btn btn-info save' title='Save' onclick = save(mapId)>Save</span><span class='btn btn-info ship' title='Ship' onclick = shipped(mapId)>Ship</span></div></div><div class='table-data-show' id='Lower_Table'></div></div>");
 	var newMapDiv = $("<div class='col-md-7'><div class='location-map-dashboard' id='map"+mapId+"'></div></div>");      
      $("#mainDiv").append(newMapDiv);
 	 $("#mainDiv").append(newTableDiv);
@@ -223,9 +242,11 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 	function save(table_id){
 		values = []
-		$("#wayPointsOriginalTable"+table_id+" tr").each( function(){
+    path_name = $("#wayPointsOriginalTable"+table_id).parent().find('input[type=text]').val()
+ 		if(path_name.length != 0){
+    $("#wayPointsOriginalTable"+table_id+" tr").each( function(){
 				var map = new Object();
- 			   //add item to array
+   			   //add item to array
  			    var $tds = $(this).find('td');
 	            name = $tds.eq(0).text();
 	            people = $tds.eq(1).text();
@@ -248,7 +269,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		$.ajax({
 	        url: "/dashboard/save",
 	        type: "POST",
-	        data: {values : values},
+	        data: {values : values,path_name: path_name},
 	        dataType: "text",
 	                 
 	        complete: function() {
@@ -256,18 +277,22 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	        },
 
 	        success: function(data, textStatus, xhr) {
-	        	$("#save").text("")
+	        	$("[aria-controls='tab_item-3']").trigger( "click" );
 	        },
 	        error: function(){
 
 	        }	
 	    });    
-		
+		}else{
+      alert("please enter path name!")
+    }
 	}
 
 	function shipped(table_id){
 		values = []
-		$("#wayPointsOriginalTable"+table_id+" tr").each( function(){
+    path_name = $("#wayPointsOriginalTable"+table_id).parent().find('input[type=text]').val()
+		if(path_name.length != 0){
+    $("#wayPointsOriginalTable"+table_id+" tr").each( function(){
 				var map = new Object();
  			   //add item to array
  			    var $tds = $(this).find('td');
@@ -292,7 +317,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		$.ajax({
 	        url: "/dashboard/shipped",
 	        type: "POST",
-	        data: {values : values},
+	        data: {values : values,path_name : path_name},
 	        dataType: "text",
 	                 
 	        complete: function() {
@@ -300,12 +325,15 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	        },
 
 	        success: function(data, textStatus, xhr) {
+            $("[aria-controls='tab_item-2']").trigger( "click" );
 	        },
 	        error: function(){
 
 	        }	
 	    });    
-		
+		}else{
+      alert("please enter path name!")
+    }
 	}
 
 	function triggersaveevent(){
@@ -327,10 +355,12 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	function deleteCurrentRoute(a)
      {
  	    var rowIndex = $(a).closest('tr').rowIndex;
+      node = $(a).parent().text().replace("+","").replace("-","");
 	    mapId = a.parentNode.parentNode.parentNode.parentNode.id.slice(-1);
     var p=a.parentNode.parentNode;
     p.parentNode.removeChild(p);
-    removefromOriginalRouteHash(OriginalRouteHash, $(a).parentNode.parentNode.children[0].innerText.charAt(0));
+    first = a.parentNode.parentNode.children[0]
+    removefromOriginalRouteHash(OriginalRouteHash, node);
 	}
 	
 	function addNextRow(b)
@@ -338,19 +368,20 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	   alert("hu");
 	}
 	
-	function getWayPointList()
+	function getWayPointList(locations)
 	{
-		<%
-			@dashboard.each do |dashboard|
-		%>
- 		OriginalRouteHash.push({ label : '<%=dashboard[:name]%>', waypoints :{lat : '<%=dashboard[:lat]%>',longt : '<%=dashboard[:long]%>'},price : '3',People : '<%=dashboard[:count]%>'});
-		<%end%>
-	    
-  //       OriginalRouteHash.push({label : 'B', waypoints : {lat : '28.5785422',longt :'77.31746199999998'},price :'3',People : '45'});
-		// OriginalRouteHash.push({label : 'C', waypoints : {lat :'28.5697189',longt :'77.318321'},price : '2',People : '55'});
-		// OriginalRouteHash.push({label : 'D',waypoints :{lat :'28.6127633',longt : '77.38713189999999'},price : '5',People : '65'});
+     
+
+     for(var i=0;i<locations.length;i++){
+    
+      OriginalRouteHash.push({ label : locations[i]['name'], waypoints :{lat : locations[i]['lat'],longt : locations[i]['long']},price : '3',People : '3'});
+    }
+
+ 
 									  
 	}
+
+
 	
 	function  fillRouteTable()
 	{	
@@ -368,6 +399,10 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	    fillroutecheck = 1;
 	    initMap();
 	}
+
+  function redirect(id){
+     location.href = "/routes/saved?id="+id
+  }
     </script>
 </head>
 
@@ -378,22 +413,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 <div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
   <div id="wrapper"> 
 
-  
-    
-    <!-- HEADER -->
-    <header class="header">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png" alt="Logo"></a>
-            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
-          </div>
-          <!-- end col  --> 
-        </div>
-        <!-- end row  --> 
-      </div>
-      <!-- end container--> 
-    </header>
-    <!-- end header -->
      <section class="section-default">
         <div class="container"> 
           
@@ -470,7 +489,28 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
      </div>
 	 <!--Tab-->
     <div>
-      <p>This tab has icon in consectetur adipiscing eliconse consectetur adipiscing elit. Vestibulum nibh urna, ctetur adipiscing elit. Vestibulum nibh urna, t.consectetur adipiscing elit. Vestibulum nibh urna,  Vestibulum nibh urna,it.</p>
+      <div class="table-ship-block">
+  <div class="mo-scrl">
+  <table class="table-col">
+  <tr>
+  <th>Route ID</th> <th>Route Name</th><th>Pickup Point</th><th>Pledges</th>
+  </tr>
+<%RouteSuggestion.all.each do |route|
+  route.route_suggestions_slots.each do |slot|
+  %> 
+  <tr>
+    <td><span onclick=redirect(<%=route.id%>) style="cursor:pointer"><u><%=route.id%></u></span></td>
+    <td><%=route.name%></td>
+    <td><%=slot.name%></td>
+    <td><a href="/points/pledges?pickup_point_id=<%=slot.id%>"><%=RouteSuggestionsPledge.where(route_suggestions_slot_id: slot.id).count%></a></td>
+  </tr>
+<%
+end
+end%> 
+  
+  </table>
+  </div>
+</div>
     </div>
     <div>
     <div class="table-ship-block">
@@ -483,7 +523,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	</tr>
 	<%RouteSuggestionsRoute.where(state: 'shipped').each do |route|%>	
 	<tr>
-	<td><a href="/routes/saved?id=<%=route.id%>"><%=route.id%></a></td>
+	<td><span onclick=redirect(<%=route.id%>) style="cursor:pointer"><u><%=route.id%></u></span></td>
 	<td><%=route.created_at.strftime("%d %b, %Y")%></td>
 	<td><%=route.updated_at.strftime("%d %b, %Y")%></td>
 	<td><%=route.route_type%></td>
@@ -495,9 +535,9 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	<td>2-3Km</td>
 	<td>Differencial</td>
 	<td>
-		<%route.slots.split(',').each do |slot|%>
-			<a href="#"><%=slot%></a> &nbsp; 
-		<%end%>
+    <%slots = RouteSuggestionsRoute.route_pledge(route.id)%>
+		<a href = "/routes/pledges?route_id=<%=route.id%>&type=M">M<%=slots[:m]%></a>
+    <a href = "/routes/pledges?route_id=<%=route.id%>&type=E">E<%=slots[:e]%></a>
 	</td>
 	<td>98</td>
 	<td>33</td>
@@ -523,7 +563,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	</tr>
 <%RouteSuggestionsRoute.where(state: 'saved').each do |route|%>	
 	<tr>
-	<td><a href="/routes/saved?id=<%=route.id%>"><%=route.id%></a></td>
+	<td><span onclick=redirect(<%=route.id%>) style="cursor:pointer"><u><%=route.id%></u></span></td>
 	<td><%=route.created_at.strftime("%d %b, %Y")%></td>
 	<td><%=route.updated_at.strftime("%d %b, %Y")%></td>
 	<td><%=route.route_type%></td>
@@ -535,9 +575,9 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	<td>2-3Km</td>
 	<td>Differencial</td>
 	<td>
-		<%route.slots.split(',').each do |slot|%>
-			<a href="#"><%=slot%></a> &nbsp; 
-		<%end%>
+		<%slots = RouteSuggestionsRoute.route_pledge(route.id)%>
+    <a href = "/routes/pledges?route_id=<%=route.id%>&type=M">M<%=slots[:m]%></a>
+    <a href = "/routes/pledges?route_id=<%=route.id%>&type=E">E<%=slots[:e]%></a>
 	</td>
 	<td>98</td>
 	<td>33</td>
