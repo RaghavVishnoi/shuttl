@@ -34,7 +34,6 @@ production:
 
 db_main:
   <<: *default
-  username: shuttl
-  host: root
+  username: root
   password: shuttl@12345
   database: shuttl
