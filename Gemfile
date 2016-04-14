@@ -33,6 +33,8 @@ gem 'time_difference'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
+require "rubygems"
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
  gem 'haversine'
