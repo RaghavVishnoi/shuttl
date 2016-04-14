@@ -67,47 +67,7 @@ google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, thi
 
       });
   <%end%>   
-     // <%if index == 0%>
-     //         var smarker = new MarkerWithLabel({
-     //           position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-     //           draggable: false,
-     //           raiseOnDrag: false,
-     //           map: map,
-     //           labelContent: "Start",
-     //           labelAnchor: new google.maps.Point(22, 0),
-     //           labelClass: "labels", // the CSS class for the label
-     //           labelStyle: {opacity: 0.75},
-               
-     //      });
-       
-     //       var siw = new google.maps.InfoWindow({
-     //         content: "<%=route.name%>"
-     //       });
-         
-
-     //     google.maps.event.addListener(smarker, "click", function (e) { siw.open(map, this); });
-     //  <%end%> 
-      // <%if index == slots.length-1%>  
-      //   var emarker = new MarkerWithLabel({
-      //          position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-      //          draggable: false,
-      //          raiseOnDrag: false,
-      //          map: map,
-      //          labelContent: "End",
-      //          labelAnchor: new google.maps.Point(22, 0),
-      //          labelClass: "labels", // the CSS class for the label
-      //          labelStyle: {opacity: 0.75},
-               
-      //     });
-       
-      //      var eiw = new google.maps.InfoWindow({
-      //        content: "<%=route.name%>"
-      //      });
-         
-
-      //    google.maps.event.addListener(emarker, "click", function (e) { eiw.open(map, this); });
-      // <%end%>
-  <%end%>
+<%end%>
     
  
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -151,19 +111,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
    
 }
 
-// function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-//   directionsService.route({
-//     origin: "#{session[:s]}",
-//     destination: "#{session[:d]}",
-//     travelMode: google.maps.TravelMode.DRIVING
-//   }, function(response, status) {
-//     if (status === google.maps.DirectionsStatus.OK) {
-//       directionsDisplay.setDirections(response);
-//     } else {
-//       window.alert('Directions request failed due to ' + status);
-//     }
-//   });
-// }
+
    
    $(document).ready(function() {
 

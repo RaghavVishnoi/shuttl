@@ -3,13 +3,7 @@
   window.onload = function() {
   initMap();
 };
-infowindowList[window].open(map,markerList[window]);
-    $(document).ready(function() {
-      
 
-	
-   });
-	
 function initMap() {
  
   var directionsService = new google.maps.DirectionsService;
@@ -20,76 +14,24 @@ function initMap() {
   });
   directionsDisplay.setMap(map);
 calculateAndDisplayRoute(directionsService, directionsDisplay);
- var marker1 = new MarkerWithLabel({
-       position: new google.maps.LatLng(<%=params[:slat]%>, <%=params[:slng]%>),
-       draggable: true,
-       raiseOnDrag: true,
-       map: map,
-       labelContent: "Pickup Point",
-       labelAnchor: new google.maps.Point(22, 0),
-       labelClass: "labels", // the CSS class for the label
-       labelStyle: {opacity: 0.75},
-       
-     });	      
-     var iw1 = new google.maps.InfoWindow({
-       content: "2016-04-04 09:11:22"
-     });
-	    
-       google.maps.event.addListener(marker1, "click", function (e) { iw1.open(map, this); });
-      
-var marker2 = new MarkerWithLabel({
-       position: new google.maps.LatLng(<%=params[:dlat]%>, <%=params[:dlng]%>),
-       draggable: true,
-       raiseOnDrag: true,
-       map: map,
-       labelContent: "Drop Point",
-       labelAnchor: new google.maps.Point(22, 0),
-       labelClass: "labels", // the CSS class for the label
-       labelStyle: {opacity: 0.75},
-       
-     });        
-     var iw2 = new google.maps.InfoWindow({
-       content: "2016-04-04 09:11:22"
-     });
-      
-       google.maps.event.addListener(marker2, "click", function (e) { iw2.open(map, this); });
-      
-  
 
-
-  
+      
 }
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
   waypts.push({
-        location: new google.maps.LatLng(28.5846875,77.3159296),
+        location: new google.maps.LatLng(<%=params[:slat]%>,<%=params[:slng]%>),
         stopover: true
       });
      waypts.push({
-        location: new google.maps.LatLng(28.5785422,77.31746199999998),
+        location: new google.maps.LatLng(<%=params[:dlat]%>,<%=params[:dlng]%>),
         stopover: true
       });
-     waypts.push({
-        location: new google.maps.LatLng(28.5697189,77.318321),
-        stopover: true
-      });
-        waypts.push({
-        location: new google.maps.LatLng(28.5528596,77.3276642),
-        stopover: true
-      });
-
-              waypts.push({
-        location: new google.maps.LatLng(28.6055319,77.3718919),
-        stopover: true
-      });
-              waypts.push({
-        location: new google.maps.LatLng(28.6127633,77.38713189999999),
-        stopover: true
-      });
+     
   directionsService.route({
 
-    origin: '',
-    destination: 'Sector-65 Noida',
+    origin: '<%=params[:slat]%>,<%=params[:slng]%>',
+    destination: '<%=params[:dlat]%>,<%=params[:dlng]%>',
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
@@ -107,6 +49,14 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }
   });
 }
+
+
+  $(document).ready(function(){
+      $("#not-interested").click(function(){
+        params = window.location.href.split('?')[1]
+        location.href = '/routes/not_interested?'+params
+    }); 
+  })
     </script>
 	
 </head>
@@ -124,7 +74,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     <header class="header">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="images/logo.png" alt="Logo"></a>
+          <div class="col-xs-12"> <a class="header-logo" href=""><img class="header-logo__img" src="/assets/logo.png" alt="Logo"></a>
             <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
           </div>
           <!-- end col  --> 
@@ -141,7 +91,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
             
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
 		  <div class="location-map-block">
-		  <h5>Vasant Kunj - Udyog Vihar</h5>
+		  <h5><%=session[:s]%> - <%=session[:d]%></h5>
 		  <div id="map"> </div>
 		 </div> 
 		 <div class="book-status-block">
@@ -162,7 +112,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		<div class="button-block">
 		 <h5>To Travel on this route</h5>
 		  <button class="btn btn-info" type="button"><a herf="https://play.google.com/store/apps/details?id=app.goplus.in.myapplication">Download the App</a> </button>
-      <button class="btn bg-danger" type="button">Not Interested <i class="fa fa-ban"></i> </button>
+      <button class="btn bg-danger" type="button" id="not-interested">Not Interested <i class="fa fa-ban"></i> </button>
 		 
 		  </div>
 		  
@@ -171,7 +121,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 		  <a href="https://www.facebook.com/sharer/sharer.php?u=http://52.38.247.134&t=Shuttl"
    onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
    target="_blank" title="Share on Facebook"><i class="fa fa-facebook"></i></a>
-		 <a href="whatsapp://send?text=http://52.38.247.134/"><i class="fa fa-whatsapp"></i></a>
+		  <a href="whatsapp://send?text=http://52.38.247.134/"><i class="fa fa-whatsapp"></i></a>
 		  </div>
 		  
 		 </div>

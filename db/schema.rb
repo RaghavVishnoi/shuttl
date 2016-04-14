@@ -11,7 +11,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20160413144708) do
 
   create_table "customer_routes", force: :cascade do |t|
@@ -43,18 +42,6 @@ ActiveRecord::Schema.define(version: 20160413144708) do
     t.datetime "updated_at",            null: false
   end
 
-  create_table "route_points", force: :cascade do |t|
-    t.float    "lat",         limit: 53
-    t.float    "lng",         limit: 53
-    t.integer  "routeid",     limit: 4
-    t.datetime "created_at"
-    t.datetime "updated_at",                         null: false
-    t.integer  "directionid", limit: 4,  default: 0
-    t.integer  "locationid",  limit: 4,  default: 0
-  end
-
-  add_index "route_points", ["routeid"], name: "routeid", using: :btree
-
   create_table "route_suggestions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
     t.integer  "threshold",  limit: 4,   null: false
@@ -63,7 +50,6 @@ ActiveRecord::Schema.define(version: 20160413144708) do
   end
 
   create_table "route_suggestions_customers", force: :cascade do |t|
-
     t.float    "from_lat",        limit: 24
     t.float    "from_long",       limit: 24
     t.float    "to_lat",          limit: 24
