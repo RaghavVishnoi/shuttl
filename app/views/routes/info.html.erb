@@ -226,52 +226,67 @@ $("#not-interested").click(function(){
 
 
 function startLazyPaymentForAmount(amount,mobileNo){
-       $.ajax({
-             url:"http://test.lazypay.in/api/assuredpay/v0/",
-           data:JSON.stringify({email:"dummy.mail@nomail.com", mobile:mobileNo, amount:amount}),
-           type:"POST",
-           contentType:"application/json",
-           headers:{
-         'accessKey':"KI7RAM54A4FIO6BTBD39",
-         'signature':"123a075a4bf21a6d91331c9575ac0f1aeb38e548",
+
+
+  $.ajax("http://"+window.location.host+ "/payment/getSignature?phoneNumber="+mobileNo+"&amount="+amount).done(
+
+      function(resp){
+        if (resp["errorCode"]>0){
+
+          alert("some error occurred try again.");
+          return;
+        }
+
+        $.ajax({
+          url:"http://test.lazypay.in/api/assuredpay/v0/users/check/eligibility",
+          data:JSON.stringify({email:"dummy.mail@nomail.com", mobile:mobileNo, amount:amount}),
+          method:"POST",
+          contentType:"application/json",
+          headers:{
+            'accessKey':"KI7RAM54A4FIO6BTBD39",
+            'signature':resp["signature"]
           },
           async:true,
-         success:function(data) {
-           $.ajax({
-             url: "",
-             data: JSON.stringify({
-               "returnUrl": window.location.host + "/routes/thankyou",
-               "notifyUrl": window.location.host + "/payment_status",
-               "amount": amount,
-               "merchantAccessKey": "06SLEEBYLVZELISZ5ECU",
-               "merchantTxnId": "143798270056812",
-               "requestSignature": "c645f026ce2ad0d26cb7c89093c53936f8627f56",
-               "userDetails": {
-                 "email": "dummy.mail@nomail.com",
-                 "mobileNo": mobileNo,
-                 "firstName": !"Tester",
-                 "lastName": !"Citrus",
-                 "address": {
-                   "state": "Maharashtra",
-                   "street1": "streetone",
-                   "street2": "streettwo",
-                   "city": "Mumbai",
-                   "country": "India",
-                   "zip": "400052"
-                 }
+          success:function(data) {
+            $.ajax({
+              url: "",
+              data: JSON.stringify({
+                "returnUrl": window.location.host + "/routes/thankyou",
+                "notifyUrl": window.location.host + "/payment_status",
+                "amount": amount,
+                "merchantAccessKey": "KI7RAM54A4FIO6BTBD39",
+                "merchantTxnId": resp["transactionId"],
+                "requestSignature": resp["signature"],
+                "userDetails": {
+                  "email": "dummy.mail@nomail.com",
+                  "mobileNo": mobileNo,
+                  "firstName": !"Tester",
+                  "lastName": !"Citrus",
+                  "address": {
+                    "state": "Maharashtra",
+                    "street1": "streetone",
+                    "street2": "streettwo",
+                    "city": "Mumbai",
+                    "country": "India",
+                    "zip": "400052"
+                  }
 
-               }
-             }),
-             error: function (data) {
-               var responseText = JSON.parse(data.responseText);
-               var httpStatusCode = responseText.status;
-               var errorMes = responseText.message;
-               alert(errorMes);
-             }
-           });
+                }
+              }),
+              error: function (data) {
+                var responseText = JSON.parse(data.responseText);
+                var httpStatusCode = responseText.status;
+                var errorMes = responseText.message;
+                alert(errorMes);
+              }
+            });
             updatePledge(phone)
-         }
-         });
+          }
+        });
+
+      }
+  );
+
      }
 
      function updatePledge(phone){

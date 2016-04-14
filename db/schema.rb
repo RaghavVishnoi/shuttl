@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160413144708) do
+=======
+ActiveRecord::Schema.define(version: 20160414082505) do
+>>>>>>> 89d83a5bca7dbda87d316a3420b287fb0e3a0d3d
 
   create_table "customer_routes", force: :cascade do |t|
     t.string   "lat",        limit: 255
@@ -26,6 +30,8 @@ ActiveRecord::Schema.define(version: 20160413144708) do
     t.float    "lng",        limit: 24
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.float    "radius",     limit: 24
+    t.integer  "people",     limit: 4
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -40,6 +46,8 @@ ActiveRecord::Schema.define(version: 20160413144708) do
     t.float    "lng",        limit: 24
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.float    "radius",     limit: 24
+    t.integer  "people",     limit: 4
   end
 
   create_table "route_suggestions", force: :cascade do |t|
@@ -62,6 +70,7 @@ ActiveRecord::Schema.define(version: 20160413144708) do
     t.datetime "updated_at"
     t.integer  "pick_cluster_id", limit: 4
     t.integer  "drop_cluster_id", limit: 4
+    t.string   "description",     limit: 255
   end
 
   create_table "route_suggestions_otps", force: :cascade do |t|
@@ -139,6 +148,14 @@ ActiveRecord::Schema.define(version: 20160413144708) do
   end
 
   add_index "route_suggestions_timestamps", ["route_suggestion_id"], name: "fk_rails_a56260d126", using: :btree
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "amount",       limit: 4
+    t.text     "phone_number", limit: 65535
+    t.integer  "status_code",  limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
 
   add_foreign_key "route_suggestions_pledges", "route_suggestions_slots"
   add_foreign_key "route_suggestions_pledges", "route_suggestions_timestamps"

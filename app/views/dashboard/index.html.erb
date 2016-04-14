@@ -31,7 +31,7 @@
       var fillroutecheck = 0;
   window.onload = function() {
     $.ajax({
-          url: "/dashboard/locations",
+          url: "/cluster/getCluster",
           type: "GET",
           data: {},
           dataType: "text",
@@ -148,17 +148,45 @@ var marker = [];
   directionsDisplay.setMap(map);
     for (var i = 0; i < OriginalRouteHash.length; i++) 
   {
+    var icon_d;
+    if (i==0){
+
+      icon_d=  {
+        path: google.maps.SymbolPath.CIRCLE,
+            strokeColor: "red",
+        fillColor: "red",
+            scale: 3
+      };
+    }else if (i==OriginalRouteHash.length-1){
+
+      icon_d=  {
+        path: google.maps.SymbolPath.CIRCLE,
+        strokeColor: "green",
+        fillColor: "red",
+        scale: 3
+      };
+    }else{
+
+      icon_d=  {
+        path: google.maps.SymbolPath.CIRCLE,
+        strokeColor: "yellow",
+        fillColor: "red",
+        scale: 3
+      };
+    }
   var ways = OriginalRouteHash[i].waypoints;
   	 marker[i] = new MarkerWithLabel
   ({
   position: new google.maps.LatLng(parseFloat(ways.lat),parseFloat(ways.longt)),
        draggable: false,
        raiseOnDrag: true,
+    icon: icon_d,
        map: map,
        labelContent: OriginalRouteHash[i].label,
        labelAnchor: new google.maps.Point(22, 0),
        labelClass: "labels", // the CSS class for the label
        labelStyle: {opacity: 1.0}
+
 	});
 	 iw[i] = new google.maps.InfoWindow({
        content: "2016-04-04 09:11:22",
@@ -180,21 +208,21 @@ calculateAndDisplayRoute(directionsService, directionsDisplay);
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
 
-  for (var i = 0; i < OriginalRouteHash.length; i++) 
-  {
-       var ways = OriginalRouteHash[i].waypoints;
-	   waypts.push({
-	    location: new google.maps.LatLng(parseFloat(ways.lat),parseFloat(ways.longt)),
+  if (OriginalRouteHash.length>1) {
+    for (var i = 1; i < OriginalRouteHash.length; i++) {
+      var ways = OriginalRouteHash[i].waypoints;
+      waypts.push({
+        location: new google.maps.LatLng(parseFloat(ways.lat), parseFloat(ways.longt)),
         stopover: true,
-	  }); 
- }
-
+      });
+    }
+  }
       var sourceLatLong = OriginalRouteHash[0].waypoints;
 	var destinationLatLong = OriginalRouteHash[OriginalRouteHash.length-1].waypoints;;
   directionsService.route({
 
-    origin: new google.maps.LatLng(ways.lat,ways.longt),
-    destination: new google.maps.LatLng(ways.lat,ways.longt),
+    origin: new google.maps.LatLng(sourceLatLong.lat,sourceLatLong.longt),
+    destination: new google.maps.LatLng(destinationLatLong.lat,destinationLatLong.longt),
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
@@ -374,7 +402,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
      for(var i=0;i<locations.length;i++){
     
-      OriginalRouteHash.push({ label : locations[i]['name'], waypoints :{lat : locations[i]['lat'],longt : locations[i]['long']},price : '3',People : '3'});
+      OriginalRouteHash.push({ label : "", waypoints :{lat : locations[i]['lat'],longt : locations[i]['lng']},price : '3',People : locations[i]["people"]});
     }
 
  

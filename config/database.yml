@@ -7,13 +7,13 @@
 default: &default
   adapter: mysql2
   pool: 5
-  host: localhost
+  host: 52.38.247.134
   timeout: 5000
 
 development:
   <<: *default
   username: root
-  password: root
+  password: shuttl@12345
   database: shuttl
   reconnect: true
 
@@ -34,7 +34,6 @@ production:
 
 db_main:
   <<: *default
-  username: operation_user
-  host: 52.74.154.11
-  password: anc123
+  username: root
+  password: shuttl@12345
   database: shuttl

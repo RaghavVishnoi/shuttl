@@ -10,7 +10,7 @@ function initMap() {
   var directionsDisplay = new google.maps.DirectionsRenderer;
    map = new google.maps.Map(document.getElementById('map'), {
     
-    center: {lat: 28.5747488, lng: 77.3538323}
+    center: {lat: <%= params[:slat] %>, lng: <%= params[:slng] %>}
   });
   directionsDisplay.setMap(map);
 calculateAndDisplayRoute(directionsService, directionsDisplay);
@@ -19,19 +19,25 @@ calculateAndDisplayRoute(directionsService, directionsDisplay);
 }
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
+
+  <%
+
+  total_wayPoints=0
+  @slots.each do |slot| %>
+  <%
+  if total_wayPoints<5
+  total_wayPoints=total_wayPoints+1
+  %>
   waypts.push({
-        location: new google.maps.LatLng(<%=params[:slat]%>,<%=params[:slng]%>),
+        location: new google.maps.LatLng(<%=slot["lat"] %>,<%= slot["lng"] %>),
         stopover: true
       });
-     waypts.push({
-        location: new google.maps.LatLng(<%=params[:dlat]%>,<%=params[:dlng]%>),
-        stopover: true
-      });
-     
+  <%end %>
+     <% end %>
   directionsService.route({
 
-    origin: '<%=params[:slat]%>,<%=params[:slng]%>',
-    destination: '<%=params[:dlat]%>,<%=params[:dlng]%>',
+    origin: new google.maps.LatLng(<%= @slots.first["lat"] %>,<%= @slots.first["lng"] %>),
+    destination: new google.maps.LatLng(<%= @slots.last["lat"] %>,<%= @slots.last["lng"] %>),
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
@@ -91,14 +97,26 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
             
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
 		  <div class="location-map-block">
+<<<<<<< HEAD
 		  <h5><%=session[:s]%> - <%=session[:d]%></h5>
+=======
+		  <h5><%= @route.name %></h5>
+>>>>>>> 89d83a5bca7dbda87d316a3420b287fb0e3a0d3d
 		  <div id="map"> </div>
 		 </div> 
 		 <div class="book-status-block">
-		 <div class="book-staff-right"><span class="frequency">5-15 min</span><br>Frequency</div>
+		 <div class="book-staff-right"><span class="frequency"><% if @frequency.size>1 %>
+           <%= @frequency.min %>-<%= @frequency.max %> min</span>
+           <%else %>
+           <%= @frequency.first %> min</span>
+           <% end %>
+           <br>Frequency</div>
 		 <div class="book-staff-left">
 		 
-		 <div class="time-slot"><span>Timing</span><div class="hour-sl-co">(Hrs)</div>    </div> <div class="hour-sl">07:30-11:30<br>15:30-20:30</div>
+		 <div class="time-slot"><span>Timing</span><div class="hour-sl-co">(Hrs)</div>    </div> <div class="hour-sl">
+
+       <%= @timeA.first.advance(hours:5).advance(minutes:30).strftime("%I:%M%p") %>-<%= @timeD.last.advance(hours:5).advance(minutes:30).strftime("%I:%M%p") %>
+     </div>
 
 		 
 		 </div>

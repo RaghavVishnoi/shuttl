@@ -44,9 +44,8 @@ module Ai4r
       # Build a new clusterer, using data examples found in data_set.
       # Items will be clustered in "number_of_clusters" different
       # clusters.
-      def build(data_set, number_of_clusters,threshold_distanc)
+      def build(data_set, number_of_clusters)
         @data_set = data_set
-        @threshold_distance=threshold_distanc
         @number_of_clusters = number_of_clusters
         
         @index_clusters = create_initial_index_clusters
@@ -95,6 +94,7 @@ module Ai4r
             @distance_matrix[i-1][j] = @distance_function.call(a, b)
           end
         end
+        k=0
       end
       
       # Returns the distance between element data_item[index_a] and

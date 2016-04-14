@@ -27,7 +27,8 @@ get 'pledge/list' => "route_suggestions_routes#pledge_list"
 post '/pledges/message' => "route_suggestions_routes#message"
 get '/points/pledges' => "route_suggestions_routes#live_pledges"
 get '/dashboard/locations'
-
+get 'payment/getSignature'=>"payment#createSignature"
+get 'cluster/getCluster'=>"cluster#getCluster"
 resources :routes, only: [:index,:show]
 resources :route_suggestions_pledges, only: [:create]
 resources :route_suggestions, only: [:create]
