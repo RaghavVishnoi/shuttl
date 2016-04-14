@@ -47,26 +47,39 @@ class RoutesController < ApplicationController
 			resultDes=RoutePoint.where("lat>#{dlat-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lat<#{dlat+Constants::THRESHOLD_DEVIATION_ALLOWED}")
 																				 .where("lng>#{dlng-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lng<#{dlng+Constants::THRESHOLD_DEVIATION_ALLOWED}")
 			if (resultDes!=nil && resultDes.size>0)
-			  routeIdChecked=Array.new
+			  resultSourceHash=Hash.new
+				resultDesHash=Hash.new
+				resultDes.each do |res|
+					if (resultDesHash[res[:routeid]]==nil)
+						resultDesHash[res[:routeid]]=Array.new
+					end
+					resultDesHash[res[:routeid]].push res
+				end
+				result.each do |res|
+					if (resultSourceHash[res[:routeid]]==nil)
+						resultSourceHash[res[:routeid]]=Array.new
+					end
+					resultSourceHash[res[:routeid]].push res
+				end
 				routeIdFound=-1
 				pickUpPointIdFound=-1
-				resultDes.each do |resultDestination|
+				resultDesHash.each do |routeid,resultDestination|
 
-					if (!routeIdChecked.include? resultDestination.routeid)
-					 result.each do |resultSource|
-						if (resultDestination.routeid==resultSource.routeid)
-							routeIdFound=resultSource.routeid
+					if ( resultSourceHash[routeid]!=nil && resultSourceHash[routeid].size>0)
+					 resultSourceHash[routeid].each do |resultSource|
 							if (resultSource.locationid!=0)
+								routeIdFound=routeid
 								pickUpPointIdFound=resultSource.locationid
 								break
 							end
-						end
+
 					 end
+
 					end
-					routeIdChecked.push resultDestination.routeid
-					if (routeIdFound!=-1 && pickUpPointIdFound!=-1)
-				    redirect_to route_exists_path(routeId:routeIdFound,pickUpPointId:pickUpPointIdFound,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
-						break
+
+					if (pickUpPointIdFound!=-1)
+						redirect_to route_exists_path(routeId:routeIdFound,pickUpPointId:pickUpPointIdFound,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
+						return
 					end
 				end
 			end
@@ -87,8 +100,8 @@ class RoutesController < ApplicationController
  			session[:pickup_point_location1] = @route[:pickup_point_location]
  			session[:drop_point_location1] = @route[:drop_point_location]
  			session[:drop_point_id] = @route[:drop_point_id]
- 		#	redirect_to routes_path(route_id: @route[:route_id],drop_point_id: @route[:drop_point_id])
-		redirect_to route_exists_path(routeId:1,pickUpPointId:2,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
+ 			redirect_to routes_path(route_id: @route[:route_id],drop_point_id: @route[:drop_point_id])
+
 		else
  			redirect_to root_path(result: false,slat: params[:slat],slong: params[:slong],dlat: params[:dlat],dlong: params[:dlong])
 		end	
@@ -128,6 +141,13 @@ class RoutesController < ApplicationController
 
 	def location
 		render :json => LOCATION
+	end
+
+  def info
+		headers['Access-Control-Allow-Origin'] = '*'
+		headers['Access-Control-Request-Method'] = '*'
+		headers['Access-Control-Allow-Headers'] = '*'
+
 	end
 
 end

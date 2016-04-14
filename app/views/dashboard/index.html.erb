@@ -31,7 +31,7 @@
       var fillroutecheck = 0;
   window.onload = function() {
     $.ajax({
-          url: "/dashboard/locations",
+          url: "/cluster/getCluster",
           type: "GET",
           data: {},
           dataType: "text",
@@ -180,7 +180,7 @@ calculateAndDisplayRoute(directionsService, directionsDisplay);
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
 
-  for (var i = 0; i < OriginalRouteHash.length; i++) 
+  for (var i = 1; i < OriginalRouteHash.length; i++)
   {
        var ways = OriginalRouteHash[i].waypoints;
 	   waypts.push({
@@ -374,7 +374,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
      for(var i=0;i<locations.length;i++){
     
-      OriginalRouteHash.push({ label : locations[i]['name'], waypoints :{lat : locations[i]['lat'],longt : locations[i]['long']},price : '3',People : '3'});
+      OriginalRouteHash.push({ label : "", waypoints :{lat : locations[i]['lat'],longt : locations[i]['lng']},price : '3',People : locations[i]["people"]});
     }
 
  
