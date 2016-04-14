@@ -87,8 +87,8 @@ class RoutesController < ApplicationController
  			session[:pickup_point_location1] = @route[:pickup_point_location]
  			session[:drop_point_location1] = @route[:drop_point_location]
  			session[:drop_point_id] = @route[:drop_point_id]
- 			redirect_to routes_path(route_id: @route[:route_id],drop_point_id: @route[:drop_point_id])
-		#redirect_to route_exists_path(routeId:1,pickUpPointId:2,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
+ 		#	redirect_to routes_path(route_id: @route[:route_id],drop_point_id: @route[:drop_point_id])
+		redirect_to route_exists_path(routeId:1,pickUpPointId:2,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
 		else
  			redirect_to root_path(result: false,slat: params[:slat],slong: params[:slong],dlat: params[:dlat],dlong: params[:dlong])
 		end	

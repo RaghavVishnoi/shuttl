@@ -36,5 +36,5 @@ db_main:
   <<: *default
   username: operation_user
   host: 52.74.154.11
-  password: operations364765469
+  password: anc123
   database: shuttl
