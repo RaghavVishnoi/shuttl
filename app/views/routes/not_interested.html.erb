@@ -1,6 +1,55 @@
  
  
 <script>
+$(document).ready(function(){
+  
+  $("#submit").click(function(){
+    reason = []
+      if($('#reason1').is(":checked")){
+        reason.push($('#reason1').val())
+      }
+      if($('#reason2').is(":checked")){
+        reason.push($('#reason2').val())
+      }
+      if($('#reason3').is(":checked")){
+        reason.push($('#reason3').val())
+      }
+      if($('#reason4').is(":checked")){
+        reason.push($('#reason4').val())
+      }
+      if($('#reason5').is(":checked")){
+        reason.push($('#reason5').val())
+      }
+      if($('#reason6').is(":checked")){
+        reason.push($('#other').val())
+      }
+      
+       $.ajax({
+        url: "/feedbacks",
+        type: "POST",
+        data: {feedback : {
+                            message : reason,
+                            user_id : 0
+                          }
+              },
+        dataType: "text",
+                 
+        complete: function() {
+
+        },
+
+        success: function(data, textStatus, xhr) {
+          location.href = "/"
+        }
+
+    });
+
+      
+
+
+    }); 
+  
+});
   
 </script>
  
@@ -37,18 +86,18 @@
     <h5>I am not interested in using Shuttl services because:</h5>
     <p class="font-s">(Multiple selection)</p>
     <ul class="mul-choice">
-    <li><input type="checkbox"> <span>I travel in different route</span></li>
-    <li><input type="checkbox"> <span>The pick-up and drop-point are unconvenient</span></li>
-    <li><input type="checkbox"> <span>The time-slot are not suitable</span></li>
-    <li><input type="checkbox"> <span>Pricing in too high</span></li>
-    <li><input type="checkbox"> <span>I don't wish to buy the passes in advance</span></li>
-    <li><input type="checkbox"> <span>Other, </span> <input type="text" class="single-line"></li>
+    <li><input type="checkbox" name="reason" id="reason1" value="I travel in different route"> <span>I travel in different route</span></li>
+    <li><input type="checkbox" name="reason" id="reason2" value="The pick-up and drop-point are unconvenient"> <span>The pick-up and drop-point are unconvenient</span></li>
+    <li><input type="checkbox" name="reason" id="reason3" value="The time-slot are not suitable"> <span>The time-slot are not suitable</span></li>
+    <li><input type="checkbox" name="reason" id="reason4" value="Pricing in too high"> <span>Pricing in too high</span></li>
+    <li><input type="checkbox" name="reason" id="reason5" value="I don't wish to buy the passes in advance"> <span>I don't wish to buy the passes in advance</span></li>
+    <li><input type="checkbox" name="reason"id="reason6" > <span>Other, </span> <input type="text" class="single-line" id="other"></li>
     
     
     </ul>
       <div class="button-block">
       <button class="btn bg-danger" type="button"> <i class="fa fa-chevron-circle-left"></i> Back  </button>
-      <button class="btn btn-info" type="button">Submit</button>
+      <button class="btn btn-info" type="button" id="submit">Submit</button>
       </div>
       
       

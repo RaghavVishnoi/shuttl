@@ -1,9 +1,9 @@
 class FeedbacksController < ApplicationController
 
 	def create
-		@feedback = Feedback.create(feedback_params)
+		@feedback = Feedback.create(params)
 		if @feedback != nil
-			render :json => @feedback
+			render :json => true
 		else
 			render :json => @feedback.errors.full_messages
 		end
