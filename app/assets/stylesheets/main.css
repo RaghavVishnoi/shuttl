@@ -43,7 +43,7 @@ img.pull-left { margin-right: 20px; }
 .table-data-show #map{height:196px;}
 
 .button-block{text-align:center;}
-.button-block .btn{ padding:10px 11px; }
+.button-block .btn{ padding:10px 11px; margin-top: 10px; }
 .button-block .fa{font-size:13px;}
 .button-col{text-align:center;}
 .button-col .btn{ padding:10px 7px; font-size:12px; }
@@ -1649,10 +1649,20 @@ html #search-open {margin-top: 8px;}
     .modal-body.signup .form-group {        
     margin-bottom: 0px;     
     }       
-    .modal-body.signup .form-control{       
-    margin-bottom: 0px;     
-    border: 0px solid #333;     
-    }       
+    .modal-body.signup .form-control{
+    /*margin-bottom: 0px;     */
+    /*border: 0px solid #333;     */
+    }
+
+    .modal-body .submitSearch {
+        border: none;
+    }
+
+    .modal-body .mobileNum:focus {
+        box-shadow: none;
+        border: none;
+    }
+
     .btn.disabled, .btn[disabled]{      
     opacity: 1;     
     }       
@@ -1660,40 +1670,43 @@ html #search-open {margin-top: 8px;}
     width: 100%;        
     }       
             
-    div#confirmSection {        
+    #confirmSection {
     background: transparent;        
     }       
-    div#confirmSection .form-group.col-md-6{padding: 0px;}      
+
+#confirmSection .form-group.col-md-6{padding: 0px;}
             
     label.control-label {       
     text-align: center;     
     display: block;     
     color: #fff;        
     }       
-    input#otp-submit {      
-    background: rgb(235, 235, 228);     
-    border: 0px solid #f1f1f1 !important;       
-    width: 100%;        
-    color: #000;        
-    }       
+
+/*input#otp-submit {      */
+    /*background: rgb(235, 235, 228);     */
+    /*border: 0px solid #f1f1f1 !important;       */
+    /*width: 100%;        */
+    /*color: #000;        */
+    /*}       */
             
     label.control-label .fa-pencil {        
     font-size: 14px;        
     padding: 9px 14px;      
     color: #fff;        
     }       
-    div#confirmSection {        
+
+#confirmSection {
     position: relative;     
     display:block;      
     }       
             
-    div#confirmSection .fa-repeat {     
-    position: absolute;     
-    z-index: 999;       
-    top: 51px;      
-    right: 30px;        
-    font-size: 15px;        
-    color: #999;        
+    #confirmSection .fa-repeat {
+        position: absolute;
+        z-index: 999;
+        top: 40px;
+        right: 5px;
+        font-size: 15px;
+        color: #999;
     }       
             
     span.resend {       
@@ -1708,12 +1721,16 @@ html #search-open {margin-top: 8px;}
     }       
     .time-slot span {       
     display: block;     
-    }       
+    }
+
+    .home-container .headline {
+        margin-bottom: 0px;
+        margin-top: 30px;
+    }
             
-            
-    div#confirmSection input {      
-    border: 1px solid #f1f1f1;      
-    }       
+    /*#confirmSection input {*/
+    /*border: 1px solid #f1f1f1;      */
+    /*}       */
             
             
             

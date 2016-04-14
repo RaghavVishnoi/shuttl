@@ -1,370 +1,366 @@
- 
-  <script>
-    $(document).ready(function() {
-      
-      <% if (params["dlat"]!=nil) %>
-      $('.source-dest-input').hide();
-      <% end %>
 
-      $('.input-group input').keyup(function(){
+<script>
+
+  var DEFAULT_WORK_TIME = '7:30';
+  var DEFAULT_HOME_TIME = '19:00';
+  var DEFAULT_TRAVEL_MODE = 'Car';
+
+  $(document).ready(function () {
+
+    <% if (params["dlat"]!=nil) %>
+    $('.source-dest-input').hide();
+    <% end %>
+
+    $('.input-group input').keyup(function () {
       var inputVal = $('#pac-input').val();
       $(this).next('.fa-times').fadeIn();
       if (inputVal === '') {
         $(this).find('.fa-times').fadeOut();
-      }else{
+      } else {
         $(this).next('.fa-times').fadeIn();
       }
-      });
-      $(".resetInput").click(function() {
-        $(this).prev("input").val("");
-        $(this).fadeOut();
     });
-    $('#contact').keyup(function(){
+    $(".resetInput").click(function () {
+      $(this).prev("input").val("");
+      $(this).fadeOut();
+    });
+    $('#contact').keyup(function () {
       var number = document.getElementById('contact');
-       if(number.value.length!=10){
-         jQuery('#contact-submit').attr("disabled", disable);
-      }else if(number.value.length===10){
-        jQuery('#contact-submit').removeAttr('disabled').css({'background':'#39B5B5','color':'#fff'});
+      if (number.value.length != 10) {
+        jQuery('#contact-submit').attr("disabled", disable);
+      } else if (number.value.length === 10) {
+        jQuery('#contact-submit').removeAttr('disabled').css({'background': '#39B5B5', 'color': '#fff'});
       }
     })
     // send OTP function 
-     
-     
-    $('#otp').keyup(function(){
+
+
+    $('#otp').keyup(function () {
       var number = document.getElementById('otp');
-      if(number.value.length!=4){
-         jQuery('#otp-submit').attr("disabled", disable);
-         console.log('nahi');
-      }else if(number.value.length===4){
-        jQuery('#otp-submit').removeAttr('disabled').css({'background':'#39B5B5','color':'#fff'});
-        
+      if (number.value.length != 4) {
+        jQuery('#otp-submit').attr("disabled", disable);
+        console.log('nahi');
+      } else if (number.value.length === 4) {
+        jQuery('#otp-submit').removeAttr('disabled').css({'background': '#39B5B5', 'color': '#fff'});
+
       }
     })
 
-      $("#start-time").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
+    $("#start-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
         "<i class='fa fa-angle-left'></i>",
         "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
-    $("#end-time").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
-     $("#start-time2").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
-    
-    $("#end-time").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
-    $("#end-time2").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
-        "<i class='fa fa-angle-left'></i>",
-        "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-      var time1 = []
-      var time2 = []
-      var mode = []
-      $('.link').on('click', function(event){
-        var $this = $(this);
-        if($this.hasClass('clicked')){
-          $this.removeClass('clicked');
-          time1.pop($this.text());
-         } else{
-          $('.link').removeClass('clicked');
-          time1.pop($this.text());
-          $this.addClass('clicked');
-          time1.push($this.text())
-        }
+      ],
 
-      });
-    
-    $('.leave-office').on('click', function(event){
-        var $this = $(this);
-        if($this.hasClass('clicked')){
-          $this.removeClass('clicked');
-          time2.pop($this.text())
-        } else{
-          $('.leave-office').removeClass('clicked');
-          time2.pop($this.text())
-          $this.addClass('clicked');
-          time2.push($this.text())
-        }
-      });
-  
-    $('.reach-work').on('click', function(event){
-     var $this = $(this);
-     var numItems = $('.reach-work-selsct').length;
-  if(numItems >=2 && !($this.hasClass('reach-work-selsct')))
-  {
-       alert("You can select only two items.")
-  }
-  else{
-        if($this.hasClass('reach-work-selsct')){
+    });
+
+    $("#end-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+    $("#start-time2").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+
+    $("#end-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+    $("#end-time2").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ]
+    });
+
+    var time1 = [DEFAULT_WORK_TIME];
+    var time2 = [DEFAULT_HOME_TIME];
+    var mode = [DEFAULT_TRAVEL_MODE];
+
+    $('.link').on('click', function (event) {
+      var $this = $(this);
+      if ($this.hasClass('clicked')) {
+        $this.removeClass('clicked');
+        time1.pop($this.text());
+      } else {
+        $('.link').removeClass('clicked');
+        time1.pop($this.text());
+        $this.addClass('clicked');
+        time1.push($this.text())
+      }
+
+    });
+
+    $('.leave-office').on('click', function (event) {
+      var $this = $(this);
+      if ($this.hasClass('clicked')) {
+        $this.removeClass('clicked');
+        time2.pop($this.text())
+      } else {
+        $('.leave-office').removeClass('clicked');
+        time2.pop($this.text())
+        $this.addClass('clicked');
+        time2.push($this.text())
+      }
+    });
+
+    $('.reach-work').on('click', function (event) {
+      var $this = $(this);
+      var numItems = $('.reach-work-selsct').length;
+      if (numItems >= 2 && !($this.hasClass('reach-work-selsct'))) {
+        alert("You can select only two items.")
+      }
+      else {
+        if ($this.hasClass('reach-work-selsct')) {
           $this.removeClass('reach-work-selsct');
-        } else{
+        } else {
           $this.addClass('reach-work-selsct');
         }
-  }
-      }); 
-    
-  $('.leave-work').on('click', function(event){
-     var $this = $(this);
-     var numItems = $('.leave-work-selsct').length;
-  if(numItems >=2 && !($this.hasClass('leave-work-selsct')))
-  {
-       alert("You can select only two items.")
-  }
-  else{
-        if($this.hasClass('leave-work-selsct')){
+      }
+    });
+
+    $('.leave-work').on('click', function (event) {
+      var $this = $(this);
+      var numItems = $('.leave-work-selsct').length;
+      if (numItems >= 2 && !($this.hasClass('leave-work-selsct'))) {
+        alert("You can select only two items.")
+      }
+      else {
+        if ($this.hasClass('leave-work-selsct')) {
           $this.removeClass('leave-work-selsct');
-        } else{
+        } else {
           $this.addClass('leave-work-selsct');
         }
-  }
-      });  
-    
-    
-    
+      }
+    });
 
-    jQuery('.travel-time-block ul li').on('click', function(event){
+
+    jQuery('.travel-time-block ul li').on('click', function (event) {
       var $this = $(this);
       var numItems = $('.selected').length;
- 
-          
-        
-        if($this.hasClass('selected')){
-          $this.removeClass('selected');
-          mode.pop($this.text());
-        } else{
-          $('.travel-time-block ul li').removeClass('selected');
-           mode.pop($this.text());
-          $this.addClass('selected');
-          mode.push($this.text())
-        }
-       });
-    
-    
-   
-  
-$('#sub').click(function(){
-  var lat1 = <%=params[:slat]%>;
-  var long1 = <%=params[:slong]%>;
-  var lat2 = <%=params[:dlat]%>;
-  var long2 = <%=params[:dlong]%>;
-  if(time1.length != 0 && time2.length != 0 && lat1 != null && lat2 != null && long1 != null && long2 != null){
-      $(".otp-dialog").attr('style','display:block')
-      $(".overlay").attr('style','display:block')
-      
-      var phone;
-      $("#contact-submit").click(function(){
-        phone = $('#contact').val()
-        if(phone != null){
-          $.ajax({
-            url: "/route_suggestions/generate_otp",
-            type: "GET",
-            data: {phone : phone},
-            dataType: "text",
-                     
-            complete: function() {
 
-            },
 
-            success: function(data, textStatus, xhr) {
-              $('#confirmSection').attr('style','display:block')
-              $("#sectionOtp").attr('style','display:none')
-              $("#contact-number").val(phone);
+      if ($this.hasClass('selected')) {
+        $this.removeClass('selected');
+        mode.pop($this.text());
+      } else {
+        $('.travel-time-block ul li').removeClass('selected');
+        mode.pop($this.text());
+        $this.addClass('selected');
+        mode.push($this.text())
+      }
+    });
 
-              $('#contact-label').text("OTP send on "+phone)
-            }
-          });
-        }else{
 
-        }
-          
-      });
-      $("#resend").click(function(){
-        var phone = $("#contact-number").val();
-          
-        
-        if(phone != null){
-          $.ajax({
-            url: "/route_suggestions/generate_otp",
-            type: "GET",
-            data: {phone : phone},
-            dataType: "text",
-                     
-            complete: function() {
+    $('#sub').click(function () {
+      var lat1 = <%=params[:slat]%>;
+      var long1 = <%=params[:slong]%>;
+      var lat2 = <%=params[:dlat]%>;
+      var long2 = <%=params[:dlong]%>;
+      if (time1.length != 0 && time2.length != 0 && lat1 != null && lat2 != null && long1 != null && long2 != null) {
+        $(".otp-dialog").attr('style', 'display:block')
+        $(".overlay").attr('style', 'display:block')
 
-            },
+        var phone;
+        $("#contact-submit").click(function () {
+          phone = $('#contact').val()
+          if (phone != null) {
+            $.ajax({
+              url: "/route_suggestions/generate_otp",
+              type: "GET",
+              data: {phone: phone},
+              dataType: "text",
 
-            success: function(data, textStatus, xhr) {
-              
-            }
-          });
-        }else{
+              complete: function () {
 
-        }
-          
-      });
-      $("#otp-submit").click(function(){
-        otp = $("#otp").val();
-        if(otp != null){
-          $.ajax({
-            url: "/route_suggestions/check_otp",
-            type: "GET",
-            data: {phone : phone,
-              otp: otp
-            },
-            dataType: "text",
-                     
-            complete: function() {
+              },
 
-            },
+              success: function (data, textStatus, xhr) {
+                $('#confirmSection').attr('style', 'display:block')
+                $("#sectionOtp").attr('style', 'display:none')
+                $("#contact-number").val(phone);
 
-            success: function(data, textStatus, xhr) {
-               
-              $('.otp-dialog').attr('style','display:block')
-              if(data == 'true'){
-                 $.ajax({
-                  url: "/route_suggestions_customers",
-                  type: "POST",
-                  data: { 
-                    from_lat : lat1,
-                    from_long : long1,
-                    to_lat : lat2,
-                    to_long : long2,
-                    time1 : time1[0],
-                    time2 :  time2[0],
-                    mode: mode[0],
-                    phone : phone
+                $('#contact-label').text("OTP sent on " + phone)
+              }
+            });
+          } else {
+
+          }
+
+        });
+        $("#resend").click(function () {
+          var phone = $("#contact-number").val();
+
+
+          if (phone != null) {
+            $.ajax({
+              url: "/route_suggestions/generate_otp",
+              type: "GET",
+              data: {phone: phone},
+              dataType: "text",
+
+              complete: function () {
+
+              },
+
+              success: function (data, textStatus, xhr) {
+
+              }
+            });
+          } else {
+
+          }
+
+        });
+        $("#otp-submit").click(function () {
+          otp = $("#otp").val();
+          if (otp != null) {
+            $.ajax({
+              url: "/route_suggestions/check_otp",
+              type: "GET",
+              data: {
+                phone: phone,
+                otp: otp
+              },
+              dataType: "text",
+
+              complete: function () {
+
+              },
+
+              success: function (data, textStatus, xhr) {
+
+                $('.otp-dialog').attr('style', 'display:block')
+                if (data == 'true') {
+                  $.ajax({
+                    url: "/route_suggestions_customers",
+                    type: "POST",
+                    data: {
+                      from_lat: lat1,
+                      from_long: long1,
+                      to_lat: lat2,
+                      to_long: long2,
+                      time1: time1[0],
+                      time2: time2[0],
+                      mode: mode[0],
+                      phone: phone
 
                     },
-                  dataType: "text",
-                           
-                  complete: function() {
+                    dataType: "text",
 
-                  },
+                    complete: function () {
 
-                  success: function(data, textStatus, xhr) {
-                    if(data == 'true'){
-                      location.href = "/routes/thankyou";
-                    }else{
+                    },
 
+                    success: function (data, textStatus, xhr) {
+                      if (data == 'true') {
+                        location.href = "/routes/thankyou";
+                      } else {
+
+                      }
                     }
-                  }
-                });  
-              }else{
-                alert('wrong otp!')
+                  });
+                } else {
+                  alert('wrong otp!')
+                }
               }
-            }
-          });
-        }else{
+            });
+          } else {
 
-        }
-      });
-
-  }else{
-    if(time1.length == 0){
-      $('#warn1').attr('style','color:red')
-    }else{
-      $('#warn1').attr('style','color:#434343')
-    }
-    if(time2.length == 0){
-      $('#warn2').attr('style','color:red')
-    }else{
-      $('#warn2').attr('style','color:#434343')
-    }if(mode.length == 0){
-      $('#warn3').attr('style','color:red')
-    }else{
-      $('#warn3').attr('style','color:#434343')
-    }
-  }
-   
-});
-
-
-$('#form').attr("style","display:block")
-  
-   });
-  
-  
-  
-    </script>
-  
-
- 
-
- 
-<!-- Loader end -->
-<div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
-  <div id="wrapper"> 
- <script>
-       
-       var slat,slng,dlat,dlng; 
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('address_hint'), {
-          
+          }
         });
+
+      } else {
+        if (time1.length == 0) {
+          $('#warn1').attr('style', 'color:red')
+        } else {
+          $('#warn1').attr('style', 'color:#434343')
+        }
+        if (time2.length == 0) {
+          $('#warn2').attr('style', 'color:red')
+        } else {
+          $('#warn2').attr('style', 'color:#434343')
+        }
+        if (mode.length == 0) {
+          $('#warn3').attr('style', 'color:red')
+        } else {
+          $('#warn3').attr('style', 'color:#434343')
+        }
+      }
+
+    });
+
+
+    $('#form').attr("style", "display:block")
+
+  });
+
+
+</script>
+
+
+
+
+
+<!-- Loader end -->
+<div class="layout-theme animated-css" data-header="sticky" data-header-top="200">
+  <div id="wrapper">
+    <script>
+
+      var slat, slng, dlat, dlng;
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('address_hint'), {});
         var input = /* @type {!HTMLInputElement} */(
             document.getElementById('pac-input'));
-      var input1 = /* @type {!HTMLInputElement} */(
+        var input1 = /* @type {!HTMLInputElement} */(
             document.getElementById('pac-input1'));
 
         var types = document.getElementById('type-selector');
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input1);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input1);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
 
         var autocomplete = new google.maps.places.Autocomplete(input);
-    var autocomplete1 = new google.maps.places.Autocomplete(input1);
+        var autocomplete1 = new google.maps.places.Autocomplete(input1);
         autocomplete.bindTo('bounds', map);
 
- 
-         
 
-        autocomplete.addListener('place_changed', function() {
-          
-        var geocoder = new google.maps.Geocoder();
-        var address = $('#pac-input').val();
-         
-        geocoder.geocode( { 'address': address}, function(results, status) {
+        autocomplete.addListener('place_changed', function () {
 
-          if (status == google.maps.GeocoderStatus.OK) {
-              slat  = results[0].geometry.location.lat();
+          var geocoder = new google.maps.Geocoder();
+          var address = $('#pac-input').val();
+
+          geocoder.geocode({'address': address}, function (results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+              slat = results[0].geometry.location.lat();
               slng = results[0].geometry.location.lng();
-                      RedirectPage(slat,slng,dlat,dlng)
-           } 
-        });
+              RedirectPage(slat, slng, dlat, dlng)
+            }
+          });
           var address = '';
           if (place.address_components) {
             address = [
@@ -377,20 +373,20 @@ $('#form').attr("style","display:block")
           infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
           infowindow.open(map, marker);
         });
-    
-    autocomplete1.addListener('place_changed', function() {
-          
-        var geocoder = new google.maps.Geocoder();
-        var address = $('#pac-input1').val();
-         
-        geocoder.geocode( { 'address': address}, function(results, status) {
 
-          if (status == google.maps.GeocoderStatus.OK) {
-              dlat  = results[0].geometry.location.lat();
+        autocomplete1.addListener('place_changed', function () {
+
+          var geocoder = new google.maps.Geocoder();
+          var address = $('#pac-input1').val();
+
+          geocoder.geocode({'address': address}, function (results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+              dlat = results[0].geometry.location.lat();
               dlng = results[0].geometry.location.lng();
-                      RedirectPage(slat,slng,dlat,dlng)
-           } 
-        });
+              RedirectPage(slat, slng, dlat, dlng)
+            }
+          });
           var address = '';
           if (place.address_components) {
             address = [
@@ -418,174 +414,166 @@ $('#form').attr("style","display:block")
         // setupClickListener('changetype-establishment', ['establishment']);
         // setupClickListener('changetype-geocode', ['geocode']);
       }
-    
-    function RedirectPage(lat1,long1,lat2,long2)
-    {
-        
-    var address = $('#pac-input').val();
-    var address1 = $('#pac-input1').val();   
-    if(lat1 != null && long1 != null && lat2 != null && long2 != null){
-        location.href = 'routes/find_route?s='+address+'&slat='+lat1+'&slong='+long1+'&d='+address1+'&dlat='+lat2+'&dlong='+long2
-    }
- 
-     }
+
+      function RedirectPage(lat1, long1, lat2, long2) {
+
+        var address = $('#pac-input').val();
+        var address1 = $('#pac-input1').val();
+        if (lat1 != null && long1 != null && lat2 != null && long2 != null) {
+          location.href = 'routes/find_route?s=' + address + '&slat=' + lat1 + '&slong=' + long1 + '&d=' + address1 + '&dlat=' + lat2 + '&dlong=' + long2
+        }
+
+      }
     </script>
-  
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWdJ3F1a1pmCUjyHaINmV1_nOJ6hpbArM&libraries=places&callback=initMap"
-        async defer></script>
-  
-    
+            async defer></script>
+
+
     <!-- HEADER -->
     <header class="header">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png"  alt="Logo"></a>
-            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
+          <div class="col-xs-12">
+            <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png" alt="Logo"></a>
+            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div>
           </div>
-          <!-- end col  --> 
+          <!-- end col  -->
         </div>
-        <!-- end row  --> 
+        <!-- end row  -->
       </div>
-      <!-- end container--> 
+      <!-- end container-->
     </header>
     <!-- end header -->
-     <section class="section-default">
-        <div class="container"> 
-          
-           <div class="row">
-            
+    <section class="section-default">
+      <div class="container home-container">
+
+        <div class="row">
+
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
-      <div class="form-group source-dest-input" id="form">
-      <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-home"></i></span>
-    <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Home Address">
-    <i class="fa fa-times resetInput"></i>
-    <div id="address_hint"></div>
-    </div>
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
-    <input class="controls form-control" id="pac-input1" type="text" placeholder="Enter Office Address">
-    <i class="fa fa-times resetInput"></i>
-    <div id="address_hint"></div>
-    </div> 
-     </div> 
-    <!-- end form group -->
-    <!-- star time -->
-<%if params[:result] == 'false'%>    
-    <div class="start-time-block">
-     <h5 id="warn1">What time do you have to reach work?</h5>
-     <p class="notify" style="text-align: right;">Select top 2 preferred time slots </p>
-     <div class="crowl-pad">
-     <div id="start-time" class="owl-carousel">               
-                <a class="item link">7:00</a>
-                <a class="item link">7:30</a>
-                <a class="item link">8:00</a>
-                <a class="item link">8:30</a>
-        <a class="item link">9:00</a>
-        <a class="item link">9:30</a>
-                <a class="item link">10:00</a>
-        <a class="item link">10:30</a>
-        <a class="item link">11:00</a>
-                <a class="item link">11:30</a>
-        <a class="item link">12:00</a>
-        <a class="item link">12:30</a>
-                <a class="item link">13:00</a>
-        <a class="item link">13:30</a>
-
+            <div class="form-group source-dest-input" id="form">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Home Address">
+                <i class="fa fa-times resetInput"></i>
+                <div id="address_hint"></div>
               </div>
-         
-      </div>
-     </div>
-     
-     <!-- end time -->
-     <div class="end-time-block">
-      <h5 id="warn2">What time do you leave from work?</h5>
-      <p class="notify" style="text-align: right;">Select top 2 preferred time slots </p>
-     <div class="crowl-pad">
-     <div id="end-time" class="owl-carousel">               
-        <a class="item leave-office">16:00</a>
-                <a class="item leave-office">16:30</a>
-                <a class="item leave-office">17:00</a>
-                <a class="item leave-office">17:30</a>
-        <a class="item leave-office">18:00</a>
-        <a class="item leave-office">18:30</a>
-                <a class="item leave-office">19:00</a>
-        <a class="item leave-office">19:30</a>
-        <a class="item leave-office">20:00</a>
-                <a class="item leave-office">20:30</a>
-        <a class="item leave-office">21:00</a>
-        <a class="item leave-office">21:30</a>
-
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
+                <input class="controls form-control" id="pac-input1" type="text" placeholder="Enter Office Address">
+                <i class="fa fa-times resetInput"></i>
+                <div id="address_hint"></div>
               </div>
-         
-      </div>
-     
-     </div>
-     <!-- travel time -->
-     <div class="travel-time-block">
-     <h5 id="warn3">What mode of travel do you use to complete this journey everyday?</h5>
-     <ul class="check-box">
-     <li> Bus </li>
-     <li> Metro </li>
-     <li> Shared Auto </li>
-     <li> Auto </li>
-     <li> Car </li>
-     <li> Shared Taxi </li>
-     <li> Office Cab </li>
-     <li> Bike </li>
-     <li> Taxi </li>
-     </ul>
-     
-     <div class="button-block">
-     <button class="btn btn-info btn-block" type="button" id="sub">Submit</button>
-     </div>
-<%end%>     
-     </div>
-         </div>
-    <!-- end coll --> 
-     
-         </div>
-         
-        </div>
-        <!-- end container --> 
-      </section>
-      <!-- end section-default -->
-   
-    
-    
-  </div>
+            </div>
+            <!-- end form group -->
+            <!-- star time -->
+            <% if params[:result] == 'false' %>
+                <div class="start-time-block">
+                  <h5 id="warn1" class="headline">What time do you have to reach work?</h5>
+                  <p class="notify" style="text-align: right;">Select top 2 preferred time slots </p>
+                  <div class="crowl-pad">
+                    <div id="start-time" class="owl-carousel">
 
- <!-- end wrapper --> 
-</div>
-<!-- SCRIPTS --> 
-<div class="overlay"></div>
-      <div class="modal-body signup otp-dialog">
-        
-            <form id="otpForm">
-              <div class="row" id="sectionOtp">
-                <div class="form-group col-md-6">
-                  <!-- <label for="mnum" class="control-label">Mobile<span class="text-danger">*</span></label> -->
-                  <input maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
-                </div>
-                <div class="form-group col-md-6">
-                  <input class="btn text-uppercase submitSearch"  value="send otp" id="contact-submit" disabled="">
-                </div>
-              </div>
-              <div class="form-group col-md-6" id="confirmSection" style="display:none">
-                  <label for="mnum" class="control-label" id="contact-label"> <i class="fa fa-pencil"></i></label>
-                  <input maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP" >
-                  <i class="fa fa-repeat"><span class="resend" id="resend">Resend</span></i>
-                  <div class="form-group col-md-6">
-                    <input class="btn text-uppercase submitSearch" value="Confirm"    id="otp-submit" disabled="">
+                      <!--Need a better way to access defaults here-->
+                      <% ['7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30'].each do |time| %>
+                          <a class="item link <%= time === '7:30' ? 'clicked' :'' %>"><%= time %></a>
+                      <% end %>
+                    </div>
+
                   </div>
                 </div>
-                  <input type="hidden" id="contact-number"/>
-            </form>
-            
-            
-            <div class="loader" style="display: none;"><img src="./images/rolling.gif"></div>
-            <div class="alert centerText hidden"></div>
+
+                <!-- end time -->
+                <div class="end-time-block">
+                  <h5 id="warn2" class="headline">What time do you leave from work?</h5>
+                  <p class="notify" style="text-align: right;">Select top 2 preferred time slots </p>
+                  <div class="crowl-pad">
+                    <div id="end-time" class="owl-carousel">
+
+                      <!--Need a better way to access defaults here-->
+                      <% ['16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30'].each do |time| %>
+                          <a class="item leave-office <%= time === '19:00' ? 'clicked' :'' %>"><%= time %></a>
+                      <% end %>
+
+                    </div>
+
+                  </div>
+
+                </div>
+                <!-- travel time -->
+                <div class="travel-time-block">
+                  <h5 id="warn3" class="headline">What mode of travel do you use to complete this journey everyday?</h5>
+                  <ul class="check-box">
+                    <li> Bus</li>
+                    <li> Metro</li>
+                    <li> Shared Auto</li>
+                    <li> Auto</li>
+                    <li class="selected"> Car</li>
+                    <li> Shared Taxi</li>
+                    <li> Office Cab</li>
+                    <li> Bike</li>
+                    <li> Taxi</li>
+                  </ul>
+
+                  <div class="button-block">
+                    <button class="btn btn-info btn-block" type="button" id="sub">Submit</button>
+                  </div>
+            <% end %>
+            </div>
           </div>
+          <!-- end coll -->
+
+        </div>
+
+      </div>
+      <!-- end container -->
+    </section>
+    <!-- end section-default -->
+
+
+  </div>
+
+  <!-- end wrapper -->
+</div>
+<!-- SCRIPTS -->
+<div class="overlay"></div>
+<div class="modal-body signup otp-dialog">
+
+  <form id="otpForm" class="container">
+
+    <fieldset id="sectionOtp">
+
+      <div class="form-group">
+        <input style="margin: 0" maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
+      </div>
+
+      <div class="form-group" style="text-align: center; margin-top: 15px">
+        <button id="contact-submit" class="btn btn-default submitSearch" disabled="">SEND OTP</button>
+      </div>
+
+    </fieldset>
+
+    <fieldset id="confirmSection" style="display:none">
+
+      <div class="form-group">
+        <label for="mnum" class="control-label" id="contact-label"> <i class="fa fa-pencil"></i></label>
+        <input style="margin: 0" maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP">
+        <i class="fa fa-repeat"><span class="resend" id="resend">Resend</span></i>
+      </div>
+
+      <div class="form-group" style="text-align: center;margin-top: 15px;">
+        <button class="btn submitSearch btn-default" id="otp-submit" disabled="">CONFIRM</button>
+      </div>
+
+    </fieldset>
+
+    <input type="hidden" id="contact-number"/>
+  </form>
+
+
+  <div class="loader" style="display: none;"><img src="./images/rolling.gif"></div>
+  <div class="alert centerText hidden"></div>
+</div>
 
  
  
