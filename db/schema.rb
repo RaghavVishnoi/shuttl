@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20160413144708) do
 
   create_table "customer_routes", force: :cascade do |t|
@@ -21,12 +22,38 @@ ActiveRecord::Schema.define(version: 20160413144708) do
     t.datetime "updated_at"
   end
 
+  create_table "destination_clusters", force: :cascade do |t|
+    t.float    "lat",        limit: 24
+    t.float    "lng",        limit: 24
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
   create_table "feedbacks", force: :cascade do |t|
     t.string   "message",    limit: 255
     t.integer  "user_id",    limit: 4
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  create_table "pick_point_clusters", force: :cascade do |t|
+    t.float    "lat",        limit: 24
+    t.float    "lng",        limit: 24
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "route_points", force: :cascade do |t|
+    t.float    "lat",         limit: 53
+    t.float    "lng",         limit: 53
+    t.integer  "routeid",     limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at",                         null: false
+    t.integer  "directionid", limit: 4,  default: 0
+    t.integer  "locationid",  limit: 4,  default: 0
+  end
+
+  add_index "route_points", ["routeid"], name: "routeid", using: :btree
 
   create_table "route_suggestions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -36,16 +63,19 @@ ActiveRecord::Schema.define(version: 20160413144708) do
   end
 
   create_table "route_suggestions_customers", force: :cascade do |t|
-    t.float    "from_lat",   limit: 24
-    t.float    "from_long",  limit: 24
-    t.float    "to_lat",     limit: 24
-    t.float    "to_long",    limit: 24
-    t.string   "time1",      limit: 255
-    t.string   "time2",      limit: 255
-    t.string   "phone",      limit: 255
-    t.string   "mode",       limit: 255
+
+    t.float    "from_lat",        limit: 24
+    t.float    "from_long",       limit: 24
+    t.float    "to_lat",          limit: 24
+    t.float    "to_long",         limit: 24
+    t.string   "time1",           limit: 255
+    t.string   "time2",           limit: 255
+    t.string   "phone",           limit: 255
+    t.string   "mode",            limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "pick_cluster_id", limit: 4
+    t.integer  "drop_cluster_id", limit: 4
   end
 
   create_table "route_suggestions_otps", force: :cascade do |t|

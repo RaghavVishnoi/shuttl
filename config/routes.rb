@@ -17,6 +17,7 @@ get 'routes/location'
 get 'route_suggestions/generate_otp'
 get 'route_suggestions/check_otp'
 get 'routes/thankyou'
+get 'clusters/refresh' => "cluster#refreshClusters"
 get 'routes/saved' => "route_suggestions_routes#show"
 get 'routes/shipped' => "route_suggestions_routes#update"
 post 'dashboard/save'

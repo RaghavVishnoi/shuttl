@@ -36,42 +36,42 @@ class RoutesController < ApplicationController
 		session[:slong] = params[:slong]
 		session[:dlat] = params[:dlat]
 		session[:dlong] = params[:dlong]
-		# # find in current live routes if present
-		# slat=params[:slat].to_f
-		# slng=params[:slong].to_f
-		# dlat=params[:dlat].to_f
-		# dlng=params[:dlong].to_f
-		# result=RoutePoint.where("lat>#{slat-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lat<#{slat+Constants::THRESHOLD_DEVIATION_ALLOWED}")
-		# .where("lng>#{slng-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lng<#{slng+Constants::THRESHOLD_DEVIATION_ALLOWED}")
-		# if (result!=nil && result.size>0)
+		 find in current live routes if present
+		slat=params[:slat].to_f
+		slng=params[:slong].to_f
+		dlat=params[:dlat].to_f
+		dlng=params[:dlong].to_f
+		result=RoutePoint.where("lat>#{slat-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lat<#{slat+Constants::THRESHOLD_DEVIATION_ALLOWED}")
+		.where("lng>#{slng-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lng<#{slng+Constants::THRESHOLD_DEVIATION_ALLOWED}")
+		if (result!=nil && result.size>0)
 
-		# 	resultDes=RoutePoint.where("lat>#{dlat-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lat<#{dlat+Constants::THRESHOLD_DEVIATION_ALLOWED}")
-		# 																		 .where("lng>#{dlng-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lng<#{dlng+Constants::THRESHOLD_DEVIATION_ALLOWED}")
-		# 	if (resultDes!=nil && resultDes.size>0)
-		# 	  routeIdChecked=Array.new
-		# 		routeIdFound=-1
-		# 		pickUpPointIdFound=-1
-		# 		resultDes.each do |resultDestination|
+			resultDes=RoutePoint.where("lat>#{dlat-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lat<#{dlat+Constants::THRESHOLD_DEVIATION_ALLOWED}")
+																				 .where("lng>#{dlng-Constants::THRESHOLD_DEVIATION_ALLOWED}").where("lng<#{dlng+Constants::THRESHOLD_DEVIATION_ALLOWED}")
+			if (resultDes!=nil && resultDes.size>0)
+			  routeIdChecked=Array.new
+				routeIdFound=-1
+				pickUpPointIdFound=-1
+				resultDes.each do |resultDestination|
 
-		# 			if (!routeIdChecked.include? resultDestination.routeid)
-		# 			 result.each do |resultSource|
-		# 				if (resultDestination.routeid==resultSource.routeid)
-		# 					routeIdFound=resultSource.routeid
-		# 					if (resultSource.locationid!=0)
-		# 						pickUpPointIdFound=resultSource.locationid
-		# 						break
-		# 					end
-		# 				end
-		# 			 end
-		# 			end
-		# 			routeIdChecked.push resultDestination.routeid
-		# 			if (routeIdFound!=-1 && pickUpPointIdFound!=-1)
-		# 		    redirect_to route_exists_path(routeId:routeIdFound,pickUpPointId:pickUpPointIdFound,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
-		# 				break
-		# 			end
-		# 		end
-		# 	end
-		# end
+					if (!routeIdChecked.include? resultDestination.routeid)
+					 result.each do |resultSource|
+						if (resultDestination.routeid==resultSource.routeid)
+							routeIdFound=resultSource.routeid
+							if (resultSource.locationid!=0)
+								pickUpPointIdFound=resultSource.locationid
+								break
+							end
+						end
+					 end
+					end
+					routeIdChecked.push resultDestination.routeid
+					if (routeIdFound!=-1 && pickUpPointIdFound!=-1)
+				    redirect_to route_exists_path(routeId:routeIdFound,pickUpPointId:pickUpPointIdFound,slat: slat,slng: slng,dlat: dlat,dlng: dlng)
+						break
+					end
+				end
+			end
+		end
 		@route = RouteSuggestionsSlot.nearest_point(params[:slat],params[:slong],params[:dlat],params[:dlong])
    		if @route != nil  
    			from = []
@@ -130,8 +130,5 @@ class RoutesController < ApplicationController
 	def location
 		render :json => LOCATION
 	end
-
-	 
-
 
 end
