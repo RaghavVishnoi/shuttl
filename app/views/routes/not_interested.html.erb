@@ -87,10 +87,13 @@ $(document).ready(function(){
     <p class="font-s">(Multiple selection)</p>
     <ul class="mul-choice">
     <li><input type="checkbox" name="reason" id="reason1" value="I travel in different route"> <span>I travel in different route</span></li>
+
     <li><input type="checkbox" name="reason" id="reason2" value="The pick-up and drop-point are unconvenient"> <span>The pick-up and drop-point are unconvenient</span></li>
+<%if params[:p] == 't'%>    
     <li><input type="checkbox" name="reason" id="reason3" value="The time-slot are not suitable"> <span>The time-slot are not suitable</span></li>
     <li><input type="checkbox" name="reason" id="reason4" value="Pricing in too high"> <span>Pricing in too high</span></li>
     <li><input type="checkbox" name="reason" id="reason5" value="I don't wish to buy the passes in advance"> <span>I don't wish to buy the passes in advance</span></li>
+<%end%>    
     <li><input type="checkbox" name="reason"id="reason6" > <span>Other, </span> <input type="text" class="single-line" id="other"></li>
     
     

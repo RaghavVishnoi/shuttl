@@ -229,7 +229,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   
   $("#not-interested").click(function(){
     params = window.location.href.split('?')[1]
-    location.href = '/routes/not_interested?'+params
+    location.href = '/routes/not_interested?'+params+'&p=f'
   });
   
   var time = []
