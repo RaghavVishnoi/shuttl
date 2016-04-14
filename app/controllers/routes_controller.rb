@@ -36,7 +36,6 @@ class RoutesController < ApplicationController
 		session[:slong] = params[:slong]
 		session[:dlat] = params[:dlat]
 		session[:dlong] = params[:dlong]
-		 find in current live routes if present
 		slat=params[:slat].to_f
 		slng=params[:slong].to_f
 		dlat=params[:dlat].to_f
