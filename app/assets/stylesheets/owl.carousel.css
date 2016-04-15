@@ -75,8 +75,56 @@
 #start-time .item:hover{background: #3EB6B5; text-decoration:none;}
 #start-time .item.clicked{background: #3EB6B6; color:#fff;}
 
-#start-time2 .item{display: block;cursor: pointer;background: #fff;padding: 2px 0px;margin: 0px 1px; line-height:15px; height:38px;
-        color: #FFF;border:solid 1px #333; color:#333;text-align: center;-webkit-tap-highlight-color: rgba(255, 255, 255, 0); font-size:15px;}
+#start-time2 .item {
+    display: block;
+    cursor: pointer;
+    background: #fff;
+    padding: 2px 0px;
+    margin: 0px 1px;
+    line-height: 33px;
+    height: 38px;
+    border: solid 1px #333;
+    color: #333;
+    text-align: center;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    font-size: 15px;
+    position: relative;
+}
+
+#end-time2 .item {
+    display: block;
+    cursor: pointer;
+    background: #fff;
+    padding: 2px 0px;
+    margin: 0px 1px;
+    line-height: 33px;
+    height: 38px;
+    border: solid 1px #333;
+    color: #333;
+    text-align: center;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    font-size: 15px;
+    position: relative;
+}
+
+#start-time2 .item.link span {
+    position: absolute;
+    bottom: -10px;
+    color: red;
+    text-align: center;
+    left: 4%;
+    width: 100%;
+}
+
+#end-time2 .item.link span {
+    position: absolute;
+    bottom: -10px;
+    color: red;
+    text-align: center;
+    left: 4%;
+    width: 100%;
+}
+
 #start-time2 .item:hover{background: #3EB6B5; text-decoration:none;}
 #start-time2 .item.clicked{background: #3EB6B6; color:#fff;}
 #start-time2 .item span{font-size:10px;}
@@ -89,8 +137,6 @@
 #end-time .item.clicked{background: #3EB6B6; color:#fff;}
 #end-time .item.clicked2{background: #3EB6B6; color:#fff;}	
  
-#end-time2 .item{display: block;cursor: pointer;background: #fff;padding:2px 0px;margin: 0px 1px; line-height:15px; height:38px;
-        color: #FFF;border:solid 1px #333; color:#333;text-align: center;-webkit-tap-highlight-color: rgba(255, 255, 255, 0); font-size:15px;}
 #end-time2 .item:hover{background: #3EB6B5; text-decoration:none;}
 #end-time2 .item.clicked{background: #3EB6B6; color:#fff;}
  #end-time2 .item span{font-size:10px;}

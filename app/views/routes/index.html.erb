@@ -1,412 +1,274 @@
- 
- <script>
+<script type="application/javascript" src="/assets/map.js"></script>
+<script>
+  window.onload = function () {
+    var waypts = [];
 
-  window.onload = function() {
-   initMap();
+    <%
+    slots = RouteSuggestionsSlot.slot_points(session[:home_route_id])
+    slots.each_with_index do |route,index|%>
+    <%if index != 0 && index != slots.length-1%>
+    waypts.push({
+      location: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
+      stopover: true
+    });
+    <%end%>
+    <%end%>
+
+    window.mapMaker.init({
+      mapElement: document.getElementById('map'),
+      from: [<%=session[:from][0]%>, <%=session[:from][1]%>],
+      source: '<%=session[:s]%>',
+      to: [<%=session[:to][0]%>, <%=session[:to][1]%>],
+      destination: "<%=session[:d]%>",
+      waypts: waypts
+    });
   };
-     
- var waypts = [] 
- function initMap() {
-  var directionsService = new google.maps.DirectionsService;
-  var directionsDisplay = new google.maps.DirectionsRenderer;
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 6,
-    center: {lat: 28.5747488, lng: 77.3538323}
-  });
-  directionsDisplay.setMap(map);
-calculateAndDisplayRoute(directionsService, directionsDisplay);
 
-var pmarker = new MarkerWithLabel({
-     position: new google.maps.LatLng(<%=session[:from][0]%>, <%=session[:from][1]%>),
-     draggable: false,
-     raiseOnDrag: false,
-     map: map,
-     labelContent: "Pickup Point",
-     labelAnchor: new google.maps.Point(22, 0),
-     labelClass: "pickup-labels", // the CSS class for the label
-     labelStyle: {opacity: 0.75},
-     
-});
-       
- var piw = new google.maps.InfoWindow({
-   content: "<%=session[:s]%>"
- });
+  $(document).ready(function () {
 
-
-google.maps.event.addListener(pmarker, "click", function (e) { piw.open(map, this); });
-
-/////////////////drop point marker/////////////////
-var dmarker = new MarkerWithLabel({
-     position: new google.maps.LatLng(<%=session[:to][0]%>, <%=session[:to][1]%>),
-     draggable: false,
-     raiseOnDrag: false,
-     map: map,
-     labelContent: "Drop Point",
-     labelAnchor: new google.maps.Point(22, 0),
-     labelClass: "pickup-labels", // the CSS class for the label
-     labelStyle: {opacity: 0.75},
-     
-});
-       
- var diw = new google.maps.InfoWindow({
-   content: "<%=session[:d]%>"
- });
-
-
-google.maps.event.addListener(dmarker, "click", function (e) { diw.open(map, this); });
-
-
-  <%
-  slots = RouteSuggestionsSlot.slot_points(session[:home_route_id])
-  
-  slots.each_with_index do |route,index|%>
-  <%if index != 0 && index != slots.length-1%>
-     waypts.push({
-        location: new google.maps.LatLng(<%=route.lat%>,<%=route.long%>),
-        stopover: true
-
-      });
-  <%end%>   
-     // <%if index == 0%>
-     //         var smarker = new MarkerWithLabel({
-     //           position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-     //           draggable: false,
-     //           raiseOnDrag: false,
-     //           map: map,
-     //           labelContent: "Start",
-     //           labelAnchor: new google.maps.Point(22, 0),
-     //           labelClass: "labels", // the CSS class for the label
-     //           labelStyle: {opacity: 0.75},
-               
-     //      });
-       
-     //       var siw = new google.maps.InfoWindow({
-     //         content: "<%=route.name%>"
-     //       });
-         
-
-     //     google.maps.event.addListener(smarker, "click", function (e) { siw.open(map, this); });
-     //  <%end%> 
-      // <%if index == slots.length-1%>  
-      //   var emarker = new MarkerWithLabel({
-      //          position: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
-      //          draggable: false,
-      //          raiseOnDrag: false,
-      //          map: map,
-      //          labelContent: "End",
-      //          labelAnchor: new google.maps.Point(22, 0),
-      //          labelClass: "labels", // the CSS class for the label
-      //          labelStyle: {opacity: 0.75},
-               
-      //     });
-       
-      //      var eiw = new google.maps.InfoWindow({
-      //        content: "<%=route.name%>"
-      //      });
-         
-
-      //    google.maps.event.addListener(emarker, "click", function (e) { eiw.open(map, this); });
-      // <%end%>
-  <%end%>
-    
- 
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-   source = [];
-   destination = [] ;
-   
-   
-  directionsService.route({
-
-    origin: '<%=session[:s]%>',
-    destination: '<%=session[:d]%>',
-    waypoints: waypts,
-    optimizeWaypoints: true,
-    travelMode: google.maps.TravelMode.DRIVING
-  }, function(response, status) {
-    if (status === google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(response);
-      var route = response.routes[0];
-      var summaryPanel = document.getElementById('directions-panel');
-   
-      for (var i = 0; i < route.legs.length; i++) {
-        var routeSegment = i + 1;
-        
-      }
-    } else {
-      window.alert('Directions request failed due to ' + status);
-    }
-  });
-}
-  var directionsService = new google.maps.DirectionsService;
-  var directionsDisplay = new google.maps.DirectionsRenderer;
-  var map = new google.maps.Map(document.getElementById('googleMap'), {
-    zoom: 7,
-    center: {lat: 41.85, lng: -87.65}
-  });
-  directionsDisplay.setMap(map);
-
-  var onChangeHandler = function() {
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
-  };
-   
-}
-
-// function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-//   directionsService.route({
-//     origin: "#{session[:s]}",
-//     destination: "#{session[:d]}",
-//     travelMode: google.maps.TravelMode.DRIVING
-//   }, function(response, status) {
-//     if (status === google.maps.DirectionsStatus.OK) {
-//       directionsDisplay.setDirections(response);
-//     } else {
-//       window.alert('Directions request failed due to ' + status);
-//     }
-//   });
-// }
-   
-   $(document).ready(function() {
-
-      $("#start-time").owlCarousel({
-        items : 10,
-        navigation: true,
-        navigationText: [
+    $("#start-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
         "<i class='fa fa-angle-left'></i>",
         "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
+      ],
+
+    });
+
     $("#start-time2").owlCarousel({
-        items : 10,
-        navigation: true,
-        navigationText: [
+      items: 10,
+      navigation: true,
+      navigationText: [
         "<i class='fa fa-angle-left'></i>",
         "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
-    
+      ],
+
+    });
+
+
     $("#end-time").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
+      items: 10,
+      navigation: true,
+      navigationText: [
         "<i class='fa fa-angle-left'></i>",
         "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
-    
+      ],
+
+    });
+
     $("#end-time2").owlCarousel({
-        items : 10,
-     navigation: true,
-        navigationText: [
+      items: 10,
+      navigation: true,
+      navigationText: [
         "<i class='fa fa-angle-left'></i>",
         "<i class='fa fa-angle-right'></i>"
-        ],
-        
-      });
+      ],
 
-      $('.link').on('click', function(event){
-        var $this = $(this);
-        if($this.hasClass('clicked')){
-          $this.removeClass('clicked');
-        } else{
-          $('.link').removeClass('clicked');
-          $this.addClass('clicked');
-        }
+    });
 
-      });
-        
-     
-      var pledges;
-      $.ajax({
-        url: "/route_suggestions_pledges/pledges",
-        type: "GET",
-        data: {route_id : <%=session[:home_route_id]%>,drop_point_id : <%=session[:drop_point_id]%>},
-        dataType: "text",
-                 
-        complete: function() {
+    $('.link').on('click', function (event) {
+      var $this = $(this);
+      if ($this.hasClass('clicked')) {
+        $this.removeClass('clicked');
+      } else {
+        $('.link').removeClass('clicked');
+        $this.addClass('clicked');
+      }
 
-        },
+    });
 
-        success: function(data, textStatus, xhr) {
-          var value;
-          arr = [] 
-          time = JSON.parse(data) 
-          pledges = time
-          fill = [] 
-          fill.push(time[0]['time'])
-          fill.push(time[1]['time'])
-          index = []
-          var val1,val2;
-          $('.link').each(function( index ) {
-            //alert($(".link:eq(3)").text());
-            time = $(this).text()
-            tagt1 = parseInt(time.split(':')[0])*60
-            tagt2 = parseInt(time.split(':')[1])
-            tagt = tagt1+tagt2
-            rest1 = parseInt(fill[0].split(':')[0])*60
-            rest2 = parseInt(fill[0].split(':')[1])
-            rest = rest1+rest2
-            resp1 = parseInt(fill[1].split(':')[0])*60
-            resp2 = parseInt(fill[1].split(':')[1])
-            resp = resp1+resp2
-            if(tagt <= rest){
-              val1 = index
-            }
-            if(tagt <= resp){
-              val2 = index
-            }
-            
-  });
-           $(".link span:eq("+val1+")").text("Filling Fast")
-           $(".link span:eq("+val2+")").text("Filling Fast")
-           
-           
-          },
-        error: function() {
-           
+
+    var pledges;
+    $.ajax({
+      url: "/route_suggestions_pledges/pledges",
+      type: "GET",
+      data: {route_id: <%=session[:home_route_id]%>, drop_point_id: <%=session[:drop_point_id]%>},
+      dataType: "text",
+
+      complete: function () {
+
+      },
+
+      success: function (data, textStatus, xhr) {
+        var value;
+        arr = []
+        time = JSON.parse(data)
+        pledges = time
+        fill = []
+        fill.push(time[0]['time'])
+        fill.push(time[1]['time'])
+        index = []
+        var val1, val2;
+        $('.link').each(function (index) {
+          //alert($(".link:eq(3)").text());
+          time = $(this).text()
+          tagt1 = parseInt(time.split(':')[0]) * 60
+          tagt2 = parseInt(time.split(':')[1])
+          tagt = tagt1 + tagt2
+          rest1 = parseInt(fill[0].split(':')[0]) * 60
+          rest2 = parseInt(fill[0].split(':')[1])
+          rest = rest1 + rest2
+          resp1 = parseInt(fill[1].split(':')[0]) * 60
+          resp2 = parseInt(fill[1].split(':')[1])
+          resp = resp1 + resp2
+          if (tagt <= rest) {
+            val1 = index
           }
-           
-           
-      });
+          if (tagt <= resp) {
+            val2 = index
+          }
+
+        });
+        $(".link span:eq(" + val1 + ")").text("Filling Fast")
+        $(".link span:eq(" + val2 + ")").text("Filling Fast")
 
 
-     
-  $('.check-box li').click(function(){
-    $(this).addClass("selected"); 
-  });
-  
-  $("#not-interested").click(function(){
-    params = window.location.href.split('?')[1]
-    location.href = '/routes/not_interested?'+params
-  });
-  
-  var time = []
-  $('.crowl-pad div a').click(function(){
-      time = $(this).text(); 
+      },
+      error: function () {
+
+      }
+
+
+    });
+
+
+    $('.check-box li').click(function () {
+      $(this).addClass("selected");
+    });
+
+    $("#not-interested").click(function () {
+      params = window.location.href.split('?')[1]
+      location.href = '/routes/not_interested?' + params
+    });
+
+    var time = []
+    $('.crowl-pad div a').click(function () {
+      time = $(this).text();
       index = $('.crowl-pad div a').index(this);
-      nindex = index+1
-      nval = $(".crowl-pad div a:eq("+nindex+")").text()
-      nval1 = parseInt(nval.split(':')[0])*60
+      nindex = index + 1
+      nval = $(".crowl-pad div a:eq(" + nindex + ")").text()
+      nval1 = parseInt(nval.split(':')[0]) * 60
       nval2 = parseInt(nval.split(':')[1])
-      nv = nval1+nval2
+      nv = nval1 + nval2
       val = $(this).text()
-      val1 = parseInt(val.split(':')[0])*60
+      val1 = parseInt(val.split(':')[0]) * 60
       val2 = parseInt(val.split(':')[1])
-      v = val1+val2
+      v = val1 + val2
       var count;
-       for(var j=0;j<pledges.length;j++){
+      for (var j = 0; j < pledges.length; j++) {
         pledge = pledges[j]['time']
-        pled1 = parseInt(pledge.split(':')[0])*60
+        pled1 = parseInt(pledge.split(':')[0]) * 60
         pled2 = parseInt(pledge.split(':')[1])
-        pled = pled1+pled2
-        if(pled>=v && pled<nv){
+        pled = pled1 + pled2
+        if (pled >= v && pled < nv) {
           count = pledges[j]['count']
           $('#pledge_route').text(pledges[j]['pledge_route']);
           $('#pledge_count').text(pledges[j]['count']);
         }
 
       }
-      if(count == null){
-        $('#pledge_route').text('Undefined');
-         $('#pledge_count').text(0);
-      }      
+      if (count == null) {
+        $('#pledge_route').text('-');
+        $('#pledge_count').text(0);
+      }
     });
-  $("#next").click(function(){
-    params = window.location.href.split('?')[1]
-     location.href = '/routes/firsttimeslot?'+params+'&timeslot='+time
-   });
-});
+    $("#next").click(function () {
+      params = window.location.href.split('?')[1]
+      location.href = '/routes/firsttimeslot?' + params + '&timeslot=' + time
+    });
+  });
 
-  
-  </script>
- 
- 
+
+</script>
+
+
 <!-- Loader -->
 <div id="page-preloader"><span class="spinner"></span></div>
 <!-- Loader end -->
-<div class="layout-theme animated-css"  data-header="sticky" data-header-top="200"> 
-  <div id="wrapper"> 
+<div class="layout-theme animated-css" data-header="sticky" data-header-top="200">
+  <div id="wrapper">
 
-  
-    
+
     <!-- HEADER -->
     <header class="header">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png"  width="100" alt="Logo"></a>
-            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
+          <div class="col-xs-12">
+            <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png" width="100" alt="Logo"></a>
+            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div>
           </div>
-          <!-- end col  --> 
+          <!-- end col  -->
         </div>
-        <!-- end row  --> 
+        <!-- end row  -->
       </div>
-      <!-- end container--> 
+      <!-- end container-->
     </header>
     <!-- end header -->
-     <section class="section-default">
-        <div class="container"> 
-          
-           <div class="row">
-            
+    <section class="section-default">
+      <div class="container">
+
+        <div class="row">
+
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
-      <div class="location-map-block">
-      <h5><%=RouteSuggestion.find(session[:home_route_id]).name%></h5>
-       <div id="map"></div>
-     </div> 
-     <div class="book-status-block">
-    <div class="book-staff-left">  <strong id= "pledge_count"></strong>/<strong><%=RouteSuggestion.find(session[:home_route_id]).threshold%></strong> traveller's confirmed</div>
-     <input type="hidden" name="pledge_count" id="hidden-value" />
-      <div class="book-staff-right"><strong id="pledge_route"></strong> days to go</div>
-     <div class=" clearfix"></div>
-     </div>
-     
-     
-    <div class="travel-time-block">
-     <h5>What time do you have to reach work?</h5>
-     <p class="font-s">(Leave blank if you don't wish to use shuttl in the morning)</p>
-     <div class="crowl-pad">
-     <div id="start-time2" class="owl-carousel">               
-        <a class="item link <%="clicked" if session[:home_slot1] == '8:00' || session[:home_slot2] == '8:00'%> first" id="default">8:00<br><span id="0800"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '0830' || session[:home_slot2] == '8:30'%>">8:30<br><span id="0830"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '9:00' || session[:home_slot2] == '9:00'%>">9:00<br><span id="0900"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '9:30' || session[:home_slot2] == '9:30'%>">9:30<br><span id="0930"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '10:00' || session[:home_slot2] == '10:00'%>">10:00<br><span id="1000"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '10:30' || session[:home_slot2] == '10:30'%>">10:30<br><span id="1030"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '11:00' || session[:home_slot2] == '11:00'%>">11:00<br><span id="1100"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '11:30' || session[:home_slot2] == '11:30'%>">11:30<br><span id="1130"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '12:00' || session[:home_slot2] == '12:00'%>">12:00<br><span id="1200"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '12:30' || session[:home_slot2] == '12:30'%>">12:30<br><span id="1230"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '13:00' || session[:home_slot2] == '13:00'%>">13:00<br><span id="1300"></span></a>
-        <a class="item link <%="clicked" if session[:home_slot1] == '13:30' || session[:home_slot2] == '13:30'%>">13:30<br><span id="1330"></span></a>
+            <div class="location-map-block">
+              <h5><%= RouteSuggestion.find(session[:home_route_id]).name %></h5>
+              <div id="map"></div>
+            </div>
+            <div class="book-status-block">
+              <div class="book-staff-left">
+                <strong id="pledge_count">0</strong>/<strong><%= RouteSuggestion.find(session[:home_route_id]).threshold || 0 %></strong>
+                traveller's confirmed
+              </div>
+              <input type="hidden" name="pledge_count" id="hidden-value"/>
+              <div class="book-staff-right"><strong id="pledge_route" style="float: left; margin: 1px 3px 0 0;">-</strong> days to go</div>
+              <div class=" clearfix"></div>
+            </div>
+
+
+            <div class="travel-time-block">
+              <h5>What time do you have to reach work?</h5>
+              <p class="font-s">(Leave blank if you don't wish to use shuttl in the morning)</p>
+              <div class="crowl-pad">
+                <div id="start-time2" class="owl-carousel">
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '8:00' || session[:home_slot2] == '8:00' %> first" id="default">8:00<br><span id="0800"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '0830' || session[:home_slot2] == '8:30' %>">8:30<br><span id="0830"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '9:00' || session[:home_slot2] == '9:00' %>">9:00<br><span id="0900"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '9:30' || session[:home_slot2] == '9:30' %>">9:30<br><span id="0930"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '10:00' || session[:home_slot2] == '10:00' %>">10:00<br><span id="1000"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '10:30' || session[:home_slot2] == '10:30' %>">10:30<br><span id="1030"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '11:00' || session[:home_slot2] == '11:00' %>">11:00<br><span id="1100"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '11:30' || session[:home_slot2] == '11:30' %>">11:30<br><span id="1130"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '12:00' || session[:home_slot2] == '12:00' %>">12:00<br><span id="1200"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '12:30' || session[:home_slot2] == '12:30' %>">12:30<br><span id="1230"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '13:00' || session[:home_slot2] == '13:00' %>">13:00<br><span id="1300"></span></a>
+                  <a class="item link <%= "clicked" if session[:home_slot1] == '13:30' || session[:home_slot2] == '13:30' %>">13:30<br><span id="1330"></span></a>
+
+                </div>
 
               </div>
-        
-      </div>
-      <br>
-       <div class="button-block">
-      <button class="btn bg-danger" type="button" id="not-interested">Not Interested <i class="fa fa-ban"></i></button>
-      <button class="btn btn-info" type="button" id="next">Next <i class="fa fa-chevron-circle-right"></i></button>
-      </div>
-     </div>
-     <!-- end time -->
-     
-         </div>
-    <!-- end coll --> 
-     
-         </div>
-         
+              <br>
+              <div class="button-block">
+                <button class="btn bg-danger" type="button" id="not-interested">Not Interested <i class="fa fa-ban"></i>
+                </button>
+                <button class="btn btn-info" type="button" id="next">Next <i class="fa fa-chevron-circle-right"></i>
+                </button>
+              </div>
+            </div>
+            <!-- end time -->
+
+          </div>
+          <!-- end coll -->
+
         </div>
-        <!-- end container --> 
-      </section>
-      <!-- end section-default -->
-   
-    
-    
+
+      </div>
+      <!-- end container -->
+    </section>
+    <!-- end section-default -->
+
+
   </div>
 
- <!-- end wrapper --> 
+  <!-- end wrapper -->
 </div>

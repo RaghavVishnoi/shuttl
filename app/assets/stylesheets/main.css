@@ -52,7 +52,7 @@ img.pull-left { margin-right: 20px; }
 .social-media a .fa{font-size:18px;}
 .Booking-status{}
 .Booking-status h5 .fa{ font-size:18px;}
-.book-detail{ padding:0;}
+.book-detail{ padding:0; background-color: whitesmoke;}
 .book-detail li{padding:10px; list-style:none;  margin-bottom:5px; width:465px; display:inline-block; background:#F5F5F5;}
 .book-detail li .change-col h5{ display:inline-block; margin-top: 0; margin-bottom:2px; font-size:15px; font-weight:500; }
 .book-detail li .change-col .change-link{ float:right; }
@@ -83,7 +83,7 @@ img.pull-left { margin-right: 20px; }
 .table-ship-block .table-col td a{text-decoration:underline;}
 .book-status-block{ padding:5px; background:#eee;}
 .book-staff-left{ float:left; font-size:11px; line-height:14px;}
-.book-staff-right{ float:right; font-size:11px; line-height:9px; text-align:center;position:relative;}
+.book-staff-right{ float:right; font-size:11px; line-height:9px; text-align:center;position:relative; margin-top: 2px;}
 .book-staff-right strong, .book-staff-left strong{font-size:15px;}
 
 
@@ -1593,7 +1593,7 @@ html #search-open { margin-top: 60px;}
 .align_right strong{text-align:center;} 
 .mul-choice{max-width:inherit; font-size:13px;} 
 .not-interested h5{text-align:left;} 
-.travel-time-block{text-align:inherit;}  
+.travel-time-block{text-align:inherit; padding-bottom: 50px;}
 }
 
 /* end max-width:767px */
@@ -1732,11 +1732,25 @@ html #search-open {margin-top: 8px;}
     /*border: 1px solid #f1f1f1;      */
     /*}       */
             
-            
+
+    .summary-table {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .summary-table .type {
+        width: 20%;
+        vertical-align: text-top;
+        font-weight: 500;
+    }
             
             
     .buttun-group{text-align:right;}
-    .pickup-labels {color: #000; padding:0px 5px; background-color:#fff; font-size:12px;font-weight: 400; text-align: center; border: 1px solid #333;; white-space: nowrap;}        
+.pickup-labels {
+    padding: 0px 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+}
             
     .contact-dialog{width:30%;height: 120px;background-color: #10B9B3;position:absolute;margin-left:40%;margin-top:300px;z-index: 10;display:none;}     
     .otp-dialog{display:none;}
