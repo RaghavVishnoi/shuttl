@@ -1,5 +1,29 @@
+<script type="application/javascript" src="/assets/map.js"></script>
+<script>
+  window.onload = function () {
+    var waypts = [];
 
-  
+    <%
+    slots = RouteSuggestionsSlot.slot_points(session[:home_route_id])
+    slots.each_with_index do |route,index|%>
+    <%if index != 0 && index != slots.length-1%>
+    waypts.push({
+      location: new google.maps.LatLng(<%=route.lat%>, <%=route.long%>),
+      stopover: true
+    });
+    <%end%>
+    <%end%>
+
+    window.mapMaker.init({
+      mapElement: document.getElementById('map'),
+      from: [<%=session[:from][0]%>, <%=session[:from][1]%>],
+      source: '<%=session[:s]%>',
+      to: [<%=session[:to][0]%>, <%=session[:to][1]%>],
+      destination: "<%=session[:d]%>",
+      waypts: waypts
+    });
+  };
+</script>
 <!-- Loader -->
 <div id="page-preloader"><span class="spinner"></span></div>
 <!-- Loader end -->
@@ -12,7 +36,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12"> <a class="header-logo" href="index.html"><img class="header-logo__img" src="/assets/logo.png"  alt="Logo"></a>
-            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div> 
+            <div class="header-inner">Home: Office Pickup: Drop for Odd:Even 2.0.</div>
           </div>
           <!-- end col  --> 
         </div>
@@ -25,16 +49,101 @@
         <div class="container"> 
           
            <div class="row">
-            
-          <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
-            <div class="thankYo">
-  		        <div class="doneSign"><i class="fa fa-check-circle-o"></i></div>
-              <div class="ThankYouPage"> 
-                  Thankyou for posting your suggestion. We will contact you soon.
-              </div>
-            </div>
-         </div>
-         </div>
+
+             <div class="Booking-status">
+
+               <% if session[:paymentDone] %>
+                   <h5>YOu payment has been received successfully! Thank you for using Shuttl!</h5>
+               <% else %>
+                   <h5>Thank you for using Shuttl!</h5>
+               <% end %>
+
+
+               <div class="location-map-block mo-none">
+                 <div id="map"></div>
+               </div>
+
+               <ul class="book-detail clearfix">
+                 <li>
+                   <div class="change-col">
+                     <span class="change-link"><a href="#" id="home-change">Change</a></span>
+                     <div class="book-title">
+                       <h5>Going to work</h5>
+
+
+                     </div>
+
+                     <% if session[:home_slot] != nil %>
+                         <div>
+                           <table class="summary-table">
+                             <tr>
+                               <td class="type">Depart:</td>
+                               <td>
+                                 <%= session[:s] %>
+                                 <b><i>@<%= RouteSuggestion.home_depart(params[:route_id], session[:home_slot], session[:drop_point_id], session[:pickup_point_id]) %></i></b>
+                               </td>
+                             </tr>
+                             <tr>
+                               <td class="type">Arrives:</td>
+                               <td>
+                                 <%= session[:d] %> <b><i>@<%= session[:home_slot] %></i></b>
+                               </td>
+                             </tr>
+                           </table>
+                         </div>
+
+                         <b><%= RouteSuggestionsPledge.total_pledge(params[:route_id]) %> more ppl required to launch
+                           root</b>
+                         </div>
+                         </li>
+                     <% else %>
+                         <em><i>No timeslot was selected</i></em>
+                         <br><br>
+                     <% end %>
+                     <li class="col-md-6">
+                       <div class="change-col">
+                         <h5>Return from work</h5>
+                         <span class="change-link"><a href="" id="work-change">Change</a></span>
+                       </div>
+                       <% if session[:work_slot] != nil %>
+                           <div>
+                             <table class="summary-table">
+                               <tr>
+                                 <td class="type">Depart:</td>
+                                 <td>
+                                   <%= session[:d] %> <b><i>@<%= session[:work_slot] %></i></b>
+                                 </td>
+                               </tr>
+                               <tr>
+                                 <td class="type">Arrives:</td>
+                                 <td>
+                                   <%= session[:s] %>
+                                   <b><i>@<%= RouteSuggestion.home_arrive(params[:route_id], session[:work_slot], session[:drop_point_id], session[:pickup_point_id]) %>
+                                   </i></b>
+                                 </td>
+                               </tr>
+                             </table>
+                           </div>
+                           <b><%= RouteSuggestionsPledge.total_pledge(params[:route_id]) %>  more ppl required to launch
+                             root</b>
+                           </p>
+                       <% else %>
+                           <em><i>No time-slot was selected</i></em>
+                           <br><br>
+                       <% end %>
+                     </li>
+
+                     </ul>
+
+             </div>
+
+             <div class="travel-time-block">
+               <div class="social-media">
+                 <p>Spread the word and earn free rides*</p>
+                 <a href="#"><i class="fa fa-facebook"></i></a>
+                 <a href="#"><i class="fa fa-whatsapp"></i></a>
+               </div>
+             </div>
 		<!-- end coll --> 
 		 
          </div>
