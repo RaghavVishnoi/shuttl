@@ -11171,9 +11171,6 @@ span.otpText {margin-top: 3px; display: block;color: #999;} */
 .btn.disabled, .btn[disabled]{
 	    opacity: 1;
 }
-input#contact-submit {
-    width: 100%;
-}
 
 div#confirmSection {
     background: transparent;

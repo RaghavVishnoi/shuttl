@@ -1594,6 +1594,9 @@ html #search-open { margin-top: 60px;}
 .mul-choice{max-width:inherit; font-size:13px;} 
 .not-interested h5{text-align:left;} 
 .travel-time-block{text-align:inherit; padding-bottom: 50px;}
+
+#contact-submit{width: 100%;}
+#otp-submit {width: 100%;}
 }
 
 /* end max-width:767px */
@@ -1607,7 +1610,8 @@ html   .header-logo { display: inline-block; float: left; position: relative; te
 html #search-open {margin-top: 8px;}
 .header-cart{margin-top: 0px !important;}
 .header-inner { font-size:18px; padding-top:30px;}
-
+    #contact-submit{width: 100%;}
+    #otp-submit {width: 100%;}
 }
 
 /*320 x 480 (iPhone)*/
@@ -1672,7 +1676,9 @@ html #search-open {margin-top: 8px;}
             
     #confirmSection {
     background: transparent;        
-    }       
+    }
+#contact-submit{width: 100%;}
+#otp-submit {width: 100%;}
 
 #confirmSection .form-group.col-md-6{padding: 0px;}
             
