@@ -263,4 +263,26 @@ class ClusterController < ApplicationController
 
     render :json=>res.to_json
   end
+
+
+  def getAllPickPointsForRoute
+    pickUpPoints=params[:pick_up_points]
+
+
+  end
+
+  def getDirections(pickUpPoints)
+
+    if (pickUpPoints==nil || pickUpPoints.size==0)
+      return nil
+    end
+    url = URI.parse("https://maps.googleapis.com/maps/api/directions/json?origin="+pickUpPoints[0]["lat"]+","+pickUpPoints[0]["lng"]+"&destination="+pickUpPoints[pickUpPoints.size-1]["lat"]+","+pickUpPoints[pickUpPoints.size-1]["lng"]+"&sensor=false&units=metric&mode=driving&key=AIzaSyBvaX6apQloHSxGg6XHmY-l_LbUjyIIUkA")
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port,:use_ssl => url.scheme == 'https') {|http|
+      http.request(req)
+    }
+
+    return nil,nil
+
+  end
 end
