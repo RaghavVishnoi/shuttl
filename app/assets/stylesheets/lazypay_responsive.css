@@ -1,0 +1,448 @@
+@media only screen and (min-width:1921px) and (max-width:  2560px)  {
+#benefits-pannel{
+padding: 150px 100px;
+}
+#benefits-pannel #buy-benefits {
+    margin: 80px 0;
+}
+#benefits-pannel .checkout-title h1{
+font-size:68px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+font-size:38px;
+line-height:40px;
+}
+#otp-container .otp-content .otp-animation #mobile-screen{
+    width: 15vw;
+}
+#otp-container .otp-content .otp-text{
+    font-size: 28px;
+    line-height: 32px;
+}
+#otp-container .otp-content form .row{
+    margin: 40px auto 0;
+}
+#otp-container .otp-content form .input-otp{
+max-width: 420px;
+}
+#otp-container .otp-content form .input-otp input[type=text]{
+font-size:18px;
+width:260px;
+}
+#otp-container .otp-content form .input-otp input{
+font-size:20px;
+}
+#otp-container .otp-content form .input-otp input.resend{
+width:20px;
+height:25px;
+}
+#otp-container .otp-content .otp-text p, #otp-container .otp-content .otp-text p a{
+    font-size: 22px;
+}
+.lazy_pay_btn{
+font-size:28px;
+}
+.img-partner-logo {
+    margin-top: 100px;
+}
+.citrus-img{
+width:300px;
+}
+
+
+
+}
+
+@media only screen and (min-width:1681px) and (max-width:  1920px)  {
+#benefits-pannel{
+padding: 100px 80px;
+}
+#benefits-pannel #buy-benefits {
+    margin: 70px 0;
+}
+#benefits-pannel .checkout-title h1{
+font-size:48px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+font-size:26px;
+line-height:26px;
+}
+#otp-container .otp-content .otp-animation #mobile-screen{
+    width: 15vw;
+}
+#otp-container .otp-content .otp-text{
+    font-size: 22px;
+    line-height: 28px;
+}
+#otp-container .otp-content form .input-otp input[type=text]{
+font-size:14px;
+}
+#otp-container .otp-content form .input-otp input{
+font-size:15px;
+}
+#otp-container .otp-content .otp-text p, #otp-container .otp-content .otp-text p a{
+    font-size: 19px;
+}
+.lazy_pay_btn{
+font-size:22px;
+}
+
+
+}
+
+
+@media only screen and (min-width:1461px) and (max-width:  1680px)  {
+#benefits-pannel .checkout-title h1{
+font-size:42px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+font-size:22px;
+line-height:22px;
+}
+#otp-container .otp-content .otp-animation #mobile-screen{
+    width: 15vw;
+}
+#otp-container .otp-content .otp-text{
+    font-size: 20px;
+    line-height: 24px;
+}
+#otp-container .otp-content .otp-text p, #otp-container .otp-content .otp-text p a{
+    font-size: 17px;
+}
+.lazy_pay_btn{
+font-size:20px;
+}
+
+}
+
+
+@media (max-width: 1100px) {
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+    font-size: 16px;
+    line-height: 17px;
+}
+#otp-container .otp-content .otp-animation #mobile-screen{
+width: 30vw;
+}
+#otp-container.card-section #card-screen form label{
+    margin: 20px 0;
+	line-height:16px;
+}
+#benefits-pannel{
+padding: 40px 30px;
+}
+#benefits-pannel .checkout-title h1{
+font-size: 34px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-img{
+width:20%;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text{
+width:80%;
+}
+#otp-container.card-section .otp-content{
+    padding: 6vh 2%;
+}
+#otp-container .otp-content form .row{
+margin: 15px auto 0;
+}
+.lazy_pay_btn{
+padding: 10px 40px;
+}
+}
+
+
+@media (max-width: 767px) {
+header{
+padding: 8px 0;
+}
+.logo-container{
+width:100%;
+}
+.logo{
+width: 155px;
+height: 22px;
+margin: auto;
+float:none;
+}
+.contact-details{
+text-align:center;
+}
+.main{
+margin-top:82px;
+}
+#benefits-pannel {
+position: absolute;
+z-index: 2;
+}
+#benefits-pannel .checkout-title h1{
+font-size: 28px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+    font-size: 18px;
+    line-height: 20px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-img{
+width:10%;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text{
+width:90%;
+}
+#slideLeftButton{
+display:block;
+position:fixed;
+z-index:3;
+bottom: 65px;
+right: 5vw;
+margin-top:-12px;
+}
+#slideLeftButton:after{
+content: "";
+background: url('../images/Arrow_white-01.svg') no-repeat;
+width:20px;
+height:14px;
+display: inline-block;
+margin-left: 10px;
+margin-bottom: -2px;
+}
+#slideLeftButton.active{
+right: 100vw;
+}
+#slideLeftButton:hover{
+    background: #E6154E !important;
+}
+#slideRightButton{
+position:fixed;
+left:0;
+bottom:40px;
+display:block;
+z-index:1;
+}
+#slideRightButton img{
+width:100%;
+float:left;
+display:block;
+width:40px;
+}
+}
+
+
+
+
+@media (max-width: 640px) {
+	
+.contact-details p{
+padding:5px 0;
+}
+.main{
+    margin-top: 76px;
+}
+#benefits-pannel .checkout-title h1{
+font-size: 30px;
+}
+#benefits-pannel #buy-benefits{
+margin: 35px 0;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-img{
+width:15%;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text{
+width:85%;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+    font-size: 17px;
+    line-height: 17px;
+}
+#otp-container .otp-content .otp-animation #mobile-screen{
+    width: 30vw;
+	height:15vh;
+}
+#otp-container .otp-content .otp-text{
+font-size:16px;
+}
+#otp-container .otp-content form{
+width:75%;
+}
+#otp-container.card-section #card-screen form label{
+font-size:12px;
+}
+#otp-container .otp-content .otp-text p, #otp-container .otp-content .otp-text p a{
+font-size:13px;
+}
+.lazy_pay_btn{
+font-size:15px;
+}
+#slider-dots{
+right:10px;
+position: absolute;
+top: 20px;
+}
+
+}
+
+
+
+@media (max-width: 480px) {
+
+#benefits-pannel{
+    padding: 30px 20px;
+}
+#benefits-pannel .checkout-title h1{
+font-size: 22px;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text p{
+    font-size: 14px;
+    line-height: 16px;
+}
+#benefits-pannel #buy-benefits {
+    margin: 20px 0;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-img{
+width:25%;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-text{
+width:75%;
+}
+#benefits-pannel #buy-benefits .row .buy-benefits-img img{
+    width: 70%;
+}
+#otp-container .otp-content{
+    padding: 5vh 5% !important;
+}
+#otp-container.card-section .otp-content{
+    padding: 5vh 2.5% !important;
+}
+#otp-container .otp-content .otp-text{
+font-size:13.5px;
+letter-spacing:0;
+line-height:15px;
+}
+#otp-container .otp-content form{
+width: 100%;
+}
+#otp-container .otp-content form .input-otp{
+padding: 10px 15px;
+}
+#otp-container .otp-content form .input-otp input[type=text]{
+width:175px;
+}
+.footer-img{
+margin-top:30px;
+width:340px;
+}
+.footer-img .citrus-secure{
+width:130px;
+height:32px;
+}
+.footer-img .pay-partner ul li.pcj{
+    width: 35px;
+    height: 15px;
+    margin: 12px 3px;
+}
+.footer-img .pay-partner ul li.visa{
+    width: 35px;
+    height: 15px;
+    margin: 12px 3px;
+}
+.footer-img .pay-partner ul li.master{
+    width: 40px;
+    height: 15px;
+    margin: 12px 2px;
+}
+.footer-img .pay-partner ul li.geotrust{
+width:65px;
+height:18px;
+margin: 10px 2px;
+}
+
+}
+
+
+@media (max-width: 380px) {
+#slideLeftButton{
+bottom: 50px;
+}
+#otp-container #otp-screen{
+    padding: 8vh 4%;
+}
+#otp-container .otp-content .otp-animation #mobile-screen{
+height: 12vh !important;
+}
+#otp-container .otp-content .otp-text{
+font-size:12px;
+}
+#otp-container .otp-content .otp-text p, #otp-container .otp-content .otp-text p a{
+font-size:11px;
+}
+#otp-container .otp-content form .row{
+    margin: 12px auto 0;
+}
+.footer-img{
+margin-top:30px;
+width:290px;
+}
+.footer-img .citrus-secure{
+width:110px;
+height:27px;
+}
+.footer-img .pay-partner ul li.pcj{
+    width: 32px;
+    height: 15px;
+    margin: 8px 3px;
+}
+.footer-img .pay-partner ul li.visa{
+    width: 32px;
+    height: 15px;
+    margin: 8px 3px;
+}
+.footer-img .pay-partner ul li.master{
+    width: 36px;
+    height: 15px;
+    margin: 8px 2px;
+}
+.footer-img .pay-partner ul li.geotrust{
+width:60px;
+height:16px;
+margin: 6px 2px;
+}
+
+
+}
+
+
+
+@media only screen and (device-width:768px){
+#slideLeftButton{bottom: 200px;}
+#slideRightButton{bottom: 175px;}
+}
+
+@media only screen and (max-height: 480px) {
+html,body{
+overflow:auto;	
+}
+.main {
+height:404px;
+}
+#benefits-pannel{
+padding: 40px 30px 120px;
+height: auto; 	
+}
+#slideLeftButton, #slideRightButton{
+position:absolute;
+bottom: 25px;
+}
+#slideRightButton{
+bottom: 0;
+}
+
+}
+
+@media only screen and (max-height: 480px) {
+
+#slideLeftButton{
+bottom: 0px;
+}
+#slideRightButton{
+bottom: -20px;
+}
+}
