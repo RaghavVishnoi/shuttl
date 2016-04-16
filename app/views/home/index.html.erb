@@ -185,8 +185,10 @@
         $(".overlay").attr('style', 'display:block')
 
         var phone;
-        $("#contact-submit").click(function () {
-          phone = $('#contact').val()
+        $("#contact-submit").click(function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          phone = $('#contact').val();
           if (phone != null) {
             $.ajax({
               url: "/route_suggestions/generate_otp",
