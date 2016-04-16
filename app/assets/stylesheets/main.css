@@ -1,6 +1,6 @@
 /* FONTS*/
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100italic,100,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
-
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 /* ======= GLOBAL ======= */
 ::-moz-selection { background: #3EB6B5;  color:#fff !important;  }
 ::selection { background: #3EB6B5 ; color:#fff !important; }
@@ -850,6 +850,7 @@ li.advantages__item { width: 50%; padding-left: 50px;
 
 
 #page-preloader { position: fixed; z-index: 100500; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; background: #2e2e2e;
+display:none;
 }
 #page-preloader .spinner { position: absolute; z-index: 1001; top: 50%; left: 50%; display: block; width: 100px; height: 100px; margin-top: -50px; margin-left: -50px; -webkit-animation: spin 2.5s infinite linear; animation: spin 2.5s infinite linear; border: 3px solid transparent; border-top-color: #e7e4d7; border-radius: 50%;
 }

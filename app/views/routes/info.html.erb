@@ -1,4 +1,6 @@
+
 <script type="application/javascript" src="/assets/map.js"></script>
+
 <script>
   window.onload = function () {
     var waypts = [];
@@ -63,6 +65,7 @@
       navigationText: [
         "<i class='fa fa-angle-left'></i>",
         "<i class='fa fa-angle-right'></i>"
+
       ],
 
     });
@@ -335,6 +338,7 @@
         <div class="row">
 
           <div class="col-md-12 wow zoomIn" data-wow-duration="1s">
+
             <div class="Booking-status">
               <h5><%= RouteSuggestion.find(params[:route_id]).name %></h5>
               <div class="location-map-block mo-none">
@@ -444,8 +448,7 @@
 
           </div>
           <!-- end coll -->
-
-        </div>
+    </div>
 
       </div>
       <!-- end container -->

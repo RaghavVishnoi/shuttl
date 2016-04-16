@@ -3,6 +3,7 @@
   window.onload = function () {
     var waypts = [];
 
+
     <%
     slots = RouteSuggestionsSlot.slot_points(session[:home_route_id])
     slots.each_with_index do |route,index|%>
@@ -13,6 +14,9 @@
     });
     <%end%>
     <%end%>
+  window.onload = function() {
+   initMap();
+  };
 
     window.mapMaker.init({
       mapElement: document.getElementById('map'),
@@ -122,6 +126,7 @@
         });
         $(".link span:eq(" + val1 + ")").text("Filling Fast")
         $(".link span:eq(" + val2 + ")").text("Filling Fast")
+
 
 
       },

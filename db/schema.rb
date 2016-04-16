@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20160413144708) do
+=======
 ActiveRecord::Schema.define(version: 20160414082505) do
+>>>>>>> 89d83a5bca7dbda87d316a3420b287fb0e3a0d3d
 
   create_table "customer_routes", force: :cascade do |t|
     t.string   "lat",        limit: 255
@@ -45,18 +49,6 @@ ActiveRecord::Schema.define(version: 20160414082505) do
     t.float    "radius",     limit: 24
     t.integer  "people",     limit: 4
   end
-
-  create_table "route_points", force: :cascade do |t|
-    t.float    "lat",         limit: 53
-    t.float    "lng",         limit: 53
-    t.integer  "routeid",     limit: 4
-    t.datetime "created_at"
-    t.datetime "updated_at",                         null: false
-    t.integer  "directionid", limit: 4,  default: 0
-    t.integer  "locationid",  limit: 4,  default: 0
-  end
-
-  add_index "route_points", ["routeid"], name: "routeid", using: :btree
 
   create_table "route_suggestions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false

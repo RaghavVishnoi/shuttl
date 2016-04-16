@@ -24,6 +24,7 @@
   
       var mapId = 0;
       var estimatedTime = [];
+      var originalRouteDrawn=[];
       var estimatedDistance = [];
       var check = 0;
       var OriginalRouteHash = [];// = {} ;
@@ -44,7 +45,7 @@
             locations = data;
             locations=JSON.parse(locations);
             getWayPointList(locations);
-            initMap();           
+            initMap(0);
           },
           error: function(){
 
@@ -135,37 +136,65 @@ geocoder.geocode( { 'address': address}, function(results, status) {
 	
 });
 	
-function initMap() {
+function initMap(mapToChange) {
 var iw = [];
 var marker = [];
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   var centerLatLong = OriginalRouteHash[Math.ceil(OriginalRouteHash.length/2)].waypoints;
-  var map = new google.maps.Map(document.getElementById('map'+mapId), {
-    zoom: 6,
+  var map = new google.maps.Map(document.getElementById('map'+ mapToChange), {
+    zoom: 8,
     center: {lat: parseFloat(centerLatLong.lat), lng: parseFloat(centerLatLong.longt)}
   });
   directionsDisplay.setMap(map);
     for (var i = 0; i < OriginalRouteHash.length; i++) 
   {
+    var icon_d;
+    if (i==0){
+
+      icon_d=  {
+        path: google.maps.SymbolPath.CIRCLE,
+            strokeColor: "red",
+        fillColor: "red",
+            scale: 3
+      };
+    }else if (i==OriginalRouteHash.length-1){
+
+      icon_d=  {
+        path: google.maps.SymbolPath.CIRCLE,
+        strokeColor: "green",
+        fillColor: "red",
+        scale: 3
+      };
+    }else{
+
+      icon_d=  {
+        path: google.maps.SymbolPath.CIRCLE,
+        strokeColor: "yellow",
+        fillColor: "red",
+        scale: 3
+      };
+    }
   var ways = OriginalRouteHash[i].waypoints;
   	 marker[i] = new MarkerWithLabel
   ({
   position: new google.maps.LatLng(parseFloat(ways.lat),parseFloat(ways.longt)),
        draggable: false,
        raiseOnDrag: true,
+    icon: icon_d,
        map: map,
-       labelContent: OriginalRouteHash[i].label,
+       labelContent: i,
        labelAnchor: new google.maps.Point(22, 0),
        labelClass: "labels", // the CSS class for the label
        labelStyle: {opacity: 1.0}
+
 	});
 	 iw[i] = new google.maps.InfoWindow({
        content: "2016-04-04 09:11:22",
      });
 	google.maps.event.addListener(marker[i], 'click', (function(MarkerWithLabel, i) {
   return function() {
-    iw[i].setContent(OriginalRouteHash[i].label)
+    iw[i].setContent(i+1)
 		for(var z=0;z<OriginalRouteHash.length;z++ )
 		{
             iw[z].close();
@@ -175,26 +204,33 @@ var marker = [];
 })(marker[i], i));
 }
 //irectionsDisplay.setMap(map);
-calculateAndDisplayRoute(directionsService, directionsDisplay);
+
+
+  if (mapId==0) {
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+  }else{
+
+    fillRouteTable(mapToChange);
+  }
 }
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
 
-  for (var i = 1; i < OriginalRouteHash.length; i++)
-  {
-       var ways = OriginalRouteHash[i].waypoints;
-	   waypts.push({
-	    location: new google.maps.LatLng(parseFloat(ways.lat),parseFloat(ways.longt)),
+  if (OriginalRouteHash.length>1) {
+    for (var i = 1; i < OriginalRouteHash.length-1; i++) {
+      var ways = OriginalRouteHash[i].waypoints;
+      waypts.push({
+        location: new google.maps.LatLng(parseFloat(ways.lat), parseFloat(ways.longt)),
         stopover: true,
-	  }); 
- }
+      });
+    }
+  }
 
-      var sourceLatLong = OriginalRouteHash[0].waypoints;
+  var sourceLatLong = OriginalRouteHash[0].waypoints;
 	var destinationLatLong = OriginalRouteHash[OriginalRouteHash.length-1].waypoints;;
   directionsService.route({
-
-    origin: new google.maps.LatLng(ways.lat,ways.longt),
-    destination: new google.maps.LatLng(ways.lat,ways.longt),
+    origin: new google.maps.LatLng(sourceLatLong.lat,sourceLatLong.longt),
+    destination: new google.maps.LatLng(destinationLatLong.lat,destinationLatLong.longt),
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
@@ -208,15 +244,40 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
      // summaryPanel.innerHTML = '';
       // For each route, display summary information.
       for (var i = 0; i < route.legs.length; i++) {
-        var routeSegment = i + 1;
-		estimatedTime.push(route.legs[i].duration.text);
-		estimatedDistance.push(route.legs[i].distance.text);
-        //summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-           
-		   '</b><br>';
+       var data={};
+        if (i==0) {
+          data["lat"]=route.legs[0].start_location.lat();
+          data["lng"]=route.legs[0].start_location.lng();
+          data["label"]=i;
+          data["eta"]=route.legs[0].duration.value;
+          data["distance"]=route.legs[0].distance.value;
+          data["people"]=OriginalRouteHash[i]["People"];
+
+        }else if (i==route.legs.length-1){
+
+          data["lat"]=route.legs[i].start_location.lat();
+          data["lng"]=route.legs[i].start_location.lng();
+          data["eta"]=route.legs[i].duration.value;
+          data["distance"]=route.legs[i].distance.value;
+          data["label"]=i;
+
+          data["people"]=OriginalRouteHash[i]["People"];
+        }else{
+
+          data["lat"]=route.legs[i].start_location.lat();
+          data["lng"]=route.legs[i].start_location.lng();
+          data["label"]=route.waypoint_order[i-1]+1;
+          data["eta"]=route.legs[i].duration.value;
+          data["distance"]=route.legs[i].distance.value;
+
+          data["people"]=OriginalRouteHash[route.waypoint_order[i-1]+1]["People"];
+
+        }
+        originalRouteDrawn.push(data);
+
       }
           if(fillroutecheck == 0)
-	  	  fillRouteTable();
+	  	  fillRouteTable(0);
     } else {
       window.alert('Directions request failed due to ' + status);
     }
@@ -228,7 +289,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
   var onChangeHandler = function() {
     calculateAndDisplayRoute(directionsService, directionsDisplay);
-	fillRouteTable();
+	fillRouteTable(mapId);
   }
 
 	function genrate_lower_table(){
@@ -237,7 +298,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	var newMapDiv = $("<div class='col-md-7'><div class='location-map-dashboard' id='map"+mapId+"'></div></div>");      
      $("#mainDiv").append(newMapDiv);
 	 $("#mainDiv").append(newTableDiv);
-	 initMap();
+	 initMap(mapId);
 	}
 
 	function save(table_id){
@@ -383,12 +444,12 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 
 	
-	function  fillRouteTable()
+	function  fillRouteTable(routeMapId)
 	{	
-	    for(var i=0; i< OriginalRouteHash.length;i++)
+	    for(var i=0; i< originalRouteDrawn.length;i++)
 		{
-	        var row = $("<tr><td>"+OriginalRouteHash[i].label+" <span class='btn btn-info' title='Add'>+</span> <span  class='btn bg-danger' title='Delete' onclick='deleteCurrentRoute(this)'>-</span></td><td>" + OriginalRouteHash[i].People +"</td><td>"+estimatedTime[i]+"</td><td>"+estimatedDistance[i]+"</td><td>" +OriginalRouteHash[i].price+"/km </td></tr>");
-         var tableId = "#wayPointsOriginalTable" + mapId;
+	        var row = $("<tr><td>"+(originalRouteDrawn[i]["label"])+" <span class='btn btn-info' title='Add'>+</span> <span  class='btn bg-danger' title='Delete' onclick='deleteCurrentRoute(this)'>-</span></td><td>" + originalRouteDrawn[i]["people"] +"</td><td>"+originalRouteDrawn[i]["eta"]+"</td><td>"+originalRouteDrawn[i]["distance"]+"</td><td>" +10+"/km </td></tr>");
+         var tableId = "#wayPointsOriginalTable" + routeMapId;
          $(tableId).append(row);
 		}
 	}
@@ -397,7 +458,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 	    tempRouteHash = OriginalRouteHash;
 	    tempRouteHash.splice(keytoRemove, 1);
 	    fillroutecheck = 1;
-	    initMap();
+	    initMap(mapId);
 	}
 
   function redirect(id){

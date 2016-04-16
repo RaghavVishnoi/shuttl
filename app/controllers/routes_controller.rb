@@ -36,6 +36,9 @@ class RoutesController < ApplicationController
 		session[:slong] = params[:slong]
 		session[:dlat] = params[:dlat]
 		session[:dlong] = params[:dlong]
+		session[:s] = params[:s]
+		session[:d] = params[:d]
+		# find in current live routes if present
 		slat=params[:slat].to_f
 		slng=params[:slong].to_f
 		dlat=params[:dlat].to_f
@@ -92,8 +95,6 @@ class RoutesController < ApplicationController
    			to.push(params[:dlat],params[:dlong])
    			session[:from] = from
 			session[:to] = to
-			session[:s] = params[:s]
-			session[:d] = params[:d]
 			session[:home_route_id] = @route[:route_id]
 	 		session[:drop_point_id] = @route[:drop_point_id]
    			session[:pickup_point_id] = @route[:pickup_point_id]
@@ -101,7 +102,6 @@ class RoutesController < ApplicationController
  			session[:drop_point_location1] = @route[:drop_point_location]
  			session[:drop_point_id] = @route[:drop_point_id]
  			redirect_to routes_path(route_id: @route[:route_id],drop_point_id: @route[:drop_point_id])
-
 		else
  			redirect_to root_path(result: false,slat: params[:slat],slong: params[:slong],dlat: params[:dlat],dlong: params[:dlong])
 		end	

@@ -46,6 +46,7 @@ class RouteSuggestionsRoute < ActiveRecord::Base
 				@customer_route = CustomerRoute.find_by(name: point)
 				@points.each do |drop|
 					@drop = CustomerRoute.find_by(name: drop)
+					
 					@customers = RouteSuggestionsCustomer.where(from_lat: (@customer_route.lat.to_f - 0.01)..(@customer_route.lat.to_f + 0.01),from_long: (@customer_route.long.to_f - 0.01)..(@customer_route.long.to_f + 0.01),to_lat: (@drop.lat.to_f - 0.01)..(@drop.lat.to_f + 0.01),to_long: (@drop.long.to_f - 0.01)..(@drop.long.to_f + 0.01))
 					if @customers.length != 0
 						mcount = mcount + @customers.where('time1 != ?','').count
