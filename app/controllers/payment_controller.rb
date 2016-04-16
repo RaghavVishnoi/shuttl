@@ -38,6 +38,13 @@ class PaymentController < ApplicationController
 
 
 
+  def showPage1
 
+
+  end
+
+  def showPage2
+
+  end
 
 end

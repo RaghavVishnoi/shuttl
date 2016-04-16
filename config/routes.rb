@@ -17,6 +17,8 @@ get 'routes/location'
 get 'route_suggestions/generate_otp'
 get 'route_suggestions/check_otp'
 get 'routes/thankyou'
+get 'payment/showPage1' =>"payment#showPage1"
+get 'payment/showPage2'=>"payment#showPage2"
 get 'clusters/refresh' => "cluster#refreshClusters"
 get 'routes/saved' => "route_suggestions_routes#show"
 get 'routes/shipped' => "route_suggestions_routes#update"
