@@ -1,4 +1,9 @@
+
 <script>
+
+  var DEFAULT_WORK_TIME = '7:30';
+  var DEFAULT_HOME_TIME = '19:00';
+  var DEFAULT_TRAVEL_MODE = 'Car';
 
   $(document).ready(function () {
 
@@ -30,6 +35,292 @@
       }
     });
     // send OTP function 
+
+
+    $('#otp').keyup(function () {
+      var number = document.getElementById('otp');
+      if (number.value.length != 4) {
+        jQuery('#otp-submit').attr("disabled", disable);
+        console.log('nahi');
+      } else if (number.value.length === 4) {
+        jQuery('#otp-submit').removeAttr('disabled').css({'background': '#39B5B5', 'color': '#fff'});
+
+      }
+    })
+
+    $("#start-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+    $("#end-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+    $("#start-time2").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+
+    $("#end-time").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ],
+
+    });
+
+    $("#end-time2").owlCarousel({
+      items: 10,
+      navigation: true,
+      navigationText: [
+        "<i class='fa fa-angle-left'></i>",
+        "<i class='fa fa-angle-right'></i>"
+      ]
+    });
+
+    var time1 = [DEFAULT_WORK_TIME];
+    var time2 = [DEFAULT_HOME_TIME];
+    var mode = [DEFAULT_TRAVEL_MODE];
+
+    $('.link').on('click', function (event) {
+      var $this = $(this);
+      if ($this.hasClass('clicked')) {
+        $this.removeClass('clicked');
+        time1.pop($this.text());
+      } else {
+        $('.link').removeClass('clicked');
+        time1.pop($this.text());
+        $this.addClass('clicked');
+        time1.push($this.text())
+      }
+
+    });
+
+    $('.leave-office').on('click', function (event) {
+      var $this = $(this);
+      if ($this.hasClass('clicked')) {
+        $this.removeClass('clicked');
+        time2.pop($this.text())
+      } else {
+        $('.leave-office').removeClass('clicked');
+        time2.pop($this.text())
+        $this.addClass('clicked');
+        time2.push($this.text())
+      }
+    });
+
+    $('.reach-work').on('click', function (event) {
+      var $this = $(this);
+      var numItems = $('.reach-work-selsct').length;
+      if (numItems >= 2 && !($this.hasClass('reach-work-selsct'))) {
+        alert("You can select only two items.")
+      }
+      else {
+        if ($this.hasClass('reach-work-selsct')) {
+          $this.removeClass('reach-work-selsct');
+        } else {
+          $this.addClass('reach-work-selsct');
+        }
+      }
+    });
+
+    $('.leave-work').on('click', function (event) {
+      var $this = $(this);
+      var numItems = $('.leave-work-selsct').length;
+      if (numItems >= 2 && !($this.hasClass('leave-work-selsct'))) {
+        alert("You can select only two items.")
+      }
+      else {
+        if ($this.hasClass('leave-work-selsct')) {
+          $this.removeClass('leave-work-selsct');
+        } else {
+          $this.addClass('leave-work-selsct');
+        }
+      }
+    });
+
+
+    jQuery('.travel-time-block ul li').on('click', function (event) {
+      var $this = $(this);
+      var numItems = $('.selected').length;
+
+
+      if ($this.hasClass('selected')) {
+        $this.removeClass('selected');
+        mode.pop($this.text());
+      } else {
+        $('.travel-time-block ul li').removeClass('selected');
+        mode.pop($this.text());
+        $this.addClass('selected');
+        mode.push($this.text())
+      }
+    });
+
+
+    $('#sub').click(function () {
+      var lat1 = <%=params[:slat]%>;
+      var long1 = <%=params[:slong]%>;
+      var lat2 = <%=params[:dlat]%>;
+      var long2 = <%=params[:dlong]%>;
+      if (time1.length != 0 && time2.length != 0 && lat1 != null && lat2 != null && long1 != null && long2 != null) {
+        $(".otp-dialog").attr('style', 'display:block')
+        $(".overlay").attr('style', 'display:block')
+
+        var phone;
+        $("#contact-submit").click(function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          phone = $('#contact').val();
+          if (phone != null) {
+            $.ajax({
+              url: "/route_suggestions/generate_otp",
+              type: "GET",
+              data: {phone: phone},
+              dataType: "text",
+
+              complete: function () {
+
+              },
+
+              success: function (data, textStatus, xhr) {
+                $('#confirmSection').attr('style', 'display:block')
+                $("#sectionOtp").attr('style', 'display:none')
+                $("#contact-number").val(phone);
+
+                $('#contact-label').text("OTP sent on " + phone)
+              }
+            });
+          } else {
+
+          }
+
+        });
+        $("#resend").click(function () {
+          var phone = $("#contact-number").val();
+
+
+          if (phone != null) {
+            $.ajax({
+              url: "/route_suggestions/generate_otp",
+              type: "GET",
+              data: {phone: phone},
+              dataType: "text",
+
+              complete: function () {
+
+              },
+
+              success: function (data, textStatus, xhr) {
+
+              }
+            });
+          } else {
+
+          }
+
+        });
+        $("#otp-submit").click(function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          otp = $("#otp").val();
+          if (otp != null) {
+            $.ajax({
+              url: "/route_suggestions/check_otp",
+              type: "GET",
+              data: {
+                phone: phone,
+                otp: otp
+              },
+              dataType: "text",
+
+              complete: function () {
+
+              },
+
+              success: function (data, textStatus, xhr) {
+
+                $('.otp-dialog').attr('style', 'display:block');
+
+                if (data == 'true') {
+                  $.ajax({
+                    url: "/route_suggestions_customers",
+                    type: "POST",
+                    data: {
+                      from_lat: lat1,
+                      from_long: long1,
+                      to_lat: lat2,
+                      to_long: long2,
+                      time1: time1[0],
+                      time2: time2[0],
+                      mode: mode[0],
+                      phone: phone
+
+                    },
+                    dataType: "text",
+
+                    complete: function () {
+
+                    },
+
+                    success: function (data, textStatus, xhr) {
+                      if (data == 'true') {
+                        location.href = "/routes/thankyou";
+                      } else {
+
+                      }
+                    }
+                  });
+                } else {
+                  alert('wrong otp!')
+                }
+              }
+            });
+          } else {
+
+          }
+        });
+
+      } else {
+        if (time1.length == 0) {
+          $('#warn1').attr('style', 'color:red')
+        } else {
+          $('#warn1').attr('style', 'color:#434343')
+        }
+        if (time2.length == 0) {
+          $('#warn2').attr('style', 'color:red')
+        } else {
+          $('#warn2').attr('style', 'color:#434343')
+        }
+        if (mode.length == 0) {
+          $('#warn3').attr('style', 'color:red')
+        } else {
+          $('#warn3').attr('style', 'color:#434343')
+        }
+      }
+
+    });
+
 
     $('#form').attr("style", "display:block")
 
@@ -214,6 +505,7 @@
                 <!-- travel time -->
                 <div class="travel-time-block">
                   <h5 id="warn3" class="headline">What mode of travel do you use to complete this journey everyday?</h5>
+                  <p class="notify" style="text-align: right;">Select all modes that you use</p>
                   <ul class="check-box">
                     <li> Bus</li>
                     <li> Metro</li>
