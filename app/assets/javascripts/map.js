@@ -34,7 +34,7 @@ window.mapMaker = (function () {
     },
 
     renderStartStopPoints = function (params, map) {
-      var pmarker = drawLabelMarkers(new google.maps.LatLng(params.from[0], params.from[1]), "Pickup Point", map, busIcon);
+      var pmarker = drawLabelMarkers(new google.maps.LatLng(params.from[0], params.from[1]), "Start", map, homeIcon);
 
       google.maps.event.addListener(pmarker, "click", function (e) {
         new google.maps.InfoWindow({
@@ -42,7 +42,7 @@ window.mapMaker = (function () {
         }).open(map, this);
       });
 
-      var dmarker = drawLabelMarkers(new google.maps.LatLng(params.to[0], params.to[1]), "Drop Point", map, busIcon);
+      var dmarker = drawLabelMarkers(new google.maps.LatLng(params.to[0], params.to[1]), "Stop", map, officeIcon);
 
       google.maps.event.addListener(dmarker, "click", function (e) {
         new google.maps.InfoWindow({
@@ -67,8 +67,8 @@ window.mapMaker = (function () {
       renderStartStopPoints(params, map);
       
       //=====================Add the home and office markers======================//////
-      //drawLabelMarkers(params.waypts[0].location, 'Home', map, homeIcon);
-      //drawLabelMarkers(params.waypts[3].location, 'Office', map, officeIcon);
+      //drawLabelMarkers(params.waypts[0].location, 'Home', map, busIcon);
+      //drawLabelMarkers(params.waypts[3].location, 'Office', map, busIcon);
 
       directionsDisplay.setMap(map);
 
