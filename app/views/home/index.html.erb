@@ -1,9 +1,8 @@
-
 <script>
 
   var DEFAULT_WORK_TIME = '7:30';
   var DEFAULT_HOME_TIME = '19:00';
-  var DEFAULT_TRAVEL_MODE = 'Car';
+  var DEFAULT_TRAVEL_MODE = 'Metro';
 
   $(document).ready(function () {
 
@@ -178,19 +177,24 @@
 
 
     $('#sub').click(function () {
-      var lat1 = <%=params[:slat]%>;
-      var long1 = <%=params[:slong]%>;
-      var lat2 = <%=params[:dlat]%>;
-      var long2 = <%=params[:dlong]%>;
+      var lat1 = '<%=params[:slat]%>';
+      var long1 = '<%=params[:slong]%>';
+      var lat2 = '<%=params[:dlat]%>';
+      var long2 = '<%=params[:dlong]%>';
       if (time1.length != 0 && time2.length != 0 && lat1 != null && lat2 != null && long1 != null && long2 != null) {
         $(".otp-dialog").attr('style', 'display:block')
         $(".overlay").attr('style', 'display:block')
 
         var phone;
         $("#contact-submit").click(function (e) {
+
           e.stopPropagation();
           e.preventDefault();
+
           phone = $('#contact').val();
+
+          $('#sectionOtp-label').html('Sending OTP to: ' + phone);
+
           if (phone != null) {
             $.ajax({
               url: "/route_suggestions/generate_otp",
@@ -203,11 +207,15 @@
               },
 
               success: function (data, textStatus, xhr) {
-                $('#confirmSection').attr('style', 'display:block')
-                $("#sectionOtp").attr('style', 'display:none')
+                $('#confirmSection').attr('style', 'display:block');
+                $("#sectionOtp").attr('style', 'display:none');
                 $("#contact-number").val(phone);
 
                 $('#contact-label').text("OTP sent on " + phone)
+              },
+
+              error: function () {
+                $('#sectionOtp-label').html('OTP failed. Please try again');
               }
             });
           } else {
@@ -215,23 +223,25 @@
           }
 
         });
-        $("#resend").click(function () {
+        $(".resendOtp").click(function () {
           var phone = $("#contact-number").val();
 
-
           if (phone != null) {
+            $('#contact-label').html('Sending new OTP on ' + phone);
+
             $.ajax({
               url: "/route_suggestions/generate_otp",
               type: "GET",
               data: {phone: phone},
               dataType: "text",
-
               complete: function () {
 
               },
-
               success: function (data, textStatus, xhr) {
-
+                $('#contact-label').html('New OTP sent on ' + phone);
+              },
+              error: function() {
+                $('#contact-label').html('Could not generate a new OPT. Please try again.');
               }
             });
           } else {
@@ -239,11 +249,15 @@
           }
 
         });
+
         $("#otp-submit").click(function (e) {
           e.stopPropagation();
           e.preventDefault();
 
           otp = $("#otp").val();
+
+          $('#contact-label').html('Validating OTP');
+
           if (otp != null) {
             $.ajax({
               url: "/route_suggestions/check_otp",
@@ -292,7 +306,7 @@
                     }
                   });
                 } else {
-                  alert('wrong otp!')
+                  $('#contact-label').html('The OTP that you have entered is not correct.');
                 }
               }
             });
@@ -478,7 +492,7 @@
 
                       <!--Need a better way to access defaults here-->
                       <% ['7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30'].each do |time| %>
-                          <a class="item link <%= time === '7:30' ? 'clicked' :'' %>"><%= time %></a>
+                          <a class="item link <%= time === '7:30' ? 'clicked' : '' %>"><%= time %></a>
                       <% end %>
                     </div>
 
@@ -494,7 +508,7 @@
 
                       <!--Need a better way to access defaults here-->
                       <% ['16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30'].each do |time| %>
-                          <a class="item leave-office <%= time === '19:00' ? 'clicked' :'' %>"><%= time %></a>
+                          <a class="item leave-office <%= time === '19:00' ? 'clicked' : '' %>"><%= time %></a>
                       <% end %>
 
                     </div>
@@ -508,10 +522,10 @@
                   <p class="notify" style="text-align: right;">Select all modes that you use</p>
                   <ul class="check-box">
                     <li> Bus</li>
-                    <li> Metro</li>
+                    <li class="selected"> Metro</li>
                     <li> Shared Auto</li>
                     <li> Auto</li>
-                    <li class="selected"> Car</li>
+                    <li> Car</li>
                     <li> Shared Taxi</li>
                     <li> Office Cab</li>
                     <li> Bike</li>
@@ -547,10 +561,12 @@
     <fieldset id="sectionOtp">
 
       <div class="form-group">
+        <label for="mnum" class="control-label" id="sectionOtp-label"></label>
+
         <input style="margin: 0" maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
       </div>
 
-      <div class="form-group" style="text-align: center; margin-top: 15px">
+      <div class="form-group">
         <button id="contact-submit" class="btn btn-default submitSearch" disabled="">SEND OTP</button>
       </div>
 
@@ -559,12 +575,12 @@
     <fieldset id="confirmSection" style="display:none">
 
       <div class="form-group">
-        <label for="mnum" class="control-label" id="contact-label"> <i class="fa fa-pencil"></i></label>
+        <label for="mnum" class="control-label" id="contact-label"></label>
         <input style="margin: 0" maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP">
-        <i class="fa fa-repeat"><span class="resend" id="resend">Resend</span></i>
+        <i style="cursor: pointer" class="fa fa-repeat resendOtp"><span class="resend" id="resend">Resend</span></i>
       </div>
 
-      <div class="form-group" style="text-align: center;margin-top: 15px;">
+      <div class="form-group">
         <button class="btn submitSearch btn-default" id="otp-submit" disabled="">CONFIRM</button>
       </div>
 
