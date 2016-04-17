@@ -298,6 +298,7 @@
                     },
 
                     success: function (data, textStatus, xhr) {
+                      $('#page-preloader').show();
                       if (data == 'true') {
                         location.href = "/routes/thankyou";
                       } else {
@@ -435,7 +436,9 @@
 
         var address = $('#pac-input').val();
         var address1 = $('#pac-input1').val();
+
         if (lat1 != null && long1 != null && lat2 != null && long2 != null) {
+          $('#page-preloader').show();
           location.href = 'routes/find_route?s=' + address + '&slat=' + lat1 + '&slong=' + long1 + '&d=' + address1 + '&dlat=' + lat2 + '&dlong=' + long2
         }
 
@@ -445,7 +448,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWdJ3F1a1pmCUjyHaINmV1_nOJ6hpbArM&libraries=places&callback=initMap"
             async defer></script>
 
-
+    <div id="page-preloader"><span class="spinner"></span></div>
     <!-- HEADER -->
     <header class="header">
       <div class="container">
