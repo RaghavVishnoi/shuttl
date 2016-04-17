@@ -14,9 +14,9 @@
     });
     <%end%>
     <%end%>
-  window.onload = function() {
-   initMap();
-  };
+    window.onload = function () {
+      initMap();
+    };
 
     window.mapMaker.init({
       mapElement: document.getElementById('map'),
@@ -104,7 +104,8 @@
         fill.push(time[1]['time'])
         index = []
         var val1, val2;
-        $('.link').each(function (index) {
+        $('.link').each(function (index, el) {
+
           //alert($(".link:eq(3)").text());
           time = $(this).text()
           tagt1 = parseInt(time.split(':')[0]) * 60
@@ -124,10 +125,11 @@
           }
 
         });
-        $(".link span:eq(" + val1 + ")").text("Filling Fast")
-        $(".link span:eq(" + val2 + ")").text("Filling Fast")
 
+        $(".link span:eq(" + val1 + ")").text("Filling Fast");
+        $(".link span:eq(" + val2 + ")").text("Filling Fast");
 
+        val2 && $(".link").eq(val2).trigger('click');
 
       },
       error: function () {
@@ -226,7 +228,9 @@
                 traveller's confirmed
               </div>
               <input type="hidden" name="pledge_count" id="hidden-value"/>
-              <div class="book-staff-right"><strong id="pledge_route" style="float: left; margin: 1px 3px 0 0;">-</strong> days to go</div>
+              <div class="book-staff-right">
+                <strong id="pledge_route" style="float: left; margin: 1px 3px 0 0;">-</strong> days to go
+              </div>
               <div class=" clearfix"></div>
             </div>
 

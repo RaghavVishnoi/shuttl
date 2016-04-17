@@ -182,8 +182,8 @@
       var lat2 = '<%=params[:dlat]%>';
       var long2 = '<%=params[:dlong]%>';
       if (time1.length != 0 && time2.length != 0 && lat1 != null && lat2 != null && long1 != null && long2 != null) {
-        $(".otp-dialog").attr('style', 'display:block')
-        $(".overlay").attr('style', 'display:block')
+        $(".otp-dialog").attr('style', 'display:block');
+        $(".overlay").attr('style', 'display:block');
 
         var phone;
         $("#contact-submit").click(function (e) {
@@ -374,7 +374,7 @@
             if (status == google.maps.GeocoderStatus.OK) {
               slat = results[0].geometry.location.lat();
               slng = results[0].geometry.location.lng();
-              RedirectPage(slat, slng, dlat, dlng)
+              RedirectPage(slat, slng, dlat, dlng);
             }
           });
           var address = '';
