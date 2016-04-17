@@ -11,6 +11,18 @@
 		top: 0;
 		width: 100%;
 	}
+    .header-inner {
+        visibility: hidden;
+    }
+    .header-inner:after {
+        content: "Home & Office Pickup-Drop service for Odd & Even 2.0";
+        visibility: visible;
+        position: absolute;
+        width: auto;
+        left: -150px;
+        right: 0;
+    }
+
 	.header_mod-a .yamm .nav > li > a {
 		color: #fff;
 	}
@@ -67,12 +79,6 @@
 /* 768 x 1024 (iPad - Portrait) */
 
 @media (max-width:991px) {
-	.header-inner {
-		text-align: left;
-		float: none;
-		padding-top: 0;
-		margin-bottom: 20px;
-	}
 	.header-login {
 		float: none;
 		margin-top: 15px;
@@ -322,22 +328,19 @@
 @media (max-width:767px) and (min-width:480px) {
 	.staff {width: 210px;}
 	.post_mod-d .entry-media {max-width: 185px;}
-	
-	
-html   .header-logo {
-    display: inline-block;
-    float: none;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    z-index: 100;
-}
+
 
 			html #search-open {
  
     margin-top: 8px;
  
 }
+
+    .header-inner {
+        width: auto;
+        float: right !important;
+        padding: 20px 0px 0 20px;
+    }
 
 .header-cart{
    margin-top: 0px !important;
@@ -352,12 +355,18 @@ html   .header-logo {
 	
 html   .header-logo {
     display: inline-block;
-    float: none;
     position: relative;
     text-align: center;
-    width: 100%;
     z-index: 100;
+    float: left;
+    width: auto !important;
 }
+    .header-inner {
+        float: right;
+        width: auto;
+        margin-top: 22px;
+        font-size: 10px;
+    }
 	
 			html #search-open {
  
@@ -368,15 +377,6 @@ html   .header-logo {
 .header-cart{
    margin-top: 0px !important;
 }
-
-	
-	html 	.header-logo {
-    display: inline-block;
-    float: none;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    z-index: 100;
 }
 
 
