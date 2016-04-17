@@ -120,7 +120,8 @@
   });
            $(".link span:eq("+val1+")").text("Filling Fast")
            $(".link span:eq("+val2+")").text("Filling Fast")
-           
+
+          val2 && $(".link").eq(val2).trigger('click');
            
           },
         error: function() {

@@ -53,9 +53,9 @@
              <div class="Booking-status">
 
                <% if session[:paymentDone] %>
-                   <h5>YOu payment has been received successfully! Thank you for using Shuttl!</h5>
+                   <h5>Your payment has been received successfully! Thank you for using Shuttl!</h5>
                <% else %>
-                   <h5>Thank you for using Shuttl! </h5>
+                   <h5>Thank you for your valuable feedback. We will get back to you soon.</h5>
                <% end %>
 
 
@@ -92,8 +92,8 @@
                            </table>
                          </div>
 
-                         <b><%= RouteSuggestionsPledge.total_pledge(params[:route_id]) %> more ppl required to launch
-                           root</b>
+                         <b><%= RouteSuggestionsPledge.total_pledge(params[:route_id]) %> more people required to launch
+                           route</b>
                          </div>
                          </li>
                      <% else %>
@@ -124,8 +124,8 @@
                                </tr>
                              </table>
                            </div>
-                           <b><%= RouteSuggestionsPledge.total_pledge(params[:route_id]) %>  more ppl required to launch
-                             root</b>
+                           <b><%= RouteSuggestionsPledge.total_pledge(params[:route_id]) %>  more people required to launch
+                             route</b>
                            </p>
                        <% else %>
                            <em><i>No time-slot was selected</i></em>

@@ -67,8 +67,8 @@ window.mapMaker = (function () {
       renderStartStopPoints(params, map);
       
       //=====================Add the home and office markers======================//////
-      //drawLabelMarkers(params.waypts[0].location, 'Home', map, busIcon);
-      //drawLabelMarkers(params.waypts[3].location, 'Office', map, busIcon);
+      drawLabelMarkers(params.waypts[1].location, 'Home', map, busIcon);
+      drawLabelMarkers(params.waypts[(params.waypts.length - 1)].location, 'Office', map, busIcon);
 
       directionsDisplay.setMap(map);
 
