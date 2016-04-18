@@ -10,8 +10,8 @@
     $('.source-dest-input').hide();
     <% end %>
 
-    $('.input-group input').keyup(function () {
-      var inputVal = $('#pac-input').val();
+    $('.input-group input').keyup(function (e) {
+      var inputVal = $(e.target).val();
       $(this).next('.fa-times').fadeIn();
       if (inputVal === '') {
         $(this).find('.fa-times').fadeOut();
@@ -240,7 +240,7 @@
               success: function (data, textStatus, xhr) {
                 $('#contact-label').html('New OTP sent on ' + phone);
               },
-              error: function() {
+              error: function () {
                 $('#contact-label').html('Could not generate a new OPT. Please try again.');
               }
             });
@@ -566,7 +566,10 @@
       <div class="form-group">
         <label for="mnum" class="control-label" id="sectionOtp-label"></label>
 
-        <input style="margin: 0" maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
+        <div class="with-reset input-group" style="width: 100%; margin-bottom: 0">
+          <input style="margin: 0" maxlength="10" type="text" class="form-control" autocomplete="off" id="contact" placeholder="Enter Mobile Number">
+          <i class="fa fa-times resetInput"></i>
+        </div>
       </div>
 
       <div class="form-group">
@@ -579,8 +582,12 @@
 
       <div class="form-group">
         <label for="mnum" class="control-label" id="contact-label"></label>
-        <input style="margin: 0" maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP">
-        <i style="cursor: pointer" class="fa fa-repeat resendOtp"><span class="resend" id="resend">Resend</span></i>
+
+        <div class="with-reset input-group" style="width: 100%; margin-bottom: 0">
+          <input style="margin: 0" maxlength="4" type="text" class="form-control" autocomplete="off" id="otp" placeholder="Enter OTP">
+          <i class="fa fa-times resetInput" style="right: 85px"></i>
+          <i style="cursor: pointer; top: 15px;" class="fa fa-repeat resendOtp"><span class="resend" id="resend">Resend</span></i>
+        </div>
       </div>
 
       <div class="form-group">
