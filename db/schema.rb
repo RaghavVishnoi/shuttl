@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160413144708) do
-=======
-ActiveRecord::Schema.define(version: 20160414082505) do
->>>>>>> 89d83a5bca7dbda87d316a3420b287fb0e3a0d3d
+ActiveRecord::Schema.define(version: 20160418070914) do
 
   create_table "customer_routes", force: :cascade do |t|
     t.string   "lat",        limit: 255
@@ -41,6 +37,27 @@ ActiveRecord::Schema.define(version: 20160414082505) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.integer  "clusterid",   limit: 4
+    t.string   "name",        limit: 255
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
+    t.decimal  "lat",                     precision: 16, scale: 10
+    t.decimal  "lng",                     precision: 16, scale: 10
+    t.string   "image",       limit: 255
+    t.string   "icon_image",  limit: 255
+    t.string   "left",        limit: 255
+    t.string   "right",       limit: 255
+    t.string   "category",    limit: 255
+    t.string   "locality",    limit: 255
+    t.string   "landmark",    limit: 255
+    t.string   "closeby",     limit: 255
+    t.integer  "global_rank", limit: 4,                             default: -1,    null: false
+    t.boolean  "deleted",     limit: 1,                             default: false, null: false
+  end
+
+  add_index "locations", ["lat", "lng"], name: "lat_lng_index", using: :btree
+
   create_table "pick_point_clusters", force: :cascade do |t|
     t.float    "lat",        limit: 24
     t.float    "lng",        limit: 24
@@ -49,6 +66,27 @@ ActiveRecord::Schema.define(version: 20160414082505) do
     t.float    "radius",     limit: 24
     t.integer  "people",     limit: 4
   end
+
+  create_table "route_dists", force: :cascade do |t|
+    t.integer  "routeid",    limit: 4
+    t.integer  "routeidD",   limit: 4
+    t.float    "distance",   limit: 24
+    t.integer  "duration",   limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "route_points", force: :cascade do |t|
+    t.float    "lat",         limit: 53
+    t.float    "lng",         limit: 53
+    t.integer  "routeid",     limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at",                         null: false
+    t.integer  "directionid", limit: 4,  default: 0
+    t.integer  "locationid",  limit: 4,  default: 0
+  end
+
+  add_index "route_points", ["routeid"], name: "routeid", using: :btree
 
   create_table "route_suggestions", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -148,6 +186,45 @@ ActiveRecord::Schema.define(version: 20160414082505) do
   end
 
   add_index "route_suggestions_timestamps", ["route_suggestion_id"], name: "fk_rails_a56260d126", using: :btree
+
+  create_table "routes", force: :cascade do |t|
+    t.string   "name",                limit: 255
+    t.string   "fromlocation",        limit: 255
+    t.string   "tolocation",          limit: 255
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "via",                 limit: 255
+    t.integer  "reverseroute",        limit: 4
+    t.text     "timeslot",            limit: 65535
+    t.integer  "fare",                limit: 4
+    t.integer  "booking_before_mins", limit: 2,     default: -1,    null: false
+    t.boolean  "deleted",             limit: 1,     default: false, null: false
+    t.integer  "distance_in_meters",  limit: 8,     default: 0,     null: false
+  end
+
+  add_index "routes", ["name"], name: "routename_index", using: :btree
+
+  create_table "slots", force: :cascade do |t|
+    t.string   "routeid",          limit: 255
+    t.string   "locationid",       limit: 255
+    t.integer  "timeinmins",       limit: 4
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.boolean  "deleted",          limit: 1,   default: false, null: false
+    t.integer  "distanceinmeters", limit: 8,   default: 0
+  end
+
+  add_index "slots", ["locationid"], name: "slots_locationid", using: :btree
+  add_index "slots", ["routeid"], name: "routeid", using: :btree
+  add_index "slots", ["routeid"], name: "slots_routeid", using: :btree
+
+  create_table "timestamps", force: :cascade do |t|
+    t.string   "routeid",  limit: 255
+    t.datetime "fromtime"
+    t.datetime "totime"
+    t.integer  "interval", limit: 4
+    t.boolean  "deleted",  limit: 1,   default: false, null: false
+  end
 
   create_table "transactions", force: :cascade do |t|
     t.integer  "amount",       limit: 4

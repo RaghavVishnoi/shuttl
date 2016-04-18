@@ -285,4 +285,73 @@ class ClusterController < ApplicationController
     return nil,nil
 
   end
+
+
+
+  def generateRoutes
+
+    sql="(
+SELECT id,routeid, from_latitude, from_longitude
+from Path
+where startLocationId<>0
+and routeid in (3,4,6,7,8,10,16,17,18,19,21,22,28,29,30,31,32,33,37,38,39,40,78,79,87,160,161,162,163,171,172,204,223,224,333,334,385,386,389,390,396,397,409,410,413,414,467,468,472,473)
+)
+UNION
+(
+select a.id,a.routeid, a.to_latitude, a.to_longitude
+from
+(
+select *
+from Path
+where endlocationid<>0
+and routeid in (3,4,6,7,8,10,16,17,18,19,21,22,28,29,30,31,32,33,37,38,39,40,78,79,87,160,161,162,163,171,172,204,223,224,333,334,385,386,389,390,396,397,409,410,413,414,467,468,472,473)
+order by id desc
+)a
+group by a.routeid
+)
+order by routeid,id"
+    result=ActiveRecord::Base.connection.execute(sql)
+    routePick=Hash.new
+    result.each do |res|
+
+      if (routePick.get(res["routeid"])==nil)
+        routePick.put(res["routeid"],Array.new)
+      end
+
+      routePick.get(res["routeid"]).push res["from_latitude"]+","+res["from_longitude"]
+
+    end
+
+    routePick.each do |key,value|
+
+      i=0
+      value.each do |val|
+
+        if (i==0)
+          url = "https://maps.googleapis.com/maps/api/directions/json?origin="
+        elsif (i==1)
+          url = url+":via"+val
+        elsif i<value.length-1
+          url=url+"|:via"+val
+        else
+          url=url+"&destination="value+"&key=AIzaSyBvaX6apQloHSxGg6XHmY-l_LbUjyIIUkA"
+        end
+
+      end
+      req = Net::HTTP::Get.new(URI.parse url.to_s)
+      res = Net::HTTP.start(url.host, url.port,:use_ssl => url.scheme == 'https') {|http|
+        http.request(req)
+      }
+
+      response=res.body
+      response=JSON.parse response
+      if (response!=nil && response["legs"].length>0)
+        distance=response["routes"]["legs"][0]["distance"]
+        duration=response["routes"]["legs"][0]["duration"]
+
+      end
+    end
+
+  end
+
 end
