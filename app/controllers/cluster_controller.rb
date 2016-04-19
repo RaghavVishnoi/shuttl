@@ -382,7 +382,8 @@ order by routeid,id"
           end
           if (!success)
 
-           RouteDist.create(:distance=>0,:duration=>-1,:routeid=>key,:routeidD=>key2)
+           r=RouteDist.new(:distance=>0,:duration=>-1,:routeid=>key,:routeidD=>key2)
+           r.save
            next
 
           end
@@ -398,7 +399,8 @@ order by routeid,id"
             distance=distance+leg["distance"]["value"]
             duration=duration+leg["duration"]["value"]
           end
-          RouteDist.create(:distance=>distance,:duration=>duration,:routeid=>key,:routeidD=>key2)
+         r= RouteDist.new(:distance=>distance,:duration=>duration,:routeid=>key,:routeidD=>key2)
+          r.save
         end
         rescue Exception=>e
 
