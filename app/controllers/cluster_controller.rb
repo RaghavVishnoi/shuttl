@@ -288,17 +288,17 @@ class ClusterController < ApplicationController
 
 
 
-  def generateRoutes
+  def generateRoutesDuration
 
     sql="(
-SELECT id,routeid, from_latitude, from_longitude
+SELECT id,routeid, from_latitude as lat, from_longitude as lng
 from Path
 where startLocationId<>0
 and routeid in (3,4,6,7,8,10,16,17,18,19,21,22,28,29,30,31,32,33,37,38,39,40,78,79,87,160,161,162,163,171,172,204,223,224,333,334,385,386,389,390,396,397,409,410,413,414,467,468,472,473)
 )
 UNION
 (
-select a.id,a.routeid, a.to_latitude, a.to_longitude
+select a.id as id,a.routeid as routeid, a.to_latitude as lat, a.to_longitude as lng
 from
 (
 select *
@@ -310,45 +310,101 @@ order by id desc
 group by a.routeid
 )
 order by routeid,id"
-    result=ActiveRecord::Base.connection.execute(sql)
+    connection = ActiveRecord::Base.establish_connection(
+        :adapter => "mysql2",
+        :host => "52.74.42.151",
+        :database => "shuttl",
+        :username => "shuttl",
+        :password => "hakunamatata"
+    )
+
+    result=connection.connection.execute(sql)
     routePick=Hash.new
     result.each do |res|
 
-      if (routePick.get(res["routeid"])==nil)
-        routePick.put(res["routeid"],Array.new)
+      if (routePick[res[1]]==nil)
+        routePick[res[1]]=Array.new
       end
-
-      routePick.get(res["routeid"]).push res["from_latitude"]+","+res["from_longitude"]
+      a=Hash.new
+      a["lat"] =res[2]
+      a["lng"] =res[3]
+      routePick[res[1]].push a
 
     end
+
+    connection = ActiveRecord::Base.establish_connection(
+        :adapter => "mysql2",
+        :host => "52.38.247.134",
+        :database => "shuttl",
+        :username => "root",
+        :password => "shuttl@12345"
+    )
 
     routePick.each do |key,value|
 
       i=0
+      url=""
       value.each do |val|
 
         if (i==0)
-          url = "https://maps.googleapis.com/maps/api/directions/json?origin="
+          url = "https://maps.googleapis.com/maps/api/directions/json?origin="+val["lat"].to_s+","+val["lng"].to_s
+
         elsif (i==1)
-          url = url+":via"+val
-        elsif i<value.length-1
-          url=url+"|:via"+val
-        else
-          url=url+"&destination="value+"&key=AIzaSyBvaX6apQloHSxGg6XHmY-l_LbUjyIIUkA"
+          url = url+"&waypoints=via:"+val["lat"].to_s+","+val["lng"].to_s
+        elsif (i<20)
+
+          url = url+"|via:"+val["lat"].to_s+","+val["lng"].to_s
         end
-
+        i=i+1
       end
-      req = Net::HTTP::Get.new(URI.parse url.to_s)
-      res = Net::HTTP.start(url.host, url.port,:use_ssl => url.scheme == 'https') {|http|
-        http.request(req)
-      }
 
-      response=res.body
-      response=JSON.parse response
-      if (response!=nil && response["legs"].length>0)
-        distance=response["routes"]["legs"][0]["distance"]
-        duration=response["routes"]["legs"][0]["duration"]
+      routePick.each do |key2,value|
+        begin
+          url1=""
+        url1=url+"&destination="+value[0]["lat"].to_s+","+value[0]["lng"].to_s+"&key=AIzaSyBaYDdManjfRZsMApOyTUkluKQugnivKMA"
+        url1=URI.parse url1
+          noOfTry=0
+          while (noOfTry<3)
 
+            begin
+            req = Net::HTTP::Get.new(url1)
+            success=false
+            res = Net::HTTP.start(url1.host, url1.port,:use_ssl => url1.scheme == 'https') {|http|
+              success=true
+              http.request(req)
+
+            }
+            rescue Exception=>e
+             noOfTry=noOfTry+1
+             next
+            end
+            break
+          end
+          if (!success)
+
+           RouteDist.create(:distance=>0,:duration=>-1,:routeid=>key,:routeidD=>key2)
+           next
+
+          end
+
+
+        response=res.body
+
+        response=JSON.parse response
+        if (response!=nil && response["routes"][0]["legs"].length>0)
+          distance=0
+          duration=0
+          response["routes"][0]["legs"].each do |leg|
+            distance=distance+leg["distance"]["value"]
+            duration=duration+leg["duration"]["value"]
+          end
+          RouteDist.create(:distance=>distance,:duration=>duration,:routeid=>key,:routeidD=>key2)
+        end
+        rescue Exception=>e
+
+          k=0
+          k=k+1
+        end
       end
     end
 

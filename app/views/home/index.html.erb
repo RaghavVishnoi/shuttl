@@ -473,13 +473,14 @@
             <div class="form-group source-dest-input" id="form">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-home"></i></span>
-                <input id="pac-input" class="controls form-control" type="text" placeholder="Enter Home Address">
+
+                <input id="pac-input" class="controls form-control" value="<%= session[:s] if (session[:s]!=nil)%>" type="text" placeholder="Enter Home Address">
                 <i class="fa fa-times resetInput"></i>
                 <div id="address_hint"></div>
               </div>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
-                <input class="controls form-control" id="pac-input1" type="text" placeholder="Enter Office Address">
+                <input class="controls form-control" id="pac-input1" value="<%= session[:d] if (session[:d]!=nil)%>" type="text" placeholder="Enter Office Address">
                 <i class="fa fa-times resetInput"></i>
                 <div id="address_hint"></div>
               </div>

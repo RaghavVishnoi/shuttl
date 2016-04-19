@@ -20,6 +20,7 @@ get 'routes/thankyou'
 get 'payment/showPage1' =>"payment#showPage1"
 get 'payment/showPage2'=>"payment#showPage2"
 get 'clusters/refresh' => "cluster#refreshClusters"
+get 'clusters/generateRoutesDuration' => "cluster#generateRoutesDuration"
 get 'routes/saved' => "route_suggestions_routes#show"
 get 'routes/shipped' => "route_suggestions_routes#update"
 post 'dashboard/save'
