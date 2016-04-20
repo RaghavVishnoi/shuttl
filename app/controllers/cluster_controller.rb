@@ -365,8 +365,8 @@ order by routeid,id"
       routePick.each do |key2,value|
 
         begin
-          nowTime=120
-          while nowTime<16*900
+          nowTime=90
+          while nowTime<16*60
           url1=""
         url1=url+"&destination="+value[0]["lat"].to_s+","+value[0]["lng"].to_s+"&key=AIzaSyBaYDdManjfRZsMApOyTUkluKQugnivKMA&departure_time=#{currentTime+nowTime*60}&traffic_model=best_guess"
         url1=URI.parse url1
