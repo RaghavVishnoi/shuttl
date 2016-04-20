@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  routeid: 1
+  routeidD: 1
+  distance: 1.5
+  duration: 1
+  eval_time: 1
+
+two:
+  routeid: 1
+  routeidD: 1
+  distance: 1.5
+  duration: 1
+  eval_time: 1

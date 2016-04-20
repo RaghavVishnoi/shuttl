@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160418070914) do
+ActiveRecord::Schema.define(version: 20160420132330) do
 
   create_table "customer_routes", force: :cascade do |t|
     t.string   "lat",        limit: 255
@@ -65,6 +65,16 @@ ActiveRecord::Schema.define(version: 20160418070914) do
     t.datetime "updated_at",            null: false
     t.float    "radius",     limit: 24
     t.integer  "people",     limit: 4
+  end
+
+  create_table "route_dist_times", force: :cascade do |t|
+    t.integer  "routeid",    limit: 4
+    t.integer  "routeidD",   limit: 4
+    t.float    "distance",   limit: 24
+    t.integer  "duration",   limit: 4
+    t.integer  "eval_time",  limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "route_dists", force: :cascade do |t|

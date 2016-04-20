@@ -310,6 +310,7 @@ order by id desc
 group by a.routeid
 )
 order by routeid,id"
+    currentTime=(((Time.now.to_i/86400)+1)*86400)
     connection = ActiveRecord::Base.establish_connection(
         :adapter => "mysql2",
         :host => "52.74.42.151",
@@ -342,6 +343,9 @@ order by routeid,id"
 
     routePick.each do |key,value|
 
+      if key!=472 && key!=7
+        next
+      end
       i=0
       url=""
       value.each do |val|
@@ -350,18 +354,21 @@ order by routeid,id"
           url = "https://maps.googleapis.com/maps/api/directions/json?origin="+val["lat"].to_s+","+val["lng"].to_s
 
         elsif (i==1)
-          url = url+"&waypoints=via:"+val["lat"].to_s+","+val["lng"].to_s
+        #  url = url+"&waypoints=via:"+val["lat"].to_s+","+val["lng"].to_s
         elsif (i<20)
 
-          url = url+"|via:"+val["lat"].to_s+","+val["lng"].to_s
+         # url = url+"|via:"+val["lat"].to_s+","+val["lng"].to_s
         end
         i=i+1
       end
 
       routePick.each do |key2,value|
+
         begin
+          nowTime=120
+          while nowTime<16*900
           url1=""
-        url1=url+"&destination="+value[0]["lat"].to_s+","+value[0]["lng"].to_s+"&key=AIzaSyBaYDdManjfRZsMApOyTUkluKQugnivKMA"
+        url1=url+"&destination="+value[0]["lat"].to_s+","+value[0]["lng"].to_s+"&key=AIzaSyBaYDdManjfRZsMApOyTUkluKQugnivKMA&departure_time=#{currentTime+nowTime*60}&traffic_model=best_guess"
         url1=URI.parse url1
           noOfTry=0
           while (noOfTry<3)
@@ -382,8 +389,9 @@ order by routeid,id"
           end
           if (!success)
 
-           r=RouteDist.new(:distance=>0,:duration=>-1,:routeid=>key,:routeidD=>key2)
-           r.save
+            r= RouteDistTime.new(:distance=>0,:duration=>-1,:routeid=>key,:routeidD=>key2,:eval_time=>time)
+
+            r.save
            next
 
           end
@@ -397,16 +405,23 @@ order by routeid,id"
           duration=0
           response["routes"][0]["legs"].each do |leg|
             distance=distance+leg["distance"]["value"]
-            duration=duration+leg["duration"]["value"]
+            duration=duration+leg["duration_in_traffic"]["value"]
           end
-         r= RouteDist.new(:distance=>distance,:duration=>duration,:routeid=>key,:routeidD=>key2)
+
+          r= RouteDistTime.new(:distance=>distance,:duration=>duration,:routeid=>key,:routeidD=>key2,:eval_time=>nowTime)
+
           r.save
+          puts "putting #{r.id}"
+
         end
+            nowTime=nowTime+30
+          end
         rescue Exception=>e
 
           k=0
           k=k+1
         end
+
       end
     end
 
